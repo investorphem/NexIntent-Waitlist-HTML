@@ -26,28 +26,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        }
-        .glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(11, 15, 25, 0) 70%);
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
-            pointer-events: none;
-        }
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px); }
+        .glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(11, 15, 25, 0) 70%); top: -150px; left: 50%; transform: translateX(-50%); z-index: -1; pointer-events: none; }
     </style>
 </head>
 <body class="bg-dark text-white min-h-screen relative overflow-x-hidden antialiased">
 
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
-
     <div class="fixed inset-0 bg-grid z-[-2]"></div>
     <div class="glow"></div>
 
@@ -55,186 +40,52 @@
         <div class="flex items-center gap-3">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="36" height="36" rx="10" fill="#10B981" fill-opacity="0.1"/>
-                <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#10B981" stroke-opacity="0.2"/>
                 <path d="M12 24V12L24 24V12" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="24" cy="12" r="3" fill="#0B0F19" stroke="#10B981" stroke-width="2"/>
-                <circle cx="24" cy="12" r="1" fill="#10B981"/>
             </svg>
             <span class="text-xl font-bold tracking-tight">NexIntent</span>
         </div>
-        
         <div class="flex items-center gap-6">
-            <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-gray-900 border border-gray-700 rounded-full cursor-help" title="Connected to the official FCA Handbook API via RAG pipeline.">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-gray-900 border border-gray-700 rounded-full">
                 <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                 <span class="text-xs font-mono text-gray-400">FCA Handbook: Synced</span>
             </div>
-            <a href="#" onclick="event.preventDefault(); showToast('Developer Docs will be unlocked for approved beta partners upon official launch.');" class="text-sm font-medium text-gray-300 hover:text-white transition-colors cursor-pointer">Developer Docs ↗</a>
+            <a href="#" onclick="event.preventDefault(); showToast('Developer Docs will be unlocked for approved beta partners.');" class="text-sm font-medium text-gray-300 hover:text-white transition-colors cursor-pointer">Developer Docs ↗</a>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 pt-24 pb-16 text-center relative z-10">
-        <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-sm font-medium">
-            🚀 UK Enterprise Beta Launching Soon
-        </div>
+        <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-sm font-medium">🚀 UK Enterprise Beta Launching Soon</div>
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">Automate FCA Audit Data. <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-500">Without Exposing Your Database.</span></h1>
+        <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">An intent-based AI Copilot that queries your transaction logs via natural language. Powered by a live RAG-sync with the FCA Handbook. Zero data hallucination. Zero-Trust architecture.</p>
 
-        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">
-            Automate FCA Audit Data. <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-500">Without Exposing Your Database.</span>
-        </h1>
-
-        <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-            An intent-based AI Copilot that queries your transaction logs via natural language. Powered by a live RAG-sync with the FCA Handbook. Zero data hallucination. Zero-Trust architecture.
-        </p>
-
-        <div id="waitlist" class="max-w-md mx-auto bg-darker p-8 rounded-2xl border border-gray-800 shadow-2xl relative">
+        <div class="max-w-md mx-auto bg-darker p-8 rounded-2xl border border-gray-800 shadow-2xl relative">
             <h3 class="text-xl font-semibold mb-2">Claim Founding Partner Status</h3>
-            <p class="text-sm text-gray-400 mb-6">Join the beta waitlist to secure 12 months of free Enterprise API access upon launch.</p>
-
+            <p class="text-sm text-gray-400 mb-6">Join the waitlist for 12 months of free Enterprise API access.</p>
             <form id="waitlist-form" action="https://formspree.io/f/mzdqeayo" method="POST" class="space-y-4 text-left">
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="name">Full Name</label>
-                    <input type="text" id="name" name="Full Name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Sarah Jenkins">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="company">Company Name</label>
-                    <input type="text" id="company" name="Company Name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Acme Payments UK">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="email">Work Email</label>
-                    <input type="email" id="email" name="Email Address" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="sarah@acmepayments.co.uk">
-                </div>
-                <button type="submit" id="submit-btn" class="w-full bg-accent hover:bg-accentHover text-dark font-bold text-lg py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                    Request Early Access
-                </button>
+                <input type="text" name="Full Name" required placeholder="Full Name" class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                <input type="text" name="Company Name" required placeholder="Company Name" class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                <input type="email" id="email" name="Email Address" required placeholder="Work Email" class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent">
+                <button type="submit" id="submit-btn" class="w-full bg-accent hover:bg-accentHover text-dark font-bold text-lg py-3 rounded-lg transition-all">Request Early Access</button>
             </form>
-            <p class="text-xs text-gray-500 mt-4 text-center">No credit card required. Non-binding pilot participation.</p>
+            <p class="text-[10px] text-gray-600 mt-4 text-center leading-relaxed">By submitting, you agree to our Terms of Pilot. NexIntent performs non-binding, read-only compliance simulations. No financial data is stored on NexIntent servers.</p>
         </div>
     </main>
 
     <section class="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Standard AI Hallucinates. <br><span class="text-accent">We Execute Strict Intents.</span></h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
-                Why forward-thinking stablecoin issuers and payment processors are upgrading their compliance infrastructure.
-            </p>
-        </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                </div>
+            <div class="bg-darker border border-gray-800 p-8 rounded-2xl">
                 <h3 class="text-lg font-bold mb-3">Absolute Data Isolation</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Your master database is never exposed to an external LLM. Our engine sits in a secure silo, preventing unauthorized data scraping, leakage, or hallucinated responses.
-                </p>
+                <p class="text-gray-400 text-sm">Your master database is never exposed. Engine sits in a secure silo, preventing data leakage.</p>
             </div>
-
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                </div>
+            <div class="bg-darker border border-gray-800 p-8 rounded-2xl">
                 <h3 class="text-lg font-bold mb-3">Live FCA Handbook Sync</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Via a strict RAG pipeline, the AI ingests daily updates from the official FCA API. When regulatory thresholds change, your audit queries adapt instantly with zero manual coding.
-                </p>
+                <p class="text-gray-400 text-sm">AI ingests daily updates from the official FCA API. Queries adapt instantly to regulatory changes.</p>
             </div>
-
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
+            <div class="bg-darker border border-gray-800 p-8 rounded-2xl">
                 <h3 class="text-lg font-bold mb-3">FCA-Ready Export Trails</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Generate immutable PDF/CSV logs of every executed query. Each export is cryptographically stamped with the specific FCA rule that triggered the audit for ultimate compliance proof.
-                </p>
+                <p class="text-gray-400 text-sm">Generate immutable audit logs cryptographically stamped with specific FCA compliance rules.</p>
             </div>
-        </div>
-    </section>
-
-    <section class="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold tracking-tight mb-4">See the Zero-Trust Router in Action</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">
-                Try the interactive demo below. Notice how natural language is isolated and converted into a strict JSON intent before returning an exportable, FCA-ready audit log.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-darker border border-gray-800 rounded-2xl p-6 shadow-2xl">
-            <div class="col-span-1 border-r border-gray-800 pr-6">
-                <h3 class="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">1. Compliance Officer Input</h3>
-                <p class="text-xs text-gray-500 mb-4">Select a natural language command to simulate an audit:</p>
-                <div class="space-y-3">
-                    <button onclick="runDemo('high_risk')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Audit high-risk accounts & wallets."
-                    </button>
-                    <button onclick="runDemo('large_fiat')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Show fiat deposits over £10k."
-                    </button>
-                    <button onclick="runDemo('cross_border')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Find anomalous SWIFT & Stablecoin transfers."
-                    </button>
-                    <button onclick="runDemo('reset')" class="w-full text-center text-accent text-xs font-bold mt-4 hover:underline">
-                        Reset Dashboard
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-span-1 md:col-span-2 flex flex-col gap-6 pl-0 md:pl-6">
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
-                        2. AI Intent Parser (Isolated)
-                        <span id="ai-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
-                    </h3>
-                    <div class="bg-black border border-gray-800 rounded-lg p-4 font-mono text-xs text-green-400 h-28 overflow-y-auto relative">
-                        <pre id="intent-output" class="whitespace-pre-wrap text-gray-500">// Waiting for natural language input...
-// The LLM operates here, completely isolated from production data.</pre>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
-                        3. Read-Only Database Result
-                        <span id="db-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
-                    </h3>
-                    <div class="bg-dark border border-gray-800 rounded-lg overflow-hidden">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-gray-900 border-b border-gray-800">
-                                <tr>
-                                    <th class="p-3 font-medium text-gray-400">Ref_ID</th>
-                                    <th class="p-3 font-medium text-gray-400">Type</th>
-                                    <th class="p-3 font-medium text-gray-400">Amount</th>
-                                    <th class="p-3 font-medium text-gray-400">Risk Score</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body" class="divide-y divide-gray-800">
-                                <tr>
-                                    <td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div id="export-container" class="bg-gray-900 border-t border-gray-800 p-3 hidden justify-end">
-                            <button onclick="showToast('Secure FCA-compliant PDF generated and downloaded successfully.')" class="flex items-center gap-2 text-xs font-bold text-accent hover:text-white transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Export FCA Audit Report
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-800 text-center relative z-10">
-        <p class="text-sm font-medium text-gray-500 mb-6 uppercase tracking-widest">Built with enterprise-grade infrastructure</p>
-        <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale">
-            <span class="text-xl font-bold font-mono">OpenAI Enterprise</span>
-            <span class="text-xl font-bold font-mono">AWS Shield</span>
-            <span class="text-xl font-bold font-mono">Supabase</span>
-            <span class="text-xl font-bold font-mono">PostgreSQL</span>
         </div>
     </section>
 
@@ -242,143 +93,34 @@
         function showToast(message, isError = false) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colorClass = isError ? 'border-red-500 text-red-400' : 'border-accent text-white';
-            const dotClass = isError ? 'bg-red-500' : 'bg-accent animate-pulse';
-
-            toast.className = `bg-darker border ${colorClass} px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-3 pointer-events-auto max-w-sm`;
-            toast.innerHTML = `
-                <div class="w-2 h-2 rounded-full ${dotClass} shrink-0"></div>
-                <p class="text-sm font-medium">${message}</p>
-            `;
+            toast.className = `bg-darker border ${isError ? 'border-red-500' : 'border-accent'} px-6 py-4 rounded-lg shadow-2xl transition-all`;
+            toast.innerHTML = `<p class="text-sm font-medium">${message}</p>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.classList.remove('translate-x-full', 'opacity-0'); }, 10);
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => { toast.remove(); }, 300);
-            }, 4000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
-        document.getElementById('waitlist-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = event.target;
-            const emailInput = document.getElementById('email').value.toLowerCase();
-            const submitBtn = document.getElementById('submit-btn');
-            const blockedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com'];
-            const emailDomain = emailInput.split('@')[1];
-
-            if (blockedDomains.includes(emailDomain)) {
-                showToast('Please use a valid corporate email address.', true);
-                return; 
-            }
-
-            const data = new FormData(form);
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = 'Sending...';
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50');
-
-            fetch(form.action, {
-                method: form.method,
-                body: data,
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    showToast('Success! You are on the priority waitlist.');
-                    form.reset();
-                } else {
-                    showToast('Oops! There was a problem submitting your request.', true);
-                }
-            }).catch(error => {
-                showToast('Network error. Please try again.', true);
-            }).finally(() => {
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50');
-            });
+        document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.toLowerCase();
+            const blocked = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+            if (blocked.includes(email.split('@')[1])) return showToast('Please use a corporate email.', true);
+            
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = 'Sending...';
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: {'Accept': 'application/json'} })
+                .then(r => r.ok ? (showToast('Success!'), this.reset()) : showToast('Error', true))
+                .finally(() => btn.innerHTML = 'Request Early Access');
         });
 
-        // Updated Database including Traditional Finance and Web3
-        const mockDatabase = [
-            { id: 'ACC-8821', type: 'IBAN Transfer', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
-            { id: 'WAL-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
-            { id: 'ACC-8823', type: 'BACS Payment', amount: '£2,100', risk: '05 (Low)', riskClass: 'text-gray-400' },
-            { id: 'WAL-8824', type: 'USDC Transfer', amount: '$85,000', risk: '88 (High)', riskClass: 'text-red-400' },
-            { id: 'ACC-8825', type: 'SWIFT Wire', amount: '£11,500', risk: '45 (Medium)', riskClass: 'text-yellow-400' }
-        ];
-
-        function runDemo(command) {
-            const intentOutput = document.getElementById('intent-output');
-            const tableBody = document.getElementById('table-body');
-            const aiStatus = document.getElementById('ai-status');
-            const dbStatus = document.getElementById('db-status');
-            const exportContainer = document.getElementById('export-container');
-
-            aiStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
-            dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600';
-            exportContainer.classList.add('hidden');
-            exportContainer.classList.remove('flex');
-            intentOutput.innerHTML = '// Parsing intent...';
-            intentOutput.className = 'whitespace-pre-wrap text-gray-400';
-            tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">Executing query...</td></tr>`;
-
+        function runDemo(cmd) {
+            document.getElementById('intent-output').innerHTML = '// Parsing intent...';
             setTimeout(() => {
-                aiStatus.className = 'w-2 h-2 rounded-full bg-accent';
-                dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
-                intentOutput.className = 'whitespace-pre-wrap text-accent';
-                
-                let intentJson = '';
-                let filteredData = [];
-
-                if (command === 'high_risk') {
-                    intentJson = `{\n  "action": "FETCH_ENTITIES",\n  "filters": {\n    "entity_types": ["bank_account", "crypto_wallet"],\n    "risk_score_min": 80\n  },\n  "fca_rule_sync": "SYSC 6.1.1",\n  "limit": 50\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.risk.includes('High'));
-                } else if (command === 'large_fiat') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "asset_class": "fiat",\n    "amount_min_gbp": 10000\n  },\n  "fca_rule_sync": "MLR 2017"\n}`;
-                    filteredData = mockDatabase.filter(tx => (tx.type === 'IBAN Transfer' || tx.type === 'SWIFT Wire') && parseInt(tx.amount.replace(/[^0-9]/g, '')) > 10000);
-                } else if (command === 'cross_border') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "types": ["SWIFT", "USDC"]\n  },\n  "fca_rule_sync": "PS23/15"\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.type === 'USDC Transfer' || tx.type === 'SWIFT Wire');
-                } else if (command === 'reset') {
-                    resetDemo();
-                    return;
-                }
-
-                intentOutput.innerHTML = intentJson;
-
-                setTimeout(() => {
-                    dbStatus.className = 'w-2 h-2 rounded-full bg-accent';
-                    renderTable(filteredData);
-                    exportContainer.classList.remove('hidden');
-                    exportContainer.classList.add('flex');
-                }, 600);
-
+                const db = { high_risk: [{id:'ACC-8821',type:'IBAN',amount:'£15k',risk:'High'}], large_fiat: [{id:'ACC-8825',type:'SWIFT',amount:'£11k',risk:'Med'}], cross_border: [{id:'WAL-8824',type:'USDC',amount:'$85k',risk:'High'}] };
+                document.getElementById('intent-output').innerHTML = '{\n  "action": "FETCH_ENTITIES",\n  "status": "SECURE_ROUTE"\n}';
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = db[cmd].map(tx => `<tr><td class="p-3 font-mono">${tx.id}</td><td class="p-3">${tx.type}</td><td class="p-3">${tx.amount}</td><td class="p-3">${tx.risk}</td></tr>`).join('');
+                document.getElementById('export-container').classList.remove('hidden');
             }, 800);
-        }
-
-        function renderTable(data) {
-            const tableBody = document.getElementById('table-body');
-            if (data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No matching records found.</td></tr>`;
-                return;
-            }
-            tableBody.innerHTML = data.map(tx => `
-                <tr class="hover:bg-gray-800 transition-colors">
-                    <td class="p-3 font-mono">${tx.id}</td>
-                    <td class="p-3">${tx.type}</td>
-                    <td class="p-3">${tx.amount}</td>
-                    <td class="p-3 font-medium ${tx.riskClass}">${tx.risk}</td>
-                </tr>
-            `).join('');
-        }
-
-        function resetDemo() {
-            document.getElementById('ai-status').className = 'w-2 h-2 rounded-full bg-gray-600';
-            document.getElementById('db-status').className = 'w-2 h-2 rounded-full bg-gray-600';
-            document.getElementById('export-container').classList.add('hidden');
-            document.getElementById('export-container').classList.remove('flex');
-            document.getElementById('intent-output').innerHTML = '// Waiting for natural language input...\n// The LLM operates here, completely isolated from production data.';
-            document.getElementById('intent-output').className = 'whitespace-pre-wrap text-gray-500';
-            document.getElementById('table-body').innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td></tr>`;
         }
     </script>
 </body>
