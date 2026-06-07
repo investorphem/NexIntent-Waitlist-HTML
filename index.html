@@ -47,7 +47,7 @@
     </style>
 </head>
 <body class="bg-dark text-white min-h-screen relative overflow-x-hidden antialiased">
-    
+
     <!-- Background Effects -->
     <div class="fixed inset-0 bg-grid z-[-2]"></div>
     <div class="glow"></div>
@@ -66,12 +66,12 @@
         <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-sm font-medium">
             🚀 UK Enterprise Beta Launching Soon
         </div>
-        
+
         <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">
             Automate FCA Audit Data. <br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-500">Without Exposing Your Database.</span>
         </h1>
-        
+
         <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
             An intent-based AI Copilot that queries your transaction logs via natural language. Zero data hallucination. Zero-Trust architecture. Built for UK FinTechs and stablecoin issuers.
         </p>
@@ -80,7 +80,7 @@
         <div id="waitlist" class="max-w-md mx-auto bg-darker p-8 rounded-2xl border border-gray-800 shadow-2xl relative">
             <h3 class="text-xl font-semibold mb-2">Claim Founding Partner Status</h3>
             <p class="text-sm text-gray-400 mb-6">Join the beta waitlist to secure 12 months of free Enterprise API access upon launch.</p>
-            
+
             <form action="#" method="POST" class="space-y-4 text-left" onsubmit="event.preventDefault(); alert('In production, this will submit to Mailchimp or Formspree!');">
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1" for="name">Full Name</label>
@@ -102,6 +102,83 @@
         </div>
     </main>
 
+    <!-- Interactive Demo Section -->
+    <section class="max-w-6xl mx-auto px-6 py-20 relative z-10">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight mb-4">See the Zero-Trust Router in Action</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Try the interactive demo below. Notice how natural language is isolated and converted into a strict, secure JSON intent before touching the mock database.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-darker border border-gray-800 rounded-2xl p-6 shadow-2xl">
+            
+            <!-- Left Column: User Input -->
+            <div class="col-span-1 border-r border-gray-800 pr-6">
+                <h3 class="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">1. Compliance Officer Input</h3>
+                <p class="text-xs text-gray-500 mb-4">Select a natural language command to simulate an audit:</p>
+                
+                <div class="space-y-3">
+                    <button onclick="runDemo('high_risk')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
+                        "Audit all high-risk wallets."
+                    </button>
+                    <button onclick="runDemo('large_fiat')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
+                        "Show fiat deposits over £10k."
+                    </button>
+                    <button onclick="runDemo('stablecoin')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
+                        "Find USDC stablecoin transfers."
+                    </button>
+                    <button onclick="runDemo('reset')" class="w-full text-center text-accent text-xs font-bold mt-4 hover:underline">
+                        Reset Dashboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: The Engine -->
+            <div class="col-span-1 md:col-span-2 flex flex-col gap-6 pl-0 md:pl-6">
+                
+                <!-- AI Intent Parser -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
+                        2. AI Intent Parser (Isolated)
+                        <span id="ai-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
+                    </h3>
+                    <div class="bg-black border border-gray-800 rounded-lg p-4 font-mono text-xs text-green-400 h-28 overflow-y-auto relative">
+                        <pre id="intent-output" class="whitespace-pre-wrap text-gray-500">// Waiting for natural language input...
+// The LLM operates here, completely isolated from production data.</pre>
+                    </div>
+                </div>
+
+                <!-- Database Result -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
+                        3. Read-Only Database Result
+                        <span id="db-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
+                    </h3>
+                    <div class="bg-dark border border-gray-800 rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-gray-900 border-b border-gray-800">
+                                <tr>
+                                    <th class="p-3 font-medium text-gray-400">TX_ID</th>
+                                    <th class="p-3 font-medium text-gray-400">Type</th>
+                                    <th class="p-3 font-medium text-gray-400">Amount</th>
+                                    <th class="p-3 font-medium text-gray-400">Risk Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-gray-800">
+                                <!-- Default empty state -->
+                                <tr>
+                                    <td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Trusted By / Tech Stack Banner -->
     <section class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-800 text-center relative z-10">
         <p class="text-sm font-medium text-gray-500 mb-6 uppercase tracking-widest">Built with enterprise-grade infrastructure</p>
@@ -114,5 +191,88 @@
         </div>
     </section>
 
+    <!-- Demo Script Engine -->
+    <script>
+        // Mock Database
+        const mockDatabase = [
+            { id: 'TX-8821', type: 'Fiat Deposit', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
+            { id: 'TX-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
+            { id: 'TX-8823', type: 'Fiat Deposit', amount: '£2,100', risk: '05 (Low)', riskClass: 'text-gray-400' },
+            { id: 'TX-8824', type: 'USDC Transfer', amount: '$85,000', risk: '88 (High)', riskClass: 'text-red-400' },
+            { id: 'TX-8825', type: 'Fiat Deposit', amount: '£11,500', risk: '45 (Medium)', riskClass: 'text-yellow-400' }
+        ];
+
+        function runDemo(command) {
+            const intentOutput = document.getElementById('intent-output');
+            const tableBody = document.getElementById('table-body');
+            const aiStatus = document.getElementById('ai-status');
+            const dbStatus = document.getElementById('db-status');
+
+            // Reset UI
+            aiStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
+            dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600';
+            intentOutput.innerHTML = '// Parsing intent...';
+            intentOutput.className = 'whitespace-pre-wrap text-gray-400';
+            tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">Executing query...</td></tr>`;
+
+            // Step 1: Simulate AI parsing the intent (800ms delay)
+            setTimeout(() => {
+                aiStatus.className = 'w-2 h-2 rounded-full bg-accent';
+                dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
+                intentOutput.className = 'whitespace-pre-wrap text-accent';
+                
+                let intentJson = '';
+                let filteredData = [];
+
+                if (command === 'high_risk') {
+                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "risk_score_min": 80\n  },\n  "limit": 50\n}`;
+                    filteredData = mockDatabase.filter(tx => tx.risk.includes('High'));
+                } else if (command === 'large_fiat') {
+                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "type": "Fiat Deposit",\n    "amount_min_gbp": 10000\n  }\n}`;
+                    filteredData = mockDatabase.filter(tx => tx.type === 'Fiat Deposit' && parseInt(tx.amount.replace(/[^0-9]/g, '')) > 10000);
+                } else if (command === 'stablecoin') {
+                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "asset": "USDC"\n  }\n}`;
+                    filteredData = mockDatabase.filter(tx => tx.type === 'USDC Transfer');
+                } else if (command === 'reset') {
+                    resetDemo();
+                    return;
+                }
+
+                intentOutput.innerHTML = intentJson;
+
+                // Step 2: Simulate Database returning results (another 600ms delay)
+                setTimeout(() => {
+                    dbStatus.className = 'w-2 h-2 rounded-full bg-accent';
+                    renderTable(filteredData);
+                }, 600);
+
+            }, 800);
+        }
+
+        function renderTable(data) {
+            const tableBody = document.getElementById('table-body');
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No matching records found.</td></tr>`;
+                return;
+            }
+            
+            tableBody.innerHTML = data.map(tx => `
+                <tr class="hover:bg-gray-800 transition-colors">
+                    <td class="p-3 font-mono">${tx.id}</td>
+                    <td class="p-3">${tx.type}</td>
+                    <td class="p-3">${tx.amount}</td>
+                    <td class="p-3 font-medium ${tx.riskClass}">${tx.risk}</td>
+                </tr>
+            `).join('');
+        }
+
+        function resetDemo() {
+            document.getElementById('ai-status').className = 'w-2 h-2 rounded-full bg-gray-600';
+            document.getElementById('db-status').className = 'w-2 h-2 rounded-full bg-gray-600';
+            document.getElementById('intent-output').innerHTML = '// Waiting for natural language input...\n// The LLM operates here, completely isolated from production data.';
+            document.getElementById('intent-output').className = 'whitespace-pre-wrap text-gray-500';
+            document.getElementById('table-body').innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td></tr>`;
+        }
+    </script>
 </body>
 </html>
