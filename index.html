@@ -169,13 +169,13 @@
                 <p class="text-xs text-gray-500 mb-4">Select a natural language command to simulate an audit:</p>
                 <div class="space-y-3">
                     <button onclick="runDemo('high_risk')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Audit all high-risk wallets."
+                        "Audit high-risk accounts & wallets."
                     </button>
                     <button onclick="runDemo('large_fiat')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
                         "Show fiat deposits over £10k."
                     </button>
-                    <button onclick="runDemo('stablecoin')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Find USDC stablecoin transfers."
+                    <button onclick="runDemo('cross_border')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
+                        "Find anomalous SWIFT & Stablecoin transfers."
                     </button>
                     <button onclick="runDemo('reset')" class="w-full text-center text-accent text-xs font-bold mt-4 hover:underline">
                         Reset Dashboard
@@ -204,7 +204,7 @@
                         <table class="w-full text-left text-xs">
                             <thead class="bg-gray-900 border-b border-gray-800">
                                 <tr>
-                                    <th class="p-3 font-medium text-gray-400">TX_ID</th>
+                                    <th class="p-3 font-medium text-gray-400">Ref_ID</th>
                                     <th class="p-3 font-medium text-gray-400">Type</th>
                                     <th class="p-3 font-medium text-gray-400">Amount</th>
                                     <th class="p-3 font-medium text-gray-400">Risk Score</th>
@@ -297,12 +297,13 @@
             });
         });
 
+        // Updated Database including Traditional Finance and Web3
         const mockDatabase = [
-            { id: 'TX-8821', type: 'Fiat Deposit', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
-            { id: 'TX-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
-            { id: 'TX-8823', type: 'Fiat Deposit', amount: '£2,100', risk: '05 (Low)', riskClass: 'text-gray-400' },
-            { id: 'TX-8824', type: 'USDC Transfer', amount: '$85,000', risk: '88 (High)', riskClass: 'text-red-400' },
-            { id: 'TX-8825', type: 'Fiat Deposit', amount: '£11,500', risk: '45 (Medium)', riskClass: 'text-yellow-400' }
+            { id: 'ACC-8821', type: 'IBAN Transfer', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
+            { id: 'WAL-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
+            { id: 'ACC-8823', type: 'BACS Payment', amount: '£2,100', risk: '05 (Low)', riskClass: 'text-gray-400' },
+            { id: 'WAL-8824', type: 'USDC Transfer', amount: '$85,000', risk: '88 (High)', riskClass: 'text-red-400' },
+            { id: 'ACC-8825', type: 'SWIFT Wire', amount: '£11,500', risk: '45 (Medium)', riskClass: 'text-yellow-400' }
         ];
 
         function runDemo(command) {
@@ -329,14 +330,14 @@
                 let filteredData = [];
 
                 if (command === 'high_risk') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "risk_score_min": 80\n  },\n  "fca_rule_sync": "SYSC 6.1.1",\n  "limit": 50\n}`;
+                    intentJson = `{\n  "action": "FETCH_ENTITIES",\n  "filters": {\n    "entity_types": ["bank_account", "crypto_wallet"],\n    "risk_score_min": 80\n  },\n  "fca_rule_sync": "SYSC 6.1.1",\n  "limit": 50\n}`;
                     filteredData = mockDatabase.filter(tx => tx.risk.includes('High'));
                 } else if (command === 'large_fiat') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "type": "Fiat Deposit",\n    "amount_min_gbp": 10000\n  },\n  "fca_rule_sync": "MLR 2017"\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.type === 'Fiat Deposit' && parseInt(tx.amount.replace(/[^0-9]/g, '')) > 10000);
-                } else if (command === 'stablecoin') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "asset": "USDC"\n  },\n  "fca_rule_sync": "PS23/15"\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.type === 'USDC Transfer');
+                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "asset_class": "fiat",\n    "amount_min_gbp": 10000\n  },\n  "fca_rule_sync": "MLR 2017"\n}`;
+                    filteredData = mockDatabase.filter(tx => (tx.type === 'IBAN Transfer' || tx.type === 'SWIFT Wire') && parseInt(tx.amount.replace(/[^0-9]/g, '')) > 10000);
+                } else if (command === 'cross_border') {
+                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "types": ["SWIFT", "USDC"]\n  },\n  "fca_rule_sync": "PS23/15"\n}`;
+                    filteredData = mockDatabase.filter(tx => tx.type === 'USDC Transfer' || tx.type === 'SWIFT Wire');
                 } else if (command === 'reset') {
                     resetDemo();
                     return;
