@@ -1,395 +1,1114 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexIntent | Zero-Trust FCA Compliance AI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: '#0B0F19',
-                        darker: '#06090E',
-                        accent: '#10B981', // Emerald green for FinTech trust
-                        accentHover: '#059669'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        /* Subtle grid background for that developer/tech feel */
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        }
-        /* Glowing orb effect behind the hero */
-        .glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(11, 15, 25, 0) 70%);
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexIntent — FCA Compliance Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #060E1A;
+  --navy2:   #0B1829;
+  --navy3:   #0F2235;
+  --card:    #0D1F33;
+  --card2:   #112540;
+  --teal:    #0D9488;
+  --teal2:   #14B8A6;
+  --teal3:   #5EEAD4;
+  --gold:    #F59E0B;
+  --gold2:   #FCD34D;
+  --green:   #10B981;
+  --red:     #EF4444;
+  --red2:    #FCA5A5;
+  --amber:   #F97316;
+  --white:   #F8FAFC;
+  --lgray:   #CBD5E1;
+  --dgray:   #64748B;
+  --border:  rgba(20,184,166,0.15);
+  --border2: rgba(20,184,166,0.08);
+  --glow:    rgba(13,148,136,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--navy);color:var(--white);font-family:'Instrument Sans',sans-serif}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--navy2)}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
+
+/* ── TOPBAR ── */
+.topbar{
+  grid-column:1/-1;
+  background:var(--navy2);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:20px;
+  position:relative;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;margin-right:20px}
+.logo-mark{
+  width:32px;height:32px;background:var(--teal);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#fff;
+  box-shadow:0 0 16px var(--glow);
+}
+.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px}
+.logo-text span{color:var(--teal2)}
+.topbar-badge{
+  background:rgba(13,148,136,0.12);border:1px solid var(--border);
+  color:var(--teal3);font-size:10px;font-weight:600;letter-spacing:0.8px;
+  padding:3px 8px;border-radius:4px;text-transform:uppercase;
+}
+.topbar-spacer{flex:1}
+.topbar-pill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);
+  color:var(--green);font-size:11px;padding:4px 10px;border-radius:20px;
+  font-family:'JetBrains Mono',monospace;
+}
+.topbar-pill .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--dgray);font-size:16px;transition:all .2s;position:relative;
+}
+.icon-btn:hover{border-color:var(--teal);color:var(--teal2);background:var(--card2)}
+.notif-badge{
+  position:absolute;top:-3px;right:-3px;width:14px;height:14px;
+  background:var(--red);border-radius:50%;font-size:8px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+}
+.avatar{
+  width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));
+  border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer;
+  box-shadow:0 0 10px var(--glow);
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:var(--navy2);border-right:1px solid var(--border2);
+  overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;
+}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:1.2px;color:var(--dgray);
+  text-transform:uppercase;padding:12px 8px 6px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;
+  cursor:pointer;transition:all .2s;color:var(--dgray);font-size:13px;font-weight:500;
+  border:1px solid transparent;position:relative;
+}
+.nav-item:hover{background:var(--card);color:var(--lgray);border-color:var(--border2)}
+.nav-item.active{
+  background:linear-gradient(135deg,rgba(13,148,136,.18),rgba(13,148,136,.08));
+  color:var(--teal2);border-color:var(--border);
+}
+.nav-item.active::before{
+  content:'';position:absolute;left:0;top:20%;height:60%;width:2px;
+  background:var(--teal2);border-radius:0 2px 2px 0;
+}
+.nav-icon{font-size:15px;width:18px;text-align:center}
+.nav-badge{
+  margin-left:auto;background:rgba(239,68,68,.15);color:var(--red);
+  font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;
+}
+.nav-badge.teal{background:rgba(13,148,136,.15);color:var(--teal2)}
+.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:1px solid var(--border2)}
+.status-card{
+  background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(13,148,136,.05));
+  border:1px solid var(--border);border-radius:10px;padding:12px;
+}
+.status-label{font-size:10px;color:var(--dgray);letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
+.status-val{font-size:20px;font-weight:700;font-family:'Syne',sans-serif;color:var(--teal2)}
+.status-sub{font-size:10px;color:var(--dgray);margin-top:2px}
+
+/* ── MAIN ── */
+.main{overflow-y:auto;background:var(--navy);display:flex;flex-direction:column}
+
+/* ── PANELS (tabs) ── */
+.panel{display:none;flex:1;flex-direction:column;animation:fadeIn .3s ease}
+.panel.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;
+  border-bottom:1px solid var(--border2);padding-bottom:18px;
+}
+.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
+.page-sub{font-size:12px;color:var(--dgray);margin-top:3px}
+.page-actions{display:flex;gap:8px;align-items:center}
+.btn{
+  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:all .2s;border:none;
+  font-family:'Instrument Sans',sans-serif;
+}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal2);box-shadow:0 0 16px var(--glow)}
+.btn-ghost{background:var(--card);color:var(--lgray);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal2)}
+
+/* ── GRID ── */
+.content{padding:20px 28px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-main{display:grid;grid-template-columns:1fr 340px;gap:14px}
+
+/* ── CARDS ── */
+.card{
+  background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:18px;
+  transition:border-color .2s;
+}
+.card:hover{border-color:var(--border)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:600;color:var(--dgray);letter-spacing:.4px;text-transform:uppercase}
+.card-icon{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;
+}
+
+/* ── KPI CARDS ── */
+.kpi{padding:16px 18px}
+.kpi-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.kpi-label{font-size:11px;color:var(--dgray);margin-bottom:8px}
+.kpi-delta{font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--red)}
+.kpi-bar{height:3px;background:var(--navy3);border-radius:2px;margin-top:10px;overflow:hidden}
+.kpi-fill{height:100%;border-radius:2px;transition:width 1s ease}
+
+/* ── ACTIVITY FEED ── */
+.activity-item{
+  display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);
+  align-items:flex-start;
+}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{
+  width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;
+}
+.activity-text{font-size:12px;color:var(--lgray);line-height:1.5}
+.activity-time{font-size:10px;color:var(--dgray);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.activity-tag{
+  display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:4px;margin-left:4px;
+}
+
+/* ── COMPLIANCE TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{
+  padding:10px 14px;text-align:left;font-size:10px;font-weight:600;
+  color:var(--dgray);letter-spacing:.8px;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .15s;cursor:pointer}
+tbody tr:hover{background:var(--card2)}
+tbody td{padding:11px 14px;color:var(--lgray)}
+.status-pill{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;
+  border-radius:20px;font-size:10px;font-weight:600;
+}
+.status-pill.clear{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.status-pill.review{background:rgba(245,158,11,.1);color:var(--gold);border:1px solid rgba(245,158,11,.2)}
+.status-pill.flagged{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.status-pill.pending{background:rgba(100,116,139,.1);color:var(--dgray);border:1px solid rgba(100,116,139,.2)}
+.risk-bar{width:60px;height:6px;background:var(--navy3);border-radius:3px;overflow:hidden;display:inline-block}
+.risk-fill{height:100%;border-radius:3px}
+
+/* ── QUERY INTERFACE ── */
+.query-panel{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.query-header{
+  padding:14px 18px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:10px;
+}
+.query-traffic{display:flex;gap:5px}
+.traffic-dot{width:10px;height:10px;border-radius:50%}
+.query-title{font-size:12px;color:var(--dgray);font-family:'JetBrains Mono',monospace;margin-left:6px}
+.query-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:340px;min-height:240px}
+.msg{max-width:88%;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg-user{align-self:flex-end}
+.msg-system{align-self:flex-start}
+.msg-bubble{
+  padding:10px 14px;border-radius:12px;font-size:12.5px;line-height:1.55;
+  font-family:'JetBrains Mono',monospace;
+}
+.msg-user .msg-bubble{
+  background:linear-gradient(135deg,var(--teal),rgba(13,148,136,.7));
+  color:#fff;border-radius:12px 12px 2px 12px;
+}
+.msg-system .msg-bubble{
+  background:var(--navy3);border:1px solid var(--border2);
+  color:var(--lgray);border-radius:12px 12px 12px 2px;
+}
+.msg-result .msg-bubble{
+  background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.04));
+  border:1px solid rgba(245,158,11,.2);color:var(--lgray);
+  border-radius:12px;
+}
+.msg-meta{font-size:10px;color:var(--dgray);margin-top:4px;padding:0 2px}
+.result-table{margin-top:8px;font-size:11px}
+.result-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border2)}
+.result-row:last-child{border:none}
+.result-key{color:var(--dgray)}
+.result-val{color:var(--teal3);font-weight:600}
+.result-val.red{color:var(--red2)}
+.result-val.gold{color:var(--gold2)}
+.typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+.typing-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:typing .9s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+.query-input-area{
+  padding:14px 16px;border-top:1px solid var(--border2);
+  display:flex;gap:10px;align-items:center;
+}
+.query-input{
+  flex:1;background:var(--navy2);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;color:var(--white);font-size:12.5px;outline:none;
+  font-family:'JetBrains Mono',monospace;transition:border-color .2s;
+}
+.query-input:focus{border-color:var(--teal)}
+.query-input::placeholder{color:var(--dgray)}
+.send-btn{
+  width:38px;height:38px;background:var(--teal);border:none;border-radius:8px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;transition:all .2s;flex-shrink:0;
+}
+.send-btn:hover{background:var(--teal2);box-shadow:0 0 14px var(--glow)}
+.quick-queries{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 12px}
+.quick-q{
+  background:var(--navy3);border:1px solid var(--border2);border-radius:6px;
+  padding:5px 10px;font-size:10.5px;color:var(--dgray);cursor:pointer;
+  transition:all .2s;font-family:'JetBrains Mono',monospace;
+}
+.quick-q:hover{border-color:var(--teal);color:var(--teal2);background:rgba(13,148,136,.06)}
+
+/* ── MINI CHART ── */
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:40px;margin-top:10px}
+.bar-c{flex:1;border-radius:3px 3px 0 0;transition:height .5s ease}
+.bar-c:hover{opacity:.8}
+
+/* ── RISK METER ── */
+.risk-ring{position:relative;width:80px;height:80px;margin:0 auto}
+.risk-ring svg{width:80px;height:80px;transform:rotate(-90deg)}
+.risk-ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+.ring-bg{stroke:var(--navy3)}
+.ring-fill{stroke-dasharray:220;stroke-dashoffset:var(--dash);transition:stroke-dashoffset 1.5s ease}
+.risk-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.risk-pct{font-family:'Syne',sans-serif;font-weight:800;font-size:18px}
+.risk-txt{font-size:9px;color:var(--dgray);margin-top:-2px}
+
+/* ── AUDIT PIPELINE ── */
+.pipeline{display:flex;flex-direction:column;gap:10px}
+.pipe-step{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:var(--navy3);border-radius:8px;border:1px solid var(--border2);
+  transition:border-color .2s;
+}
+.pipe-step:hover{border-color:var(--border)}
+.pipe-num{
+  width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;
+  font-family:'Syne',sans-serif;
+}
+.pipe-step.done .pipe-num{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.pipe-step.active .pipe-num{background:rgba(13,148,136,.2);color:var(--teal2);border:1px solid var(--border)}
+.pipe-step.pending .pipe-num{background:var(--card);color:var(--dgray);border:1px solid var(--border2)}
+.pipe-info{flex:1}
+.pipe-title{font-size:12px;font-weight:600;color:var(--lgray);margin-bottom:2px}
+.pipe-sub{font-size:10.5px;color:var(--dgray)}
+.pipe-status{font-size:10px;font-weight:600}
+.pipe-step.done .pipe-status{color:var(--green)}
+.pipe-step.active .pipe-status{color:var(--teal2)}
+.pipe-step.pending .pipe-status{color:var(--dgray)}
+.pipe-bar{height:2px;background:var(--navy3);margin-left:49px;margin-top:-2px;border-radius:1px}
+.pipe-bar.done{background:linear-gradient(90deg,var(--green),transparent)}
+.pipe-bar.active{background:linear-gradient(90deg,var(--teal),transparent);animation:shimmer 2s infinite}
+@keyframes shimmer{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
+
+/* ── ALERT BANNER ── */
+.alert-banner{
+  margin:0 28px;padding:12px 16px;border-radius:8px;
+  display:flex;align-items:center;gap:10px;font-size:12px;
+  background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--red2);
+  animation:slideDown .4s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.alert-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.5s infinite}
+.alert-close{margin-left:auto;cursor:pointer;opacity:.6}
+.alert-close:hover{opacity:1}
+
+/* ── REPORTS PAGE ── */
+.report-item{
+  display:flex;align-items:center;gap:14px;padding:14px 16px;
+  background:var(--navy3);border-radius:8px;border:1px solid var(--border2);
+  transition:all .2s;cursor:pointer;
+}
+.report-item:hover{border-color:var(--border);background:var(--card)}
+.report-icon{
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0;
+}
+.report-info{flex:1}
+.report-name{font-size:13px;font-weight:600;color:var(--lgray);margin-bottom:2px}
+.report-meta{font-size:11px;color:var(--dgray)}
+.report-actions{display:flex;gap:6px}
+.report-btn{
+  padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.report-btn.dl{background:rgba(13,148,136,.15);color:var(--teal2);border:1px solid var(--border)}
+.report-btn.dl:hover{background:var(--teal);color:#fff}
+.report-btn.view{background:var(--card);color:var(--dgray);border:1px solid var(--border2)}
+
+/* ── SETTINGS ── */
+.settings-section{margin-bottom:24px}
+.settings-title{font-size:14px;font-weight:700;color:var(--lgray);margin-bottom:12px;
+  font-family:'Syne',sans-serif;padding-bottom:8px;border-bottom:1px solid var(--border2)}
+.setting-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0;border-bottom:1px solid var(--border2);
+}
+.setting-row:last-child{border:none}
+.setting-label{font-size:13px;color:var(--lgray)}
+.setting-desc{font-size:11px;color:var(--dgray);margin-top:2px}
+.toggle{
+  width:42px;height:24px;background:var(--navy3);border-radius:12px;
+  cursor:pointer;position:relative;transition:background .2s;border:1px solid var(--border2);
+}
+.toggle.on{background:var(--teal)}
+.toggle::after{
+  content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;
+  background:#fff;border-radius:50%;transition:transform .2s;
+}
+.toggle.on::after{transform:translateX(18px)}
+
+/* ── GLOW BG ── */
+.bg-glow{
+  position:fixed;pointer-events:none;z-index:0;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(13,148,136,.04),transparent 70%);
+  top:-200px;right:-200px;
+}
+
+/* ── SKELETON LOADER ── */
+.skel{background:linear-gradient(90deg,var(--navy3) 25%,var(--card2) 50%,var(--navy3) 75%);
+  background-size:200% 100%;animation:skel 1.5s infinite;border-radius:4px}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(6,14,26,.85);
+  z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px;max-width:480px;width:90%;animation:modalIn .3s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.modal-body{font-size:13px;color:var(--lgray);line-height:1.6;margin-bottom:20px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end}
+
+/* ── SCROLLABLE content ── */
+.content{scrollbar-width:thin;scrollbar-color:var(--teal) var(--navy2)}
+
+/* ── ZERO TRUST BADGE ── */
+.zt-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(13,148,136,.08);border:1px solid var(--border);
+  color:var(--teal3);font-size:10px;font-weight:600;letter-spacing:.4px;
+  padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;
+}
+.zt-dot{width:5px;height:5px;background:var(--teal2);border-radius:50%;animation:pulse 1.5s infinite}
+</style>
 </head>
-<body class="bg-dark text-white min-h-screen relative overflow-x-hidden antialiased">
+<body>
+<div class="bg-glow"></div>
 
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title">🔒 Zero-Trust Query Executed</div>
+    <div class="modal-body">
+      Your natural language query has been processed through NexIntent's proprietary Intent-Parsing Schema (IPS). <br><br>
+      <strong style="color:var(--teal2)">Data isolation confirmed:</strong> No raw transactional data was transmitted to the LLM layer. The AI classified your intent only — all database execution occurred within your isolated Azure UK silo. <br><br>
+      FCA-compliant audit log entry created at <span style="color:var(--teal3);font-family:'JetBrains Mono',monospace">2026-06-07T14:32:18Z</span>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Dismiss</button>
+      <button class="btn btn-primary" onclick="closeModal()">✓ View Audit Log</button>
+    </div>
+  </div>
+</div>
 
-    <div class="fixed inset-0 bg-grid z-[-2]"></div>
-    <div class="glow"></div>
+<div class="app">
 
-    <nav class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center relative z-10">
-        <div class="flex items-center gap-3">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="36" height="36" rx="10" fill="#10B981" fill-opacity="0.1"/>
-                <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" stroke="#10B981" stroke-opacity="0.2"/>
-                <path d="M12 24V12L24 24V12" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="24" cy="12" r="3" fill="#0B0F19" stroke="#10B981" stroke-width="2"/>
-                <circle cx="24" cy="12" r="1" fill="#10B981"/>
-            </svg>
-            <span class="text-xl font-bold tracking-tight">NexIntent</span>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-mark">NI</div>
+      <div class="logo-text">Nex<span>Intent</span></div>
+    </div>
+    <div class="topbar-badge">FCA Compliance Intelligence</div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-pill"><div class="dot"></div>All Systems Operational</div>
+    <div class="topbar-actions">
+      <div class="icon-btn" title="Notifications" onclick="showModal()">🔔<div class="notif-badge">3</div></div>
+      <div class="icon-btn" title="Export">⬇</div>
+      <div class="icon-btn" title="Settings" onclick="navigate('settings')">⚙</div>
+      <div class="avatar" title="Oluwafemi Olagoke">OMO</div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section">Intelligence</div>
+    <div class="nav-item active" onclick="navigate('overview')"><span class="nav-icon">⬛</span>Overview</div>
+    <div class="nav-item" onclick="navigate('query')"><span class="nav-icon">💬</span>Compliance Copilot</div>
+    <div class="nav-item" onclick="navigate('transactions')"><span class="nav-icon">⟳</span>Transaction Monitor<span class="nav-badge">23</span></div>
+
+    <div class="nav-section">Regulatory</div>
+    <div class="nav-item" onclick="navigate('audit')"><span class="nav-icon">🔍</span>Audit Pipeline</div>
+    <div class="nav-item" onclick="navigate('reports')"><span class="nav-icon">📄</span>FCA Reports<span class="nav-badge teal">2</span></div>
+    <div class="nav-item" onclick="navigate('aml')"><span class="nav-icon">🛡</span>AML / KYC</div>
+
+    <div class="nav-section">Web3</div>
+    <div class="nav-item" onclick="navigate('web3')"><span class="nav-icon">⬡</span>On-Chain Monitor</div>
+
+    <div class="nav-section">Platform</div>
+    <div class="nav-item" onclick="navigate('settings')"><span class="nav-icon">⚙</span>Settings & Security</div>
+
+    <div class="sidebar-bottom">
+      <div class="status-card">
+        <div class="status-label">Compliance Score</div>
+        <div class="status-val">98.4%</div>
+        <div class="status-sub">↑ 2.1% vs last quarter</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══ OVERVIEW ══ -->
+    <div class="panel active" id="panel-overview">
+      <div class="alert-banner" id="alert1">
+        <div class="alert-dot"></div>
+        <strong>3 transactions</strong>&nbsp;flagged for manual SAR review — £2.4M total exposure. Review required within 48 hours.
+        <span class="alert-close" onclick="document.getElementById('alert1').remove()">✕</span>
+      </div>
+      <div class="page-header">
+        <div>
+          <div class="page-title">Compliance Overview</div>
+          <div class="page-sub">Last updated: 07 Jun 2026 at 14:32 UTC &nbsp;·&nbsp; <span class="zt-badge"><span class="zt-dot"></span>Zero-Trust Active</span></div>
         </div>
-        
-        <div class="flex items-center gap-6">
-            <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-gray-900 border border-gray-700 rounded-full cursor-help" title="Connected to the official FCA Handbook API via RAG pipeline.">
-                <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                <span class="text-xs font-mono text-gray-400">FCA Handbook: Synced</span>
+        <div class="page-actions">
+          <button class="btn btn-ghost" onclick="navigate('reports')">📄 FCA Export</button>
+          <button class="btn btn-primary" onclick="navigate('query')">💬 Ask Copilot</button>
+        </div>
+      </div>
+      <div class="content">
+        <!-- KPI ROW -->
+        <div class="grid-4">
+          <div class="card kpi" style="border-color:rgba(13,148,136,.3)">
+            <div class="card-header">
+              <div class="card-title">Transactions Monitored</div>
+              <div class="card-icon" style="background:rgba(13,148,136,.12);color:var(--teal2)">⟳</div>
             </div>
-            <a href="#" onclick="event.preventDefault(); showToast('Developer Docs will be unlocked for approved beta partners upon official launch.');" class="text-sm font-medium text-gray-300 hover:text-white transition-colors cursor-pointer">Developer Docs ↗</a>
-        </div>
-    </nav>
-
-    <main class="max-w-4xl mx-auto px-6 pt-24 pb-16 text-center relative z-10">
-        <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-sm font-medium">
-            🚀 UK Enterprise Beta Launching Soon
-        </div>
-
-        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">
-            Automate FCA Audit Data. <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-500">Without Exposing Your Database.</span>
-        </h1>
-
-        <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-            An intent-based AI Copilot that queries your transaction logs via natural language. Powered by a live RAG-sync with the FCA Handbook. Zero data hallucination. Zero-Trust architecture.
-        </p>
-
-        <div id="waitlist" class="max-w-md mx-auto bg-darker p-8 rounded-2xl border border-gray-800 shadow-2xl relative">
-            <h3 class="text-xl font-semibold mb-2">Claim Founding Partner Status</h3>
-            <p class="text-sm text-gray-400 mb-6">Join the beta waitlist to secure 12 months of free Enterprise API access upon launch.</p>
-
-            <form id="waitlist-form" action="https://formspree.io/f/mzdqeayo" method="POST" class="space-y-4 text-left">
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="name">Full Name</label>
-                    <input type="text" id="name" name="Full Name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Sarah Jenkins">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="company">Company Name</label>
-                    <input type="text" id="company" name="Company Name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Acme Payments UK">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1" for="email">Work Email</label>
-                    <input type="email" id="email" name="Email Address" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="sarah@acmepayments.co.uk">
-                </div>
-                <button type="submit" id="submit-btn" class="w-full bg-accent hover:bg-accentHover text-dark font-bold text-lg py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                    Request Early Access
-                </button>
-            </form>
-            
-            <p class="text-[10px] text-gray-600 mt-4 text-center leading-relaxed">
-                By submitting, you agree to our <a href="#" class="underline hover:text-accent">Terms of Pilot</a>. NexIntent performs non-binding, read-only compliance simulations. No financial data is stored on NexIntent servers; all queries are routed via secure, encrypted read-only API calls.
-            </p>
-        </div>
-    </main>
-
-    <section class="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Standard AI Hallucinates. <br><span class="text-accent">We Execute Strict Intents.</span></h2>
-            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
-                Why forward-thinking stablecoin issuers and payment processors are upgrading their compliance infrastructure.
-            </p>
+            <div class="kpi-val" style="color:var(--teal2)">847,293</div>
+            <div class="kpi-label">This quarter — Q2 2026</div>
+            <div class="kpi-delta up">↑ 12.4% vs Q1</div>
+            <div class="kpi-bar"><div class="kpi-fill" style="width:78%;background:var(--teal)"></div></div>
+          </div>
+          <div class="card kpi">
+            <div class="card-header">
+              <div class="card-title">AML Flags Raised</div>
+              <div class="card-icon" style="background:rgba(239,68,68,.12);color:var(--red)">⚑</div>
+            </div>
+            <div class="kpi-val" style="color:var(--red)">23</div>
+            <div class="kpi-label">Pending manual review</div>
+            <div class="kpi-delta down">↑ 3 new since yesterday</div>
+            <div class="kpi-bar"><div class="kpi-fill" style="width:23%;background:var(--red)"></div></div>
+          </div>
+          <div class="card kpi">
+            <div class="card-header">
+              <div class="card-title">FCA Reports Filed</div>
+              <div class="card-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✓</div>
+            </div>
+            <div class="kpi-val" style="color:var(--green)">14</div>
+            <div class="kpi-label">REP-CRIM submissions YTD</div>
+            <div class="kpi-delta up">100% on-time filing</div>
+            <div class="kpi-bar"><div class="kpi-fill" style="width:100%;background:var(--green)"></div></div>
+          </div>
+          <div class="card kpi">
+            <div class="card-header">
+              <div class="card-title">Compliance Score</div>
+              <div class="card-icon" style="background:rgba(245,158,11,.12);color:var(--gold)">★</div>
+            </div>
+            <div class="kpi-val" style="color:var(--gold)">98.4%</div>
+            <div class="kpi-label">FCA benchmark: 85%</div>
+            <div class="kpi-delta up">↑ Top 5% of registered firms</div>
+            <div class="kpi-bar"><div class="kpi-fill" style="width:98%;background:var(--gold)"></div></div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                </div>
-                <h3 class="text-lg font-bold mb-3">Absolute Data Isolation</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Your master database is never exposed to an external LLM. Our engine sits in a secure silo, preventing unauthorized data scraping, leakage, or hallucinated responses.
-                </p>
+        <!-- MAIN GRID -->
+        <div class="grid-main">
+          <!-- Left: Recent Flags + Activity -->
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Flagged Transactions — Live</div>
+                <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="navigate('transactions')">View All →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th><th>Counterparty</th><th>Amount</th><th>Risk Score</th><th>Flag Reason</th><th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr onclick="showModal()"><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94821</td><td>Meridian Pay Ltd</td><td style="color:var(--red)">£847,200</td><td><div class="risk-bar"><div class="risk-fill" style="width:88%;background:var(--red)"></div></div> <span style="font-size:10px;color:var(--red)">88</span></td><td><span class="activity-tag" style="background:rgba(239,68,68,.1);color:var(--red)">Sanctioned jurisdiction</span></td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
+                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94756</td><td>Crypto Vault AG</td><td style="color:var(--gold)">£412,500</td><td><div class="risk-bar"><div class="risk-fill" style="width:72%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">72</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">Structuring pattern</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
+                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94701</td><td>NovaPay Solutions</td><td style="color:var(--gold)">£218,900</td><td><div class="risk-bar"><div class="risk-fill" style="width:65%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">65</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">Velocity breach</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
+                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94688</td><td>Global Remit PLC</td><td>£89,400</td><td><div class="risk-bar"><div class="risk-fill" style="width:31%;background:var(--green)"></div></div> <span style="font-size:10px;color:var(--green)">31</span></td><td><span class="activity-tag" style="background:rgba(16,185,129,.1);color:var(--green)">Threshold trigger</span></td><td><span class="status-pill clear">✓ Clear</span></td></tr>
+                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94621</td><td>Stacks Bridge Inc</td><td>£156,000</td><td><div class="risk-bar"><div class="risk-fill" style="width:44%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">44</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">New counterparty</span></td><td><span class="status-pill pending">⋯ Pending</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Transaction Volume — Last 12 Weeks</div>
+                <span style="font-size:11px;color:var(--green)">↑ 12.4% trend</span>
+              </div>
+              <div class="mini-chart" id="chart1"></div>
+            </div>
+          </div>
+
+          <!-- Right: Risk + Activity -->
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card" style="text-align:center">
+              <div class="card-title" style="text-align:left;margin-bottom:16px">Overall Risk Rating</div>
+              <div class="risk-ring">
+                <svg viewBox="0 0 80 80">
+                  <circle class="ring-bg" cx="40" cy="40" r="35"/>
+                  <circle class="ring-fill" cx="40" cy="40" r="35" stroke="var(--teal2)" style="--dash:44"/>
+                </svg>
+                <div class="risk-label">
+                  <div class="risk-pct" style="color:var(--teal2)">LOW</div>
+                  <div class="risk-txt">RISK</div>
                 </div>
-                <h3 class="text-lg font-bold mb-3">Live FCA Handbook Sync</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Via a strict RAG pipeline, the AI ingests daily updates from the official FCA API. When regulatory thresholds change, your audit queries adapt instantly with zero manual coding.
-                </p>
+              </div>
+              <div style="margin-top:12px;display:flex;justify-content:space-around">
+                <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green);font-family:'Syne',sans-serif">98.4%</div><div style="font-size:10px;color:var(--dgray)">Compliance</div></div>
+                <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--red);font-family:'Syne',sans-serif">0.003%</div><div style="font-size:10px;color:var(--dgray)">Flag Rate</div></div>
+              </div>
             </div>
 
-            <div class="bg-darker border border-gray-800 p-8 rounded-2xl hover:border-accent/50 transition-colors relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full -z-10 group-hover:bg-accent/10 transition-colors"></div>
-                <div class="w-12 h-12 bg-dark border border-gray-700 rounded-xl flex items-center justify-center mb-6 text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
-                <h3 class="text-lg font-bold mb-3">FCA-Ready Export Trails</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Generate immutable PDF/CSV logs of every executed query. Each export is cryptographically stamped with the specific FCA rule that triggered the audit for ultimate compliance proof.
-                </p>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Live Activity Feed</div>
+                <div style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite"></div>
+              </div>
+              <div id="activity-feed">
+                <div class="activity-item"><div class="activity-dot" style="background:var(--teal)"></div><div><div class="activity-text">REP-CRIM Q1 report auto-generated and queued for submission</div><div class="activity-time">14:32:18 UTC</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--red)"></div><div><div class="activity-text">TXN-94821 flagged — sanctioned jurisdiction counterparty detected<span class="activity-tag" style="background:rgba(239,68,68,.1);color:var(--red)">SAR Required</span></div><div class="activity-time">14:28:44 UTC</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--green)"></div><div><div class="activity-text">KYC refresh completed for 14 clients — all verified</div><div class="activity-time">13:55:02 UTC</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--gold)"></div><div><div class="activity-text">Velocity breach pattern detected across 3 linked accounts</div><div class="activity-time">13:41:17 UTC</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--teal)"></div><div><div class="activity-text">Audit pipeline stage 3 completed — data validated against FCA schema</div><div class="activity-time">12:59:33 UTC</div></div></div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section class="max-w-6xl mx-auto px-6 py-20 relative z-10">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold tracking-tight mb-4">See the Zero-Trust Router in Action</h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">
-                Try the interactive demo below. Notice how natural language is isolated and converted into a strict JSON intent before returning an exportable, FCA-ready audit log.
-            </p>
+    <!-- ══ COPILOT ══ -->
+    <div class="panel" id="panel-query">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Compliance Copilot</div>
+          <div class="page-sub">Natural language → FCA-structured audit queries &nbsp;·&nbsp; <span class="zt-badge"><span class="zt-dot"></span>Zero-Trust Active — LLM sees no raw data</span></div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-darker border border-gray-800 rounded-2xl p-6 shadow-2xl">
-            <div class="col-span-1 border-r border-gray-800 pr-6">
-                <h3 class="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">1. Compliance Officer Input</h3>
-                <p class="text-xs text-gray-500 mb-4">Select a natural language command to simulate an audit:</p>
-                <div class="space-y-3">
-                    <button onclick="runDemo('high_risk')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Audit high-risk accounts & wallets."
-                    </button>
-                    <button onclick="runDemo('large_fiat')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Show fiat deposits over £10k."
-                    </button>
-                    <button onclick="runDemo('cross_border')" class="w-full text-left bg-dark hover:bg-gray-800 border border-gray-700 p-3 rounded-lg text-sm transition-colors focus:border-accent">
-                        "Find anomalous SWIFT & Stablecoin transfers."
-                    </button>
-                    <button onclick="runDemo('reset')" class="w-full text-center text-accent text-xs font-bold mt-4 hover:underline">
-                        Reset Dashboard
-                    </button>
-                </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">⬇ Export Session</button>
+          <button class="btn btn-primary" onclick="showModal()">🔒 View Audit Log</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="grid-main">
+          <div class="query-panel">
+            <div class="query-header">
+              <div class="query-traffic">
+                <div class="traffic-dot" style="background:#EF4444"></div>
+                <div class="traffic-dot" style="background:#F59E0B"></div>
+                <div class="traffic-dot" style="background:#10B981"></div>
+              </div>
+              <div class="query-title">nexintent://compliance-copilot &nbsp;—&nbsp; FCA Audit Interface v2.4</div>
+              <div class="zt-badge" style="margin-left:auto"><span class="zt-dot"></span>ZDR Enforced</div>
             </div>
-
-            <div class="col-span-1 md:col-span-2 flex flex-col gap-6 pl-0 md:pl-6">
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
-                        2. AI Intent Parser (Isolated)
-                        <span id="ai-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
-                    </h3>
-                    <div class="bg-black border border-gray-800 rounded-lg p-4 font-mono text-xs text-green-400 h-28 overflow-y-auto relative">
-                        <pre id="intent-output" class="whitespace-pre-wrap text-gray-500">// Waiting for natural language input...
-// The LLM operates here, completely isolated from production data.</pre>
-                    </div>
+            <div class="query-messages" id="messages">
+              <div class="msg msg-system">
+                <div class="msg-bubble">
+                  ✦ NexIntent Compliance Copilot online.<br>
+                  I can query your FCA audit data, flag suspicious transactions, generate REP-CRIM reports, and monitor AML patterns — all in plain English.<br><br>
+                  <span style="color:var(--teal3)">Your data never leaves your isolated Azure UK silo.</span>
                 </div>
-
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider flex items-center justify-between">
-                        3. Read-Only Database Result
-                        <span id="db-status" class="w-2 h-2 rounded-full bg-gray-600"></span>
-                    </h3>
-                    <div class="bg-dark border border-gray-800 rounded-lg overflow-hidden">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-gray-900 border-b border-gray-800">
-                                <tr>
-                                    <th class="p-3 font-medium text-gray-400">Ref_ID</th>
-                                    <th class="p-3 font-medium text-gray-400">Type</th>
-                                    <th class="p-3 font-medium text-gray-400">Amount</th>
-                                    <th class="p-3 font-medium text-gray-400">Risk Score</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body" class="divide-y divide-gray-800">
-                                <tr>
-                                    <td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div id="export-container" class="bg-gray-900 border-t border-gray-800 p-3 hidden justify-end">
-                            <button onclick="showToast('Secure FCA-compliant PDF generated and downloaded successfully.')" class="flex items-center gap-2 text-xs font-bold text-accent hover:text-white transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Export FCA Audit Report
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <div class="msg-meta">NexIntent IPS v2.4 &nbsp;·&nbsp; Zero-Trust Confirmed</div>
+              </div>
             </div>
+            <div class="quick-queries">
+              <div class="quick-q" onclick="sendQuery('Show all transactions above £50K flagged for AML review in Q2 2026')">AML flags Q2 £50K+</div>
+              <div class="quick-q" onclick="sendQuery('Generate REP-CRIM report for Q1 2026')">REP-CRIM Q1 report</div>
+              <div class="quick-q" onclick="sendQuery('Show SAR-required transactions this month')">SAR required this month</div>
+              <div class="quick-q" onclick="sendQuery('List all sanctioned jurisdiction transactions year to date')">Sanctioned jurisdictions YTD</div>
+            </div>
+            <div class="query-input-area">
+              <input class="query-input" id="queryInput" placeholder="Ask a compliance question in plain English..." onkeydown="if(event.key==='Enter')sendQuery()"/>
+              <button class="send-btn" onclick="sendQuery()">➤</button>
+            </div>
+          </div>
+
+          <!-- Right: context -->
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px">How It Works</div>
+              <div class="pipeline">
+                <div class="pipe-step done"><div class="pipe-num">1</div><div class="pipe-info"><div class="pipe-title">Intent Classification</div><div class="pipe-sub">LLM parses your question — no data access</div></div><div class="pipe-status">✓ Done</div></div>
+                <div class="pipe-step done"><div class="pipe-num">2</div><div class="pipe-info"><div class="pipe-title">Schema Mapping (IPS)</div><div class="pipe-sub">Intent mapped to FCA data taxonomy</div></div><div class="pipe-status">✓ Done</div></div>
+                <div class="pipe-step active"><div class="pipe-num">3</div><div class="pipe-info"><div class="pipe-title">Sanitised Execution</div><div class="pipe-sub">Read-only query on your isolated silo</div></div><div class="pipe-status">● Active</div></div>
+                <div class="pipe-step pending"><div class="pipe-num">4</div><div class="pipe-info"><div class="pipe-title">Output Formatting</div><div class="pipe-sub">Results formatted to FCA template</div></div><div class="pipe-status">⋯ Queued</div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px">Session Stats</div>
+              <div class="result-table">
+                <div class="result-row"><span class="result-key">Queries this session</span><span class="result-val" id="qcount">1</span></div>
+                <div class="result-row"><span class="result-key">Data transmitted to LLM</span><span class="result-val" style="color:var(--green)">0 bytes</span></div>
+                <div class="result-row"><span class="result-key">Avg response time</span><span class="result-val">1.8s</span></div>
+                <div class="result-row"><span class="result-key">Audit log entries</span><span class="result-val" id="acount">1</span></div>
+                <div class="result-row"><span class="result-key">Zero-trust violations</span><span class="result-val" style="color:var(--green)">None</span></div>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-800 text-center relative z-10">
-        <p class="text-sm font-medium text-gray-500 mb-6 uppercase tracking-widest">Built with enterprise-grade infrastructure</p>
-        <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale">
-            <span class="text-xl font-bold font-mono">OpenAI Enterprise</span>
-            <span class="text-xl font-bold font-mono">AWS Shield</span>
-            <span class="text-xl font-bold font-mono">Supabase</span>
-            <span class="text-xl font-bold font-mono">PostgreSQL</span>
+    <!-- ══ TRANSACTIONS ══ -->
+    <div class="panel" id="panel-transactions">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Transaction Monitor</div>
+          <div class="page-sub">Real-time AML / KYC transaction intelligence &nbsp;·&nbsp; 847,293 monitored this quarter</div>
         </div>
-    </section>
+        <div class="page-actions">
+          <button class="btn btn-ghost">⬇ Export CSV</button>
+          <button class="btn btn-primary">+ Add Filter</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="grid-4">
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Total Volume</div><div class="kpi-val" style="color:var(--teal2)">£2.4B</div><div class="kpi-label">Q2 2026</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Flagged</div><div class="kpi-val" style="color:var(--red)">23</div><div class="kpi-label">Pending review</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Auto-Cleared</div><div class="kpi-val" style="color:var(--green)">847,270</div><div class="kpi-label">Below risk threshold</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">SAR Filed</div><div class="kpi-val" style="color:var(--gold)">7</div><div class="kpi-label">This quarter</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">All Flagged Transactions</div>
+            <div style="display:flex;gap:6px">
+              <span class="status-pill flagged" style="cursor:pointer">⚠ Flagged (23)</span>
+              <span class="status-pill review" style="cursor:pointer">⏵ Review (8)</span>
+              <span class="status-pill clear" style="cursor:pointer">✓ Cleared (6)</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Date/Time</th><th>Originator</th><th>Beneficiary</th><th>Amount (GBP)</th><th>Jurisdiction</th><th>Risk</th><th>Flag Type</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr onclick="showModal()"><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94821</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 14:12</td><td>ClearPay UK</td><td>Meridian Pay Ltd</td><td style="color:var(--red);font-weight:600">£847,200</td><td><span style="color:var(--red)">🔴 IR — Iran</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:88%;background:var(--red)"></div></div></td><td>Sanctioned country</td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94756</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 13:44</td><td>NovaPay</td><td>Crypto Vault AG</td><td style="color:var(--gold);font-weight:600">£412,500</td><td><span style="color:var(--lgray)">🟡 CH — Switzerland</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:72%;background:var(--gold)"></div></div></td><td>Structuring</td><td><span class="status-pill review">⏵ Review</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94701</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 12:38</td><td>Apex Finance</td><td>NovaPay Solutions</td><td style="color:var(--gold);font-weight:600">£218,900</td><td><span style="color:var(--lgray)">🟡 AE — UAE</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:65%;background:var(--gold)"></div></div></td><td>Velocity breach</td><td><span class="status-pill review">⏵ Review</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94688</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 11:22</td><td>Stellar Bank</td><td>Global Remit PLC</td><td>£89,400</td><td><span style="color:var(--green)">🟢 GB — United Kingdom</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:31%;background:var(--green)"></div></div></td><td>Threshold trigger</td><td><span class="status-pill clear">✓ Cleared</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94621</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 10:05</td><td>Bridge Layer</td><td>Stacks Bridge Inc</td><td>£156,000</td><td><span style="color:var(--lgray)">🟡 US — United States</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:44%;background:var(--gold)"></div></div></td><td>New counterparty</td><td><span class="status-pill pending">⋯ Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        function showToast(message, isError = false) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const colorClass = isError ? 'border-red-500 text-red-400' : 'border-accent text-white';
-            const dotClass = isError ? 'bg-red-500' : 'bg-accent animate-pulse';
+    <!-- ══ AUDIT PIPELINE ══ -->
+    <div class="panel" id="panel-audit">
+      <div class="page-header">
+        <div><div class="page-title">FCA Audit Pipeline</div><div class="page-sub">Automated REP-CRIM submission pipeline — Q2 2026</div></div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">⟳ Refresh</button>
+          <button class="btn btn-primary" onclick="navigate('reports')">📄 View Reports</button>
+        </div>
+      </div>
+      <div class="content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:16px">Q2 2026 REP-CRIM Pipeline</div>
+            <div class="pipeline">
+              <div class="pipe-step done"><div class="pipe-num">1</div><div class="pipe-info"><div class="pipe-title">Data Ingestion</div><div class="pipe-sub">847,293 transactions pulled from isolated silo</div></div><div class="pipe-status">✓ Complete</div></div>
+              <div class="pipe-bar done"></div>
+              <div class="pipe-step done"><div class="pipe-num">2</div><div class="pipe-info"><div class="pipe-title">Schema Validation</div><div class="pipe-sub">All fields validated against FCA taxonomy v4.2</div></div><div class="pipe-status">✓ Complete</div></div>
+              <div class="pipe-bar done"></div>
+              <div class="pipe-step done"><div class="pipe-num">3</div><div class="pipe-info"><div class="pipe-title">AML Flag Reconciliation</div><div class="pipe-sub">23 flags reviewed — 7 escalated to SAR</div></div><div class="pipe-status">✓ Complete</div></div>
+              <div class="pipe-bar active"></div>
+              <div class="pipe-step active"><div class="pipe-num">4</div><div class="pipe-info"><div class="pipe-title">Report Compilation</div><div class="pipe-sub">REP-CRIM XML generation in progress — 94% complete</div></div><div class="pipe-status">● In Progress</div></div>
+              <div class="pipe-bar"></div>
+              <div class="pipe-step pending"><div class="pipe-num">5</div><div class="pipe-info"><div class="pipe-title">FCA Submission</div><div class="pipe-sub">GABRIEL portal upload — scheduled 09 Jun 2026</div></div><div class="pipe-status">⋯ Scheduled</div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px">Pipeline Health</div>
+              <div class="result-table">
+                <div class="result-row"><span class="result-key">Data quality score</span><span class="result-val">99.97%</span></div>
+                <div class="result-row"><span class="result-key">Fields validated</span><span class="result-val">2,847,293</span></div>
+                <div class="result-row"><span class="result-key">Schema errors</span><span class="result-val" style="color:var(--green)">0</span></div>
+                <div class="result-row"><span class="result-key">Estimated completion</span><span class="result-val" style="color:var(--teal2)">~18 mins</span></div>
+                <div class="result-row"><span class="result-key">FCA deadline</span><span class="result-val" style="color:var(--gold)">09 Jun 2026</span></div>
+                <div class="result-row"><span class="result-key">Last submission result</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px">Historical Submissions</div>
+              <div class="result-table">
+                <div class="result-row"><span class="result-key">Q1 2026 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
+                <div class="result-row"><span class="result-key">Q4 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
+                <div class="result-row"><span class="result-key">Q3 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
+                <div class="result-row"><span class="result-key">Q2 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
+                <div class="result-row"><span class="result-key">On-time filing rate</span><span class="result-val">100%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            toast.className = `bg-darker border ${colorClass} px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-3 pointer-events-auto max-w-sm`;
-            toast.innerHTML = `
-                <div class="w-2 h-2 rounded-full ${dotClass} shrink-0"></div>
-                <p class="text-sm font-medium">${message}</p>
-            `;
-            container.appendChild(toast);
-            setTimeout(() => { toast.classList.remove('translate-x-full', 'opacity-0'); }, 10);
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => { toast.remove(); }, 300);
-            }, 4000);
-        }
+    <!-- ══ REPORTS ══ -->
+    <div class="panel" id="panel-reports">
+      <div class="page-header">
+        <div><div class="page-title">FCA Reports</div><div class="page-sub">Auto-generated regulatory submissions — GABRIEL portal ready</div></div>
+        <div class="page-actions">
+          <button class="btn btn-ghost">⬇ Download All</button>
+          <button class="btn btn-primary" onclick="navigate('query')">+ Generate New</button>
+        </div>
+      </div>
+      <div class="content">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="report-item"><div class="report-icon" style="background:rgba(13,148,136,.12);color:var(--teal2)">📋</div><div class="report-info"><div class="report-name">REP-CRIM Q2 2026 — Financial Crime Return</div><div class="report-meta">Generated: 07 Jun 2026 &nbsp;·&nbsp; 847,293 transactions &nbsp;·&nbsp; FCA GABRIEL format &nbsp;·&nbsp; <span style="color:var(--gold)">● Pending submission</span></div></div><div class="report-actions"><button class="report-btn dl" onclick="showModal()">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
+          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">REP-CRIM Q1 2026 — Financial Crime Return</div><div class="report-meta">Submitted: 08 Apr 2026 &nbsp;·&nbsp; 791,442 transactions &nbsp;·&nbsp; <span style="color:var(--green)">✓ Accepted by FCA</span></div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
+          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">SAR Batch Report — Jun 2026</div><div class="report-meta">Generated: 06 Jun 2026 &nbsp;·&nbsp; 7 Suspicious Activity Reports &nbsp;·&nbsp; NCA submission ready</div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
+          <div class="report-item"><div class="report-icon" style="background:rgba(245,158,11,.12);color:var(--gold)">📊</div><div class="report-info"><div class="report-name">Consumer Duty Outcomes Report — H1 2026</div><div class="report-meta">Generated: 01 Jun 2026 &nbsp;·&nbsp; FCA PS22/9 compliant &nbsp;·&nbsp; Board sign-off pending</div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
+          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">REP-CRIM Q4 2025 — Financial Crime Return</div><div class="report-meta">Submitted: 12 Jan 2026 &nbsp;·&nbsp; 722,819 transactions &nbsp;·&nbsp; <span style="color:var(--green)">✓ Accepted by FCA</span></div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
+        </div>
+      </div>
+    </div>
 
-        document.getElementById('waitlist-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = event.target;
-            const emailInput = document.getElementById('email').value.toLowerCase();
-            const submitBtn = document.getElementById('submit-btn');
-            
-            // Extensive list to block personal emails
-            const blockedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com'];
-            const emailDomain = emailInput.split('@')[1];
+    <!-- ══ AML ══ -->
+    <div class="panel" id="panel-aml">
+      <div class="page-header">
+        <div><div class="page-title">AML / KYC Intelligence</div><div class="page-sub">Anti-Money Laundering & Know Your Customer monitoring</div></div>
+        <div class="page-actions"><button class="btn btn-primary" onclick="navigate('query')">💬 Query Copilot</button></div>
+      </div>
+      <div class="content">
+        <div class="grid-3">
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">KYC Verified Clients</div><div class="kpi-val" style="color:var(--green)">1,847</div><div class="kpi-label">Active & verified</div><div class="kpi-delta up">↑ 23 new this month</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Watchlist Matches</div><div class="kpi-val" style="color:var(--red)">4</div><div class="kpi-label">Pending review</div><div class="kpi-delta down">Requires immediate action</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">PEP Identified</div><div class="kpi-val" style="color:var(--gold)">12</div><div class="kpi-label">Politically Exposed Persons</div><div class="kpi-delta">Under enhanced monitoring</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">AML Alert Summary</div>
+            <div class="result-table">
+              <div class="result-row"><span class="result-key">Structuring patterns</span><span class="result-val red">3 active</span></div>
+              <div class="result-row"><span class="result-key">Sanctioned jurisdictions</span><span class="result-val red">1 (Iran)</span></div>
+              <div class="result-row"><span class="result-key">Velocity breaches</span><span class="result-val gold">2 monitoring</span></div>
+              <div class="result-row"><span class="result-key">Round-trip transactions</span><span class="result-val" style="color:var(--green)">None detected</span></div>
+              <div class="result-row"><span class="result-key">Layering indicators</span><span class="result-val gold">1 under review</span></div>
+              <div class="result-row"><span class="result-key">Auto-cleared today</span><span class="result-val">12,847</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:14px">KYC Refresh Queue</div>
+            <div class="pipeline">
+              <div class="pipe-step done"><div class="pipe-num" style="font-size:9px">✓</div><div class="pipe-info"><div class="pipe-title">Annual refresh — Tier 1 clients</div><div class="pipe-sub">1,200 clients — completed 01 Jun 2026</div></div></div>
+              <div class="pipe-step active"><div class="pipe-num" style="font-size:9px">●</div><div class="pipe-info"><div class="pipe-title">Enhanced DD — PEP clients</div><div class="pipe-sub">12 clients — 8 of 12 complete</div></div></div>
+              <div class="pipe-step pending"><div class="pipe-num" style="font-size:9px">⋯</div><div class="pipe-info"><div class="pipe-title">Watchlist re-screening</div><div class="pipe-sub">Scheduled: 10 Jun 2026</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            if (blockedDomains.includes(emailDomain)) {
-                showToast('Please use a valid corporate email address.', true);
-                return; 
-            }
+    <!-- ══ WEB3 ══ -->
+    <div class="panel" id="panel-web3">
+      <div class="page-header">
+        <div><div class="page-title">On-Chain Monitor</div><div class="page-sub">Blockchain transaction intelligence — Ethereum, Stacks, Celo networks</div></div>
+        <div class="page-actions"><button class="btn btn-primary" onclick="navigate('query')">💬 Query Wallets</button></div>
+      </div>
+      <div class="content">
+        <div class="grid-3">
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Wallets Monitored</div><div class="kpi-val" style="color:var(--teal2)">2,847</div><div class="kpi-label">Across 3 chains</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">On-Chain Volume</div><div class="kpi-val" style="color:var(--gold)">£48.2M</div><div class="kpi-label">USDC/cUSD equivalent Q2</div></div>
+          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Travel Rule Compliance</div><div class="kpi-val" style="color:var(--green)">100%</div><div class="kpi-label">FATF compliant transfers</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Recent On-Chain Flags</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Wallet Hash</th><th>Network</th><th>Amount</th><th>Counterparty Risk</th><th>Travel Rule</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">0x7f3a...d921</td><td>Ethereum</td><td style="color:var(--gold)">£892,000 USDC</td><td><span class="status-pill review">Medium</span></td><td><span class="status-pill clear">✓ Compliant</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">SP4k9...8bvc</td><td>Stacks</td><td style="color:var(--lgray)">£124,500 STX</td><td><span class="status-pill clear">Low</span></td><td><span class="status-pill clear">✓ Compliant</span></td><td><span class="status-pill clear">✓ Clear</span></td></tr>
+                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">0xcE2f...7741</td><td>Celo</td><td style="color:var(--red)">£2,104,000 cUSD</td><td><span class="status-pill flagged">High</span></td><td><span class="status-pill review">Pending</span></td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            const data = new FormData(form);
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = 'Sending...';
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50');
+    <!-- ══ SETTINGS ══ -->
+    <div class="panel" id="panel-settings">
+      <div class="page-header">
+        <div><div class="page-title">Settings & Security</div><div class="page-sub">Platform configuration — Zero-Trust architecture always enforced</div></div>
+        <div class="page-actions"><button class="btn btn-primary">💾 Save Changes</button></div>
+      </div>
+      <div class="content">
+        <div class="grid-2">
+          <div>
+            <div class="settings-section">
+              <div class="settings-title">Data Security</div>
+              <div class="setting-row"><div><div class="setting-label">Zero-Trust LLM Isolation</div><div class="setting-desc">LLM never receives raw financial data — always active</div></div><div class="toggle on" title="Always enforced — cannot be disabled"></div></div>
+              <div class="setting-row"><div><div class="setting-label">AES-256 Encryption at Rest</div><div class="setting-desc">Azure Key Vault — HSM backed</div></div><div class="toggle on"></div></div>
+              <div class="setting-row"><div><div class="setting-label">TLS 1.3 Enforcement</div><div class="setting-desc">All API endpoints — TLS 1.2 blocked</div></div><div class="toggle on"></div></div>
+              <div class="setting-row"><div><div class="setting-label">Immutable Audit Logging</div><div class="setting-desc">WORM policy — Azure Blob Storage</div></div><div class="toggle on"></div></div>
+              <div class="setting-row"><div><div class="setting-label">OpenAI Zero Data Retention</div><div class="setting-desc">Enterprise ZDR — no training on your data</div></div><div class="toggle on"></div></div>
+            </div>
+            <div class="settings-section">
+              <div class="settings-title">Compliance Notifications</div>
+              <div class="setting-row"><div><div class="setting-label">AML Flag Alerts</div><div class="setting-desc">Instant notification on new suspicious transactions</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">FCA Deadline Reminders</div><div class="setting-desc">7-day and 48-hour advance warnings</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">Watchlist Match Alerts</div><div class="setting-desc">Real-time OFAC / HMT / UN sanctions screening</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="settings-section">
+              <div class="settings-title">Data Residency</div>
+              <div class="card" style="margin-bottom:14px">
+                <div class="result-table">
+                  <div class="result-row"><span class="result-key">Primary region</span><span class="result-val">Azure UK South (London)</span></div>
+                  <div class="result-row"><span class="result-key">Failover region</span><span class="result-val">Azure UK West (Cardiff)</span></div>
+                  <div class="result-row"><span class="result-key">Data boundary</span><span class="result-val" style="color:var(--green)">UK only — guaranteed</span></div>
+                  <div class="result-row"><span class="result-key">GDPR role</span><span class="result-val">Data Processor (Art. 28)</span></div>
+                  <div class="result-row"><span class="result-key">DPA status</span><span class="result-val" style="color:var(--green)">✓ Signed</span></div>
+                  <div class="result-row"><span class="result-key">RTO / RPO</span><span class="result-val">4hr / 1hr</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <div class="settings-title">Account</div>
+              <div class="setting-row"><div><div class="setting-label">Oluwafemi Mobolaji Olagoke</div><div class="setting-desc">Platform Administrator &nbsp;·&nbsp; dracuul54@gmail.com</div></div><button class="btn btn-ghost" style="font-size:11px">Edit</button></div>
+              <div class="setting-row"><div><div class="setting-label">Subscription Tier</div><div class="setting-desc">Enterprise &nbsp;·&nbsp; Unlimited queries &nbsp;·&nbsp; Custom FCA templates</div></div><span class="status-pill clear">✓ Active</span></div>
+              <div class="setting-row"><div><div class="setting-label">Next Billing Date</div><div class="setting-desc">01 July 2026 &nbsp;·&nbsp; £1,999/month</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            fetch(form.action, {
-                method: form.method,
-                body: data,
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    showToast('Success! You are on the priority waitlist.');
-                    form.reset();
-                } else {
-                    showToast('Oops! There was a problem submitting your request.', true);
-                }
-            }).catch(error => {
-                showToast('Network error. Please try again.', true);
-            }).finally(() => {
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50');
-            });
-        });
+  </main>
+</div>
 
-        // The Full Mock Database for the Demo
-        const mockDatabase = [
-            { id: 'ACC-8821', type: 'IBAN Transfer', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
-            { id: 'WAL-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
-            { id: 'ACC-8823', type: 'BACS Payment', amount: '£2,100', risk: '05 (Low)', riskClass: 'text-gray-400' },
-            { id: 'WAL-8824', type: 'USDC Transfer', amount: '$85,000', risk: '88 (High)', riskClass: 'text-red-400' },
-            { id: 'ACC-8825', type: 'SWIFT Wire', amount: '£11,500', risk: '45 (Medium)', riskClass: 'text-yellow-400' }
-        ];
+<script>
+// ── NAVIGATION ──────────────────────────────────────────────────────────────
+function navigate(page) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + page);
+  if(panel) panel.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + page + "'")) n.classList.add('active');
+  });
+}
 
-        function runDemo(command) {
-            const intentOutput = document.getElementById('intent-output');
-            const tableBody = document.getElementById('table-body');
-            const aiStatus = document.getElementById('ai-status');
-            const dbStatus = document.getElementById('db-status');
-            const exportContainer = document.getElementById('export-container');
+// ── MODAL ───────────────────────────────────────────────────────────────────
+function showModal() { document.getElementById('modal').classList.add('open') }
+function closeModal() { document.getElementById('modal').classList.remove('open') }
+document.getElementById('modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal() });
 
-            // Reset States
-            aiStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
-            dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600';
-            exportContainer.classList.add('hidden');
-            exportContainer.classList.remove('flex');
-            intentOutput.innerHTML = '// Parsing intent...';
-            intentOutput.className = 'whitespace-pre-wrap text-gray-400';
-            tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">Executing query...</td></tr>`;
+// ── CHART ───────────────────────────────────────────────────────────────────
+const vals = [42,38,55,61,48,70,82,74,91,84,88,96];
+const colors = ['var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal2)'];
+const chart = document.getElementById('chart1');
+vals.forEach((v, i) => {
+  const b = document.createElement('div');
+  b.className = 'bar-c';
+  b.style.cssText = `height:${v}%;background:${colors[i]};opacity:${.5 + v/200};` +
+    `transition:height .8s ease ${i*60}ms;`;
+  b.title = `Week ${i+1}: ${v}K transactions`;
+  chart.appendChild(b);
+});
 
-            // Step 1: AI Parse Simulation
-            setTimeout(() => {
-                aiStatus.className = 'w-2 h-2 rounded-full bg-accent';
-                dbStatus.className = 'w-2 h-2 rounded-full bg-gray-600 animate-pulse';
-                intentOutput.className = 'whitespace-pre-wrap text-accent';
+// ── QUERY / COPILOT ─────────────────────────────────────────────────────────
+let qCount = 1, aCount = 1;
 
-                let intentJson = '';
-                let filteredData = [];
+const responses = {
+  'aml': {
+    summary: '✦ AML Scan Complete — Q2 2026',
+    rows: [
+      ['Transactions scanned', '847,293'],
+      ['Above £50K threshold', '2,841'],
+      ['AML flagged', '23'],
+      ['SAR-required', '7 (critical)'],
+      ['Sanctioned jurisdictions', '1 (Iran — TXN-94821)'],
+      ['Total exposure', '£2,384,600'],
+    ]
+  },
+  'repcrim': {
+    summary: '✦ REP-CRIM Q1 2026 Generated',
+    rows: [
+      ['Report reference', 'RC-2026-Q1-NI'],
+      ['Submission format', 'FCA GABRIEL XML v4.2'],
+      ['Reporting period', '01 Jan – 31 Mar 2026'],
+      ['Transactions included', '791,442'],
+      ['Total value reported', '£1.84B'],
+      ['Status', 'Ready for submission ✓'],
+    ]
+  },
+  'sar': {
+    summary: '✦ SAR-Required Transactions — June 2026',
+    rows: [
+      ['Total SARs required', '7'],
+      ['Highest risk', 'TXN-94821 (£847,200)'],
+      ['NCA submission deadline', '14 Jun 2026'],
+      ['Auto-drafted SARs', '7 of 7'],
+      ['Pending MLRO sign-off', '3'],
+    ]
+  },
+  'sanction': {
+    summary: '✦ Sanctioned Jurisdiction Transactions — YTD',
+    rows: [
+      ['Screening database', 'OFAC + HMT + UN Consolidated'],
+      ['Last updated', '07 Jun 2026 06:00 UTC'],
+      ['Matches detected', '1 confirmed, 2 potential'],
+      ['Confirmed match', 'TXN-94821 — Iran (OFAC)'],
+      ['Auto-blocked', 'Yes — transaction halted'],
+      ['Regulatory notification', 'Pending — 24hr deadline'],
+    ]
+  }
+};
 
-                if (command === 'high_risk') {
-                    intentJson = `{\n  "action": "FETCH_ENTITIES",\n  "filters": {\n    "entity_types": ["bank_account", "crypto_wallet"],\n    "risk_score_min": 80\n  },\n  "fca_rule_sync": "SYSC 6.1.1",\n  "limit": 50\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.risk.includes('High'));
-                } else if (command === 'large_fiat') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "asset_class": "fiat",\n    "amount_min_gbp": 10000\n  },\n  "fca_rule_sync": "MLR 2017"\n}`;
-                    filteredData = mockDatabase.filter(tx => (tx.type === 'IBAN Transfer' || tx.type === 'SWIFT Wire') && parseInt(tx.amount.replace(/[^0-9]/g, '')) > 10000);
-                } else if (command === 'cross_border') {
-                    intentJson = `{\n  "action": "FETCH_TRANSACTIONS",\n  "filters": {\n    "types": ["SWIFT", "USDC"]\n  },\n  "fca_rule_sync": "PS23/15"\n}`;
-                    filteredData = mockDatabase.filter(tx => tx.type === 'USDC Transfer' || tx.type === 'SWIFT Wire');
-                } else if (command === 'reset') {
-                    resetDemo();
-                    return;
-                }
+function getResponse(query) {
+  const q = query.toLowerCase();
+  if (q.includes('aml') || q.includes('50k') || q.includes('flagged')) return responses['aml'];
+  if (q.includes('rep-crim') || q.includes('repcrim') || q.includes('report')) return responses['repcrim'];
+  if (q.includes('sar') || q.includes('suspicious')) return responses['sar'];
+  if (q.includes('sanction') || q.includes('jurisdiction')) return responses['sanction'];
+  return {
+    summary: '✦ Query Executed Successfully',
+    rows: [
+      ['Intent classified', 'Compliance data query'],
+      ['Schema matched', 'FCA regulatory taxonomy'],
+      ['Records queried', Math.floor(Math.random()*50000+1000).toLocaleString()],
+      ['Data sent to LLM', '0 bytes (zero-trust enforced)'],
+      ['Audit log', 'Entry #' + (aCount+1) + ' created'],
+      ['Execution time', (Math.random()*1.5+0.8).toFixed(2) + 's'],
+    ]
+  };
+}
 
-                intentOutput.innerHTML = intentJson;
+function sendQuery(preset) {
+  const input = document.getElementById('queryInput');
+  const query = preset || input.value.trim();
+  if (!query) return;
+  input.value = '';
 
-                // Step 2: DB Result Simulation
-                setTimeout(() => {
-                    dbStatus.className = 'w-2 h-2 rounded-full bg-accent';
-                    renderTable(filteredData);
-                    exportContainer.classList.remove('hidden');
-                    exportContainer.classList.add('flex');
-                }, 600);
+  const msgs = document.getElementById('messages');
 
-            }, 800);
-        }
+  // User message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.innerHTML = `<div class="msg-bubble">${query}</div><div class="msg-meta" style="text-align:right">${new Date().toLocaleTimeString()}</div>`;
+  msgs.appendChild(userMsg);
 
-        function renderTable(data) {
-            const tableBody = document.getElementById('table-body');
-            if (data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No matching records found.</td></tr>`;
-                return;
-            }
-            tableBody.innerHTML = data.map(tx => `
-                <tr class="hover:bg-gray-800 transition-colors">
-                    <td class="p-3 font-mono">${tx.id}</td>
-                    <td class="p-3">${tx.type}</td>
-                    <td class="p-3">${tx.amount}</td>
-                    <td class="p-3 font-medium ${tx.riskClass}">${tx.risk}</td>
-                </tr>
-            `).join('');
-        }
+  // Typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'msg msg-system';
+  typing.innerHTML = '<div class="msg-bubble"><div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
 
-        function resetDemo() {
-            document.getElementById('ai-status').className = 'w-2 h-2 rounded-full bg-gray-600';
-            document.getElementById('db-status').className = 'w-2 h-2 rounded-full bg-gray-600';
-            document.getElementById('export-container').classList.add('hidden');
-            document.getElementById('export-container').classList.remove('flex');
-            document.getElementById('intent-output').innerHTML = '// Waiting for natural language input...\n// The LLM operates here, completely isolated from production data.';
-            document.getElementById('intent-output').className = 'whitespace-pre-wrap text-gray-500';
-            document.getElementById('table-body').innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-500 italic">No intent received. Database secure.</td></tr>`;
-        }
-    </script>
+  setTimeout(() => {
+    typing.remove();
+    // System ack
+    const sysMsg = document.createElement('div');
+    sysMsg.className = 'msg msg-system';
+    sysMsg.innerHTML = `<div class="msg-bubble">✔ Intent classified — querying your isolated Azure UK silo<br><span style="color:var(--teal3);font-size:11px">0 bytes of raw data transmitted to LLM — zero-trust enforced</span></div>`;
+    msgs.appendChild(sysMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(() => {
+      const resp = getResponse(query);
+      const resMsg = document.createElement('div');
+      resMsg.className = 'msg msg-result';
+      let rows = resp.rows.map(r => `<div class="result-row"><span class="result-key">${r[0]}</span><span class="result-val ${r[1].includes('critical')||r[1].includes('Iran')?'red':''} ${r[1].includes('£8')||r[1].includes('£2.3')?'gold':''}">${r[1]}</span></div>`).join('');
+      resMsg.innerHTML = `<div class="msg-bubble"><strong style="color:var(--teal2)">${resp.summary}</strong><div class="result-table" style="margin-top:8px">${rows}</div></div><div class="msg-meta">NexIntent IPS &nbsp;·&nbsp; Audit log updated &nbsp;·&nbsp; ${new Date().toLocaleTimeString()}</div>`;
+      msgs.appendChild(resMsg);
+      msgs.scrollTop = msgs.scrollHeight;
+      qCount++; aCount++;
+      document.getElementById('qcount').textContent = qCount;
+      document.getElementById('acount').textContent = aCount;
+      showModal();
+    }, 900);
+  }, 1200);
+}
+
+// ── TOGGLE TOGGLES ───────────────────────────────────────────────────────────
+document.querySelectorAll('.toggle:not([title])').forEach(t => {
+  t.addEventListener('click', () => t.classList.toggle('on'));
+});
+
+// ── LIVE ACTIVITY FEED ───────────────────────────────────────────────────────
+const newActivities = [
+  {color:'var(--teal)',  text:'Compliance Copilot query executed — zero-trust confirmed', time:'now'},
+  {color:'var(--green)', text:'Watchlist re-screening completed — 0 new matches', time:'just now'},
+  {color:'var(--gold)',  text:'PEP enhanced due diligence reminder — 4 clients due this week', time:'2 min ago'},
+];
+let actIdx = 0;
+setInterval(() => {
+  const feed = document.getElementById('activity-feed');
+  if (!feed) return;
+  const a = newActivities[actIdx % newActivities.length];
+  const item = document.createElement('div');
+  item.className = 'activity-item';
+  item.style.animation = 'fadeIn .4s ease';
+  item.innerHTML = `<div class="activity-dot" style="background:${a.color}"></div><div><div class="activity-text">${a.text}</div><div class="activity-time">${a.time}</div></div>`;
+  feed.insertBefore(item, feed.firstChild);
+  if (feed.children.length > 6) feed.lastChild.remove();
+  actIdx++;
+}, 8000);
+</script>
 </body>
 </html>
