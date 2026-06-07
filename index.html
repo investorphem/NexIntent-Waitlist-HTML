@@ -85,7 +85,7 @@
             <h3 class="text-xl font-semibold mb-2">Claim Founding Partner Status</h3>
             <p class="text-sm text-gray-400 mb-6">Join the beta waitlist to secure 12 months of free Enterprise API access upon launch.</p>
 
-            <form action="https://formspree.io/f/mzdqeayo" method="POST" class="space-y-4 text-left">
+            <form id="waitlist-form" action="https://formspree.io/f/mzdqeayo" method="POST" class="space-y-4 text-left">
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1" for="name">Full Name</label>
                     <input type="text" id="name" name="Full Name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Sarah Jenkins">
@@ -96,9 +96,9 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1" for="email">Work Email</label>
-                    <input type="email" id="email" name="Email Address" required pattern="^[a-zA-Z0-9._%+-]+@(?!gmail.com)(?!yahoo.com)(?!hotmail.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please use your corporate email address." class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="sarah@acmepayments.co.uk">
+                    <input type="email" id="email" name="Email Address" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="sarah@acmepayments.co.uk">
                 </div>
-                <button type="submit" class="w-full bg-accent hover:bg-accentHover text-dark font-bold text-lg py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <button type="submit" id="submit-btn" class="w-full bg-accent hover:bg-accentHover text-dark font-bold text-lg py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-[0_0_20px_rgba(16,185,129,0.3)]">
                     Request Early Access
                 </button>
             </form>
@@ -189,34 +189,78 @@
 
     <script>
         // Custom Toast Notification System
-        function showToast(message) {
+        function showToast(message, isError = false) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             
-            // Apply Tailwind classes for sliding animation
-            toast.className = 'bg-darker border border-accent text-white px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-3 pointer-events-auto max-w-sm';
+            // Apply Tailwind classes for sliding animation (Red for error, Emerald for success)
+            const colorClass = isError ? 'border-red-500 text-red-400' : 'border-accent text-white';
+            const dotClass = isError ? 'bg-red-500' : 'bg-accent animate-pulse';
+
+            toast.className = `bg-darker border ${colorClass} px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-3 pointer-events-auto max-w-sm`;
             toast.innerHTML = `
-                <div class="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0"></div>
+                <div class="w-2 h-2 rounded-full ${dotClass} shrink-0"></div>
                 <p class="text-sm font-medium">${message}</p>
             `;
             
             container.appendChild(toast);
             
             // Trigger slide in
-            setTimeout(() => {
-                toast.classList.remove('translate-x-full', 'opacity-0');
-            }, 10);
+            setTimeout(() => { toast.classList.remove('translate-x-full', 'opacity-0'); }, 10);
             
-            // Trigger slide out after 3 seconds
+            // Trigger slide out after 4 seconds
             setTimeout(() => {
                 toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, 3000);
+                setTimeout(() => { toast.remove(); }, 300);
+            }, 4000);
         }
 
-        // Mock Database
+        // Formspree AJAX Submission & Email Validator
+        document.getElementById('waitlist-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevents the redirect
+
+            const form = event.target;
+            const emailInput = document.getElementById('email').value.toLowerCase();
+            const submitBtn = document.getElementById('submit-btn');
+
+            // 1. Strict Domain Blocker
+            const blockedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com'];
+            const emailDomain = emailInput.split('@')[1];
+
+            if (blockedDomains.includes(emailDomain)) {
+                showToast('Please use a valid corporate email address.', true);
+                return; // Stops the form from sending
+            }
+
+            // 2. Send data to Formspree in the background
+            const data = new FormData(form);
+            const originalBtnText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = 'Sending...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50');
+
+            fetch(form.action, {
+                method: form.method,
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    showToast('Success! You are on the priority waitlist.');
+                    form.reset();
+                } else {
+                    showToast('Oops! There was a problem submitting your request.', true);
+                }
+            }).catch(error => {
+                showToast('Network error. Please try again.', true);
+            }).finally(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50');
+            });
+        });
+
+        // Mock Database for Demo
         const mockDatabase = [
             { id: 'TX-8821', type: 'Fiat Deposit', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
             { id: 'TX-8822', type: 'USDC Transfer', amount: '$4,500', risk: '12 (Low)', riskClass: 'text-gray-400' },
