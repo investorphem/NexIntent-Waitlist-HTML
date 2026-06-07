@@ -48,6 +48,9 @@
 </head>
 <body class="bg-dark text-white min-h-screen relative overflow-x-hidden antialiased">
 
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
     <!-- Background Effects -->
     <div class="fixed inset-0 bg-grid z-[-2]"></div>
     <div class="glow"></div>
@@ -58,7 +61,8 @@
             <div class="w-8 h-8 rounded bg-accent flex items-center justify-center font-bold text-dark">N</div>
             <span class="text-xl font-bold tracking-tight">NexIntent</span>
         </div>
-        <a href="#waitlist" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Developer Docs ↗</a>
+        <!-- Updated Developer Docs Link -->
+        <a href="#" onclick="event.preventDefault(); showToast('Developer Docs will be unlocked for approved beta partners upon official launch.');" class="text-sm font-medium text-gray-300 hover:text-white transition-colors cursor-pointer">Developer Docs ↗</a>
     </nav>
 
     <!-- Hero Section -->
@@ -81,7 +85,7 @@
             <h3 class="text-xl font-semibold mb-2">Claim Founding Partner Status</h3>
             <p class="text-sm text-gray-400 mb-6">Join the beta waitlist to secure 12 months of free Enterprise API access upon launch.</p>
 
-            <form action="#" method="POST" class="space-y-4 text-left" onsubmit="event.preventDefault(); alert('In production, this will submit to Mailchimp or Formspree!');">
+            <form action="#" method="POST" class="space-y-4 text-left" onsubmit="event.preventDefault(); showToast('In production, this form will connect to Formspree or Mailchimp to save the lead.');">
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1" for="name">Full Name</label>
                     <input type="text" id="name" required class="w-full bg-dark border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors" placeholder="e.g. Sarah Jenkins">
@@ -191,8 +195,36 @@
         </div>
     </section>
 
-    <!-- Demo Script Engine -->
+    <!-- UI Interaction Scripts -->
     <script>
+        // Custom Toast Notification System
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            // Apply Tailwind classes for sliding animation
+            toast.className = 'bg-darker border border-accent text-white px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full opacity-0 flex items-center gap-3 pointer-events-auto max-w-sm';
+            toast.innerHTML = `
+                <div class="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0"></div>
+                <p class="text-sm font-medium">${message}</p>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger slide in
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
+            
+            // Trigger slide out after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
         // Mock Database
         const mockDatabase = [
             { id: 'TX-8821', type: 'Fiat Deposit', amount: '£15,000', risk: '92 (High)', riskClass: 'text-red-400' },
