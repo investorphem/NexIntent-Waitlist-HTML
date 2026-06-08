@@ -5,1110 +5,1378 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NexIntent — FCA Compliance Intelligence Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ─────────────────────────────────────────────
+   DESIGN SYSTEM
+───────────────────────────────────────────── */
 :root {
-  --navy:    #060E1A;
-  --navy2:   #0B1829;
-  --navy3:   #0F2235;
-  --card:    #0D1F33;
-  --card2:   #112540;
-  --teal:    #0D9488;
-  --teal2:   #14B8A6;
-  --teal3:   #5EEAD4;
-  --gold:    #F59E0B;
-  --gold2:   #FCD34D;
-  --green:   #10B981;
-  --red:     #EF4444;
-  --red2:    #FCA5A5;
-  --amber:   #F97316;
-  --white:   #F8FAFC;
-  --lgray:   #CBD5E1;
-  --dgray:   #64748B;
-  --border:  rgba(20,184,166,0.15);
-  --border2: rgba(20,184,166,0.08);
-  --glow:    rgba(13,148,136,0.35);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;background:var(--navy);color:var(--white);font-family:'Instrument Sans',sans-serif}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:var(--navy2)}
-::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px}
-
-/* ── LAYOUT ── */
-.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
-
-/* ── TOPBAR ── */
-.topbar{
-  grid-column:1/-1;
-  background:var(--navy2);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 20px;gap:20px;
-  position:relative;z-index:100;
-}
-.logo{display:flex;align-items:center;gap:10px;margin-right:20px}
-.logo-mark{
-  width:32px;height:32px;background:var(--teal);border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#fff;
-  box-shadow:0 0 16px var(--glow);
-}
-.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.3px}
-.logo-text span{color:var(--teal2)}
-.topbar-badge{
-  background:rgba(13,148,136,0.12);border:1px solid var(--border);
-  color:var(--teal3);font-size:10px;font-weight:600;letter-spacing:0.8px;
-  padding:3px 8px;border-radius:4px;text-transform:uppercase;
-}
-.topbar-spacer{flex:1}
-.topbar-pill{
-  display:flex;align-items:center;gap:6px;
-  background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);
-  color:var(--green);font-size:11px;padding:4px 10px;border-radius:20px;
-  font-family:'JetBrains Mono',monospace;
-}
-.topbar-pill .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.topbar-actions{display:flex;gap:8px;align-items:center}
-.icon-btn{
-  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
-  background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:var(--dgray);font-size:16px;transition:all .2s;position:relative;
-}
-.icon-btn:hover{border-color:var(--teal);color:var(--teal2);background:var(--card2)}
-.notif-badge{
-  position:absolute;top:-3px;right:-3px;width:14px;height:14px;
-  background:var(--red);border-radius:50%;font-size:8px;
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
-}
-.avatar{
-  width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));
-  border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;
-  font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer;
-  box-shadow:0 0 10px var(--glow);
+  --bg:       #030711;
+  --surface:  #080F1E;
+  --surface2: #0C1628;
+  --surface3: #111F35;
+  --teal:     #0FADA0;
+  --teal2:    #12CFC0;
+  --teal3:    #65E8DF;
+  --gold:     #E8A020;
+  --gold2:    #F5C842;
+  --green:    #0FBA6F;
+  --red:      #E03B3B;
+  --white:    #EEF2F8;
+  --muted:    #8494AF;
+  --dim:      #3D4F68;
+  --border:   rgba(15,173,160,.14);
+  --border2:  rgba(15,173,160,.07);
+  --glow-sm:  0 0 20px rgba(15,173,160,.2);
+  --glow-md:  0 0 40px rgba(15,173,160,.15);
+  --glow-lg:  0 0 80px rgba(15,173,160,.1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
 }
 
-/* ── SIDEBAR ── */
-.sidebar{
-  background:var(--navy2);border-right:1px solid var(--border2);
-  overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior: smooth }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: default;
 }
-.nav-section{font-size:10px;font-weight:600;letter-spacing:1.2px;color:var(--dgray);
-  text-transform:uppercase;padding:12px 8px 6px}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;
-  cursor:pointer;transition:all .2s;color:var(--dgray);font-size:13px;font-weight:500;
-  border:1px solid transparent;position:relative;
-}
-.nav-item:hover{background:var(--card);color:var(--lgray);border-color:var(--border2)}
-.nav-item.active{
-  background:linear-gradient(135deg,rgba(13,148,136,.18),rgba(13,148,136,.08));
-  color:var(--teal2);border-color:var(--border);
-}
-.nav-item.active::before{
-  content:'';position:absolute;left:0;top:20%;height:60%;width:2px;
-  background:var(--teal2);border-radius:0 2px 2px 0;
-}
-.nav-icon{font-size:15px;width:18px;text-align:center}
-.nav-badge{
-  margin-left:auto;background:rgba(239,68,68,.15);color:var(--red);
-  font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;
-}
-.nav-badge.teal{background:rgba(13,148,136,.15);color:var(--teal2)}
-.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:1px solid var(--border2)}
-.status-card{
-  background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(13,148,136,.05));
-  border:1px solid var(--border);border-radius:10px;padding:12px;
-}
-.status-label{font-size:10px;color:var(--dgray);letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
-.status-val{font-size:20px;font-weight:700;font-family:'Syne',sans-serif;color:var(--teal2)}
-.status-sub{font-size:10px;color:var(--dgray);margin-top:2px}
+::selection { background: rgba(15,173,160,.3); color: var(--white) }
+::-webkit-scrollbar { width: 3px }
+::-webkit-scrollbar-track { background: var(--bg) }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px }
 
-/* ── MAIN ── */
-.main{overflow-y:auto;background:var(--navy);display:flex;flex-direction:column}
-
-/* ── PANELS (tabs) ── */
-.panel{display:none;flex:1;flex-direction:column;animation:fadeIn .3s ease}
-.panel.active{display:flex}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── PAGE HEADER ── */
-.page-header{
-  padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;
-  border-bottom:1px solid var(--border2);padding-bottom:18px;
-}
-.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
-.page-sub{font-size:12px;color:var(--dgray);margin-top:3px}
-.page-actions{display:flex;gap:8px;align-items:center}
-.btn{
-  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;
-  display:flex;align-items:center;gap:6px;transition:all .2s;border:none;
-  font-family:'Instrument Sans',sans-serif;
-}
-.btn-primary{background:var(--teal);color:#fff}
-.btn-primary:hover{background:var(--teal2);box-shadow:0 0 16px var(--glow)}
-.btn-ghost{background:var(--card);color:var(--lgray);border:1px solid var(--border)}
-.btn-ghost:hover{border-color:var(--teal);color:var(--teal2)}
-
-/* ── GRID ── */
-.content{padding:20px 28px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.grid-main{display:grid;grid-template-columns:1fr 340px;gap:14px}
-
-/* ── CARDS ── */
-.card{
-  background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:18px;
-  transition:border-color .2s;
-}
-.card:hover{border-color:var(--border)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:12px;font-weight:600;color:var(--dgray);letter-spacing:.4px;text-transform:uppercase}
-.card-icon{
-  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
-  justify-content:center;font-size:15px;
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity: .4;
 }
 
-/* ── KPI CARDS ── */
-.kpi{padding:16px 18px}
-.kpi-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
-.kpi-label{font-size:11px;color:var(--dgray);margin-bottom:8px}
-.kpi-delta{font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px}
-.kpi-delta.up{color:var(--green)}
-.kpi-delta.down{color:var(--red)}
-.kpi-bar{height:3px;background:var(--navy3);border-radius:2px;margin-top:10px;overflow:hidden}
-.kpi-fill{height:100%;border-radius:2px;transition:width 1s ease}
+/* ── MESH GRADIENT BG ── */
+.mesh {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.mesh-orb {
+  position: absolute; border-radius: 50%; filter: blur(120px);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.mesh-orb:nth-child(1) { width:700px; height:700px; top:-200px; right:-100px; background:rgba(15,173,160,.07); animation-delay:0s }
+.mesh-orb:nth-child(2) { width:500px; height:500px; bottom:-100px; left:-100px; background:rgba(15,173,160,.05); animation-delay:-8s }
+.mesh-orb:nth-child(3) { width:300px; height:300px; top:40%; left:30%; background:rgba(232,160,32,.04); animation-delay:-4s }
+@keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,30px) scale(1.08)} }
 
-/* ── ACTIVITY FEED ── */
-.activity-item{
-  display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);
-  align-items:flex-start;
-}
-.activity-item:last-child{border-bottom:none}
-.activity-dot{
-  width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;
-}
-.activity-text{font-size:12px;color:var(--lgray);line-height:1.5}
-.activity-time{font-size:10px;color:var(--dgray);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.activity-tag{
-  display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;
-  border-radius:4px;margin-left:4px;
+/* ── GRID LINES BG ── */
+.grid-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(15,173,160,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15,173,160,.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
 }
 
-/* ── COMPLIANCE TABLE ── */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{
-  padding:10px 14px;text-align:left;font-size:10px;font-weight:600;
-  color:var(--dgray);letter-spacing:.8px;text-transform:uppercase;
-  border-bottom:1px solid var(--border);
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(3,7,17,.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border2);
+  transition: border-color .3s;
 }
-tbody tr{border-bottom:1px solid var(--border2);transition:background .15s;cursor:pointer}
-tbody tr:hover{background:var(--card2)}
-tbody td{padding:11px 14px;color:var(--lgray)}
-.status-pill{
-  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;
-  border-radius:20px;font-size:10px;font-weight:600;
+nav.scrolled { border-bottom-color: var(--border) }
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+  cursor: pointer;
 }
-.status-pill.clear{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
-.status-pill.review{background:rgba(245,158,11,.1);color:var(--gold);border:1px solid rgba(245,158,11,.2)}
-.status-pill.flagged{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
-.status-pill.pending{background:rgba(100,116,139,.1);color:var(--dgray);border:1px solid rgba(100,116,139,.2)}
-.risk-bar{width:60px;height:6px;background:var(--navy3);border-radius:3px;overflow:hidden;display:inline-block}
-.risk-fill{height:100%;border-radius:3px}
+.nav-logomark {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--teal), var(--teal2));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 16px; color: var(--bg);
+  letter-spacing: 0; box-shadow: var(--glow-sm);
+}
+.nav-wordmark { font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; color: var(--white) }
+.nav-wordmark span { color: var(--teal2) }
+.nav-center { display: flex; align-items: center; gap: 2px }
+.nav-link {
+  padding: 6px 16px; border-radius: 6px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  cursor: pointer; transition: all .2s; border: none; background: none;
+  font-family: var(--font-body);
+}
+.nav-link:hover { color: var(--white) }
+.nav-link.active { color: var(--teal2); background: rgba(15,173,160,.08) }
+.nav-right { display: flex; align-items: center; gap: 10px }
+.nav-status {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--green);
+  background: rgba(15,186,111,.08); border: 1px solid rgba(15,186,111,.15);
+  padding: 4px 10px; border-radius: 20px;
+}
+.status-pulse { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.75)} }
+.btn-nav {
+  padding: 8px 20px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--teal); color: var(--teal2);
+  background: rgba(15,173,160,.08); transition: all .25s;
+  font-family: var(--font-mono); letter-spacing: .3px;
+}
+.btn-nav:hover { background: var(--teal); color: var(--bg); box-shadow: var(--glow-sm) }
 
-/* ── QUERY INTERFACE ── */
-.query-panel{
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
-  display:flex;flex-direction:column;overflow:hidden;
+/* ── TICKER ── */
+.ticker-bar {
+  position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+  height: 32px; background: rgba(15,173,160,.06); border-bottom: 1px solid var(--border2);
+  overflow: hidden; display: flex; align-items: center;
 }
-.query-header{
-  padding:14px 18px;border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;gap:10px;
+.ticker-track {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: ticker 28s linear infinite;
 }
-.query-traffic{display:flex;gap:5px}
-.traffic-dot{width:10px;height:10px;border-radius:50%}
-.query-title{font-size:12px;color:var(--dgray);font-family:'JetBrains Mono',monospace;margin-left:6px}
-.query-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:340px;min-height:240px}
-.msg{max-width:88%;animation:msgIn .3s ease}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg-user{align-self:flex-end}
-.msg-system{align-self:flex-start}
-.msg-bubble{
-  padding:10px 14px;border-radius:12px;font-size:12.5px;line-height:1.55;
-  font-family:'JetBrains Mono',monospace;
+.ticker-item {
+  display: flex; align-items: center; gap: 8px; padding: 0 32px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  border-right: 1px solid var(--border2);
 }
-.msg-user .msg-bubble{
-  background:linear-gradient(135deg,var(--teal),rgba(13,148,136,.7));
-  color:#fff;border-radius:12px 12px 2px 12px;
-}
-.msg-system .msg-bubble{
-  background:var(--navy3);border:1px solid var(--border2);
-  color:var(--lgray);border-radius:12px 12px 12px 2px;
-}
-.msg-result .msg-bubble{
-  background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.04));
-  border:1px solid rgba(245,158,11,.2);color:var(--lgray);
-  border-radius:12px;
-}
-.msg-meta{font-size:10px;color:var(--dgray);margin-top:4px;padding:0 2px}
-.result-table{margin-top:8px;font-size:11px}
-.result-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border2)}
-.result-row:last-child{border:none}
-.result-key{color:var(--dgray)}
-.result-val{color:var(--teal3);font-weight:600}
-.result-val.red{color:var(--red2)}
-.result-val.gold{color:var(--gold2)}
-.typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
-.typing-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:typing .9s infinite}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes typing{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
-.query-input-area{
-  padding:14px 16px;border-top:1px solid var(--border2);
-  display:flex;gap:10px;align-items:center;
-}
-.query-input{
-  flex:1;background:var(--navy2);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px;color:var(--white);font-size:12.5px;outline:none;
-  font-family:'JetBrains Mono',monospace;transition:border-color .2s;
-}
-.query-input:focus{border-color:var(--teal)}
-.query-input::placeholder{color:var(--dgray)}
-.send-btn{
-  width:38px;height:38px;background:var(--teal);border:none;border-radius:8px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:16px;transition:all .2s;flex-shrink:0;
-}
-.send-btn:hover{background:var(--teal2);box-shadow:0 0 14px var(--glow)}
-.quick-queries{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 12px}
-.quick-q{
-  background:var(--navy3);border:1px solid var(--border2);border-radius:6px;
-  padding:5px 10px;font-size:10.5px;color:var(--dgray);cursor:pointer;
-  transition:all .2s;font-family:'JetBrains Mono',monospace;
-}
-.quick-q:hover{border-color:var(--teal);color:var(--teal2);background:rgba(13,148,136,.06)}
+.ticker-dot { width: 5px; height: 5px; border-radius: 50% }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-/* ── MINI CHART ── */
-.mini-chart{display:flex;align-items:flex-end;gap:3px;height:40px;margin-top:10px}
-.bar-c{flex:1;border-radius:3px 3px 0 0;transition:height .5s ease}
-.bar-c:hover{opacity:.8}
+/* ── SECTIONS ── */
+section { position: relative; z-index: 1 }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 48px }
+.page-panel { display: none }
+.page-panel.active { display: block }
 
-/* ── RISK METER ── */
-.risk-ring{position:relative;width:80px;height:80px;margin:0 auto}
-.risk-ring svg{width:80px;height:80px;transform:rotate(-90deg)}
-.risk-ring circle{fill:none;stroke-width:7;stroke-linecap:round}
-.ring-bg{stroke:var(--navy3)}
-.ring-fill{stroke-dasharray:220;stroke-dashoffset:var(--dash);transition:stroke-dashoffset 1.5s ease}
-.risk-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.risk-pct{font-family:'Syne',sans-serif;font-weight:800;font-size:18px}
-.risk-txt{font-size:9px;color:var(--dgray);margin-top:-2px}
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 160px 0 100px; position: relative; overflow: hidden;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  color: var(--teal3); letter-spacing: 1.5px; text-transform: uppercase;
+  background: rgba(15,173,160,.08); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 20px; margin-bottom: 28px;
+  animation: fadeUp .6s ease both;
+}
+.hero-eyebrow-dot { width:6px; height:6px; background:var(--teal2); border-radius:50%; animation:pulse 1.5s infinite }
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 9vw, 128px);
+  line-height: .95; letter-spacing: 1px;
+  margin-bottom: 32px; color: var(--white);
+  animation: fadeUp .6s .1s ease both;
+}
+.hero-title .accent {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--teal);
+  display: block;
+}
+.hero-title .accent-fill {
+  background: linear-gradient(90deg, var(--teal), var(--teal2), var(--teal3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-body {
+  font-size: 18px; font-weight: 300; color: var(--muted);
+  max-width: 580px; line-height: 1.7; margin-bottom: 44px;
+  animation: fadeUp .6s .2s ease both;
+}
+.hero-ctas {
+  display: flex; gap: 14px; align-items: center;
+  animation: fadeUp .6s .3s ease both;
+}
+.btn-primary {
+  padding: 14px 32px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; background: var(--teal); color: var(--bg);
+  font-family: var(--font-mono); letter-spacing: .5px; transition: all .25s;
+  box-shadow: 0 4px 24px rgba(15,173,160,.3);
+}
+.btn-primary:hover { background: var(--teal2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(15,173,160,.4) }
+.btn-secondary {
+  padding: 14px 32px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border); color: var(--muted);
+  background: transparent; font-family: var(--font-mono); transition: all .25s;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal2); background: rgba(15,173,160,.06) }
+.hero-trust {
+  margin-top: 72px; animation: fadeUp .6s .4s ease both;
+}
+.trust-label { font-size: 11px; color: var(--dim); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 16px; font-family: var(--font-mono) }
+.trust-badges { display: flex; gap: 12px; flex-wrap: wrap }
+.trust-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border2);
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 11px; font-weight: 500; color: var(--muted); font-family: var(--font-mono);
+  transition: border-color .2s;
+}
+.trust-badge:hover { border-color: var(--border) }
+.trust-badge svg { flex-shrink: 0 }
 
-/* ── AUDIT PIPELINE ── */
-.pipeline{display:flex;flex-direction:column;gap:10px}
-.pipe-step{
-  display:flex;align-items:center;gap:12px;padding:12px 14px;
-  background:var(--navy3);border-radius:8px;border:1px solid var(--border2);
-  transition:border-color .2s;
+/* Hero visual — right side animated panel */
+.hero-visual {
+  position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  width: 480px; pointer-events: none;
+  animation: fadeUp .6s .2s ease both;
 }
-.pipe-step:hover{border-color:var(--border)}
-.pipe-num{
-  width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;
-  font-family:'Syne',sans-serif;
+.hero-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5), var(--glow-md);
 }
-.pipe-step.done .pipe-num{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.3)}
-.pipe-step.active .pipe-num{background:rgba(13,148,136,.2);color:var(--teal2);border:1px solid var(--border)}
-.pipe-step.pending .pipe-num{background:var(--card);color:var(--dgray);border:1px solid var(--border2)}
-.pipe-info{flex:1}
-.pipe-title{font-size:12px;font-weight:600;color:var(--lgray);margin-bottom:2px}
-.pipe-sub{font-size:10.5px;color:var(--dgray)}
-.pipe-status{font-size:10px;font-weight:600}
-.pipe-step.done .pipe-status{color:var(--green)}
-.pipe-step.active .pipe-status{color:var(--teal2)}
-.pipe-step.pending .pipe-status{color:var(--dgray)}
-.pipe-bar{height:2px;background:var(--navy3);margin-left:49px;margin-top:-2px;border-radius:1px}
-.pipe-bar.done{background:linear-gradient(90deg,var(--green),transparent)}
-.pipe-bar.active{background:linear-gradient(90deg,var(--teal),transparent);animation:shimmer 2s infinite}
-@keyframes shimmer{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
+.panel-chrome {
+  background: var(--surface2); border-bottom: 1px solid var(--border2);
+  padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+}
+.chrome-dots { display:flex; gap:5px }
+.chrome-dot { width:10px; height:10px; border-radius:50% }
+.chrome-title { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-left: 4px }
+.panel-body { padding: 16px }
+.panel-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 10px; border-radius: 6px; margin-bottom: 4px;
+  font-family: var(--font-mono); font-size: 11px;
+  transition: background .2s;
+}
+.panel-row:hover { background: var(--surface3) }
+.panel-row-id { color: var(--teal3) }
+.panel-row-type { color: var(--muted) }
+.panel-row-amount { color: var(--white); font-weight: 600 }
+.risk-high { color: var(--red) }
+.risk-med { color: var(--gold) }
+.risk-low { color: var(--green) }
+.panel-footer {
+  border-top: 1px solid var(--border2); padding: 10px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 10px;
+}
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal2), transparent);
+  animation: scan 3s linear infinite; pointer-events: none; opacity: .4;
+}
+@keyframes scan { 0%{top:40px} 100%{top:100%} }
 
-/* ── ALERT BANNER ── */
-.alert-banner{
-  margin:0 28px;padding:12px 16px;border-radius:8px;
-  display:flex;align-items:center;gap:10px;font-size:12px;
-  background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--red2);
-  animation:slideDown .4s ease;
+/* ── SECTION COMMON ── */
+.section-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; color: var(--teal2);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
 }
-@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.alert-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.5s infinite}
-.alert-close{margin-left:auto;cursor:pointer;opacity:.6}
-.alert-close:hover{opacity:1}
+.section-title {
+  font-family: var(--font-display); font-size: clamp(42px, 5vw, 64px);
+  line-height: 1; letter-spacing: .5px; margin-bottom: 16px;
+}
+.section-body { font-size: 16px; color: var(--muted); max-width: 540px; line-height: 1.7 }
 
-/* ── REPORTS PAGE ── */
-.report-item{
-  display:flex;align-items:center;gap:14px;padding:14px 16px;
-  background:var(--navy3);border-radius:8px;border:1px solid var(--border2);
-  transition:all .2s;cursor:pointer;
+/* ── HOW IT WORKS ── */
+.how-section { padding: 120px 0; border-top: 1px solid var(--border2) }
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 64px }
+.step-card {
+  background: var(--surface); border: 1px solid var(--border2);
+  padding: 40px 32px; position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s;
 }
-.report-item:hover{border-color:var(--border);background:var(--card)}
-.report-icon{
-  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;font-size:18px;flex-shrink:0;
+.step-card:hover { border-color: var(--border); transform: translateY(-4px) }
+.step-card::before {
+  content: attr(data-num);
+  position: absolute; right: 24px; top: 24px;
+  font-family: var(--font-display); font-size: 80px; color: var(--border2);
+  line-height: 1; pointer-events: none;
 }
-.report-info{flex:1}
-.report-name{font-size:13px;font-weight:600;color:var(--lgray);margin-bottom:2px}
-.report-meta{font-size:11px;color:var(--dgray)}
-.report-actions{display:flex;gap:6px}
-.report-btn{
-  padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;
-  cursor:pointer;border:none;transition:all .2s;
+.step-number {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--teal); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 20px;
 }
-.report-btn.dl{background:rgba(13,148,136,.15);color:var(--teal2);border:1px solid var(--border)}
-.report-btn.dl:hover{background:var(--teal);color:#fff}
-.report-btn.view{background:var(--card);color:var(--dgray);border:1px solid var(--border2)}
-
-/* ── SETTINGS ── */
-.settings-section{margin-bottom:24px}
-.settings-title{font-size:14px;font-weight:700;color:var(--lgray);margin-bottom:12px;
-  font-family:'Syne',sans-serif;padding-bottom:8px;border-bottom:1px solid var(--border2)}
-.setting-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 0;border-bottom:1px solid var(--border2);
-}
-.setting-row:last-child{border:none}
-.setting-label{font-size:13px;color:var(--lgray)}
-.setting-desc{font-size:11px;color:var(--dgray);margin-top:2px}
-.toggle{
-  width:42px;height:24px;background:var(--navy3);border-radius:12px;
-  cursor:pointer;position:relative;transition:background .2s;border:1px solid var(--border2);
-}
-.toggle.on{background:var(--teal)}
-.toggle::after{
-  content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;
-  background:#fff;border-radius:50%;transition:transform .2s;
-}
-.toggle.on::after{transform:translateX(18px)}
-
-/* ── GLOW BG ── */
-.bg-glow{
-  position:fixed;pointer-events:none;z-index:0;
-  width:600px;height:600px;border-radius:50%;
-  background:radial-gradient(circle,rgba(13,148,136,.04),transparent 70%);
-  top:-200px;right:-200px;
+.step-title { font-size: 20px; font-weight: 600; margin-bottom: 12px; color: var(--white) }
+.step-body { font-size: 14px; color: var(--muted); line-height: 1.7 }
+.step-card:nth-child(1) { border-radius: 16px 0 0 16px }
+.step-card:nth-child(3) { border-radius: 0 16px 16px 0 }
+.step-connector {
+  position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--teal); z-index: 1;
 }
 
-/* ── SKELETON LOADER ── */
-.skel{background:linear-gradient(90deg,var(--navy3) 25%,var(--card2) 50%,var(--navy3) 75%);
-  background-size:200% 100%;animation:skel 1.5s infinite;border-radius:4px}
-@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ── MODAL ── */
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(6,14,26,.85);
-  z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+/* ── SANDBOX ── */
+.sandbox-section { padding: 120px 0; border-top: 1px solid var(--border2) }
+.sandbox-wrap {
+  margin-top: 64px; display: grid; grid-template-columns: 260px 1fr; gap: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.4), var(--glow-md);
 }
-.modal-overlay.open{display:flex}
-.modal{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  padding:28px;max-width:480px;width:90%;animation:modalIn .3s ease;
+.sandbox-sidebar {
+  background: var(--surface2); border-right: 1px solid var(--border2);
+  padding: 24px;
 }
-@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-.modal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
-.modal-body{font-size:13px;color:var(--lgray);line-height:1.6;margin-bottom:20px}
-.modal-footer{display:flex;gap:10px;justify-content:flex-end}
-
-/* ── SCROLLABLE content ── */
-.content{scrollbar-width:thin;scrollbar-color:var(--teal) var(--navy2)}
-
-/* ── ZERO TRUST BADGE ── */
-.zt-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(13,148,136,.08);border:1px solid var(--border);
-  color:var(--teal3);font-size:10px;font-weight:600;letter-spacing:.4px;
-  padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;
+.sandbox-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 16px;
 }
-.zt-dot{width:5px;height:5px;background:var(--teal2);border-radius:50%;animation:pulse 1.5s infinite}
+.sandbox-cmd {
+  width: 100%; text-align: left; padding: 12px 14px;
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: 8px; margin-bottom: 8px; cursor: pointer;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  transition: all .2s; line-height: 1.4;
+}
+.sandbox-cmd:hover { border-color: var(--teal); color: var(--teal3); background: rgba(15,173,160,.06) }
+.sandbox-cmd.executing { border-color: var(--teal); color: var(--teal2); background: rgba(15,173,160,.08) }
+.sandbox-reset {
+  width: 100%; text-align: center; padding: 8px; margin-top: 8px;
+  background: none; border: none; font-family: var(--font-mono);
+  font-size: 10px; color: var(--dim); cursor: pointer; transition: color .2s;
+}
+.sandbox-reset:hover { color: var(--teal) }
+.sandbox-main { display: flex; flex-direction: column }
+.sandbox-chrome {
+  background: var(--surface2); border-bottom: 1px solid var(--border2);
+  padding: 12px 20px; display: flex; align-items: center; gap: 12px;
+}
+.sandbox-panels { display: grid; grid-template-columns: 1fr 1fr; flex: 1 }
+.sandbox-pane {
+  padding: 20px; border-right: 1px solid var(--border2);
+}
+.sandbox-pane:last-child { border-right: none }
+.pane-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.pane-label { font-family: var(--font-mono); font-size: 10px; color: var(--dim); letter-spacing: 1.2px; text-transform: uppercase }
+.pane-indicator {
+  width: 8px; height: 8px; border-radius: 50%; transition: background .3s, box-shadow .3s;
+}
+.ind-idle { background: var(--dim) }
+.ind-active { background: var(--teal2); box-shadow: 0 0 8px var(--teal) }
+.ind-loading { background: var(--gold); box-shadow: 0 0 8px var(--gold); animation: pulse .8s infinite }
+.code-block {
+  background: var(--bg); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 14px; font-family: var(--font-mono);
+  font-size: 11px; min-height: 140px; overflow-y: auto;
+  color: var(--muted); line-height: 1.7;
+}
+.code-teal { color: var(--teal2) }
+.code-gold { color: var(--gold2) }
+.code-white { color: var(--white) }
+.code-dim { color: var(--dim) }
+.results-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11px }
+.results-table th {
+  text-align: left; padding: 8px 10px;
+  font-size: 10px; color: var(--dim); letter-spacing: .8px; text-transform: uppercase;
+  border-bottom: 1px solid var(--border2);
+}
+.results-table td { padding: 9px 10px; border-bottom: 1px solid var(--border2); color: var(--muted) }
+.results-table tr:last-child td { border-bottom: none }
+.results-table tr:hover td { background: var(--surface3) }
+.sandbox-footer {
+  border-top: 1px solid var(--border2); padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 10px; color: var(--dim);
+}
+.export-btn {
+  display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+  background: rgba(15,173,160,.1); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--teal2); font-family: var(--font-mono);
+  font-size: 10px; font-weight: 600; cursor: pointer; transition: all .2s;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.export-btn:hover { background: var(--teal); color: var(--bg) }
+
+/* ── SOLUTIONS ── */
+.solutions-hero { padding: 140px 0 80px; border-bottom: 1px solid var(--border2) }
+.vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 64px }
+.vs-card {
+  padding: 40px; border-radius: 16px; border: 1px solid;
+}
+.vs-card.danger { border-color: rgba(224,59,59,.2); background: rgba(224,59,59,.03) }
+.vs-card.advantage { border-color: var(--border); background: var(--surface) }
+.vs-heading {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px;
+  padding-bottom: 12px; border-bottom: 1px solid;
+}
+.vs-card.danger .vs-heading { color: var(--red); border-color: rgba(224,59,59,.2) }
+.vs-card.advantage .vs-heading { color: var(--teal2); border-color: var(--border2) }
+.vs-item { margin-bottom: 24px }
+.vs-item:last-child { margin-bottom: 0 }
+.vs-item-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--white) }
+.vs-item-body { font-size: 13px; color: var(--muted); line-height: 1.6 }
+
+/* Matrix */
+.matrix-section { padding: 80px 0 120px }
+.matrix-table { width: 100%; border-collapse: collapse; margin-top: 48px }
+.matrix-table th {
+  padding: 14px 20px; text-align: left;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .8px; text-transform: uppercase;
+  border-bottom: 2px solid var(--border2);
+}
+.matrix-table th.ours { color: var(--teal2); background: rgba(15,173,160,.06) }
+.matrix-table td {
+  padding: 14px 20px; font-family: var(--font-mono); font-size: 12px;
+  border-bottom: 1px solid var(--border2); color: var(--muted); transition: background .15s;
+}
+.matrix-table tr:hover td { background: var(--surface3) }
+.matrix-table td:first-child { color: var(--white); font-weight: 600 }
+.matrix-table td.ours { color: var(--teal2); background: rgba(15,173,160,.04); font-weight: 700 }
+.matrix-table td.neg { color: var(--dim) }
+
+/* ── AUDIT LOGS ── */
+.logs-section { padding: 140px 0 120px }
+.log-table { width: 100%; border-collapse: collapse; margin-top: 48px }
+.log-table th {
+  padding: 12px 16px; text-align: left; font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--dim); border-bottom: 1px solid var(--border2);
+}
+.log-table td { padding: 13px 16px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border2) }
+.log-table tr:hover td { background: var(--surface3) }
+.log-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 700; font-size: 11px;
+}
+.log-status.resolved { color: var(--teal2) }
+.log-status.flagged { color: var(--red) }
+.sector-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  background: var(--surface3); border: 1px solid var(--border2);
+  font-size: 10px; color: var(--muted);
+}
+
+/* ── PRICING ── */
+.pricing-section { padding: 140px 0 120px }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 64px }
+.price-card {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 40px 32px;
+  display: flex; flex-direction: column; transition: border-color .3s, transform .3s;
+  position: relative;
+}
+.price-card:hover { border-color: var(--border); transform: translateY(-4px) }
+.price-card.featured {
+  border-color: var(--teal); background: var(--surface2);
+  box-shadow: var(--glow-md);
+}
+.price-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--teal); color: var(--bg); font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 20px;
+}
+.price-tier { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px }
+.price-val { font-family: var(--font-display); font-size: 52px; color: var(--white); line-height: 1; margin-bottom: 4px }
+.price-period { font-size: 13px; color: var(--muted); margin-bottom: 16px }
+.price-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 28px }
+.price-divider { height: 1px; background: var(--border2); margin-bottom: 24px }
+.price-features { flex: 1; margin-bottom: 32px }
+.price-feature {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--white); margin-bottom: 12px;
+}
+.price-feature .f-check { color: var(--teal2); font-size: 12px; margin-top: 2px; flex-shrink: 0 }
+.price-feature .f-no { color: var(--dim); font-size: 12px; margin-top: 2px; flex-shrink: 0 }
+.price-feature.dimmed { color: var(--dim) }
+.btn-price {
+  width: 100%; padding: 13px; border-radius: 10px; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all .25s; font-family: var(--font-mono); letter-spacing: .5px;
+}
+.btn-price-primary { background: var(--teal); color: var(--bg); border: none }
+.btn-price-primary:hover { background: var(--teal2); box-shadow: var(--glow-sm) }
+.btn-price-ghost { background: none; border: 1px solid var(--border2); color: var(--muted) }
+.btn-price-ghost:hover { border-color: var(--teal); color: var(--teal2) }
+
+/* ── DOCS ── */
+.docs-section { padding: 140px 0 120px }
+.docs-grid { display: grid; grid-template-columns: 200px 1fr; gap: 48px; margin-top: 64px }
+.docs-nav { position: sticky; top: 100px; height: fit-content }
+.docs-nav-item {
+  display: block; padding: 8px 14px; border-radius: 6px;
+  font-size: 13px; color: var(--muted); cursor: pointer; transition: all .2s;
+  border: none; background: none; text-align: left; width: 100%;
+  font-family: var(--font-body);
+}
+.docs-nav-item:hover { color: var(--white); background: var(--surface3) }
+.docs-nav-item.active { color: var(--teal2); background: rgba(15,173,160,.08) }
+.docs-content { display: flex; flex-direction: column; gap: 40px }
+.doc-block {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 32px; transition: border-color .2s;
+}
+.doc-block:hover { border-color: var(--border) }
+.doc-block-title { font-size: 17px; font-weight: 600; margin-bottom: 10px; color: var(--white) }
+.doc-block-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px }
+.code-snippet {
+  background: var(--bg); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  overflow-x: auto; line-height: 1.8;
+}
+
+/* ── COMPANY ── */
+.company-section { padding: 140px 0 120px }
+.founder-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 48px;
+  display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start;
+  position: relative; overflow: hidden; margin-top: 64px;
+  box-shadow: var(--glow-md);
+}
+.founder-card::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(15,173,160,.06), transparent 70%);
+  pointer-events: none;
+}
+.founder-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), rgba(15,173,160,.4));
+  border: 2px solid var(--teal); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 28px; color: var(--bg);
+  box-shadow: var(--glow-sm); flex-shrink: 0;
+}
+.founder-name { font-family: var(--font-display); font-size: 36px; letter-spacing: .5px; margin-bottom: 4px }
+.founder-role { font-family: var(--font-mono); font-size: 12px; color: var(--teal2); margin-bottom: 20px }
+.founder-bio { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px }
+.founder-links { display: flex; gap: 12px }
+.founder-link {
+  display: flex; align-items: center; gap: 6px; padding: 7px 14px;
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: 7px; font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.founder-link:hover { border-color: var(--teal); color: var(--teal2) }
+.ops-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px }
+.ops-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 28px }
+.ops-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 16px; border-bottom: 1px solid var(--border2); padding-bottom: 10px }
+.ops-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border2); font-family: var(--font-mono); font-size: 12px }
+.ops-row:last-child { border: none }
+.ops-key { color: var(--dim) }
+.ops-val { color: var(--white) }
+.ops-val.pending { color: var(--gold) }
+
+/* ── PILOT FORM ── */
+.pilot-section { padding: 120px 0; border-top: 1px solid var(--border2) }
+.pilot-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 64px; max-width: 780px; margin: 0 auto;
+  position: relative; overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.4), var(--glow-lg);
+}
+.pilot-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+}
+.pilot-form { margin-top: 40px; display: flex; flex-direction: column; gap: 16px }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+.form-group { display: flex; flex-direction: column; gap: 6px }
+.form-label { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--dim); letter-spacing: 1.2px; text-transform: uppercase }
+.form-input {
+  background: var(--bg); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 12px 16px; font-size: 13px; color: var(--white); outline: none;
+  font-family: var(--font-body); transition: border-color .2s;
+}
+.form-input:focus { border-color: var(--teal) }
+.form-input::placeholder { color: var(--dim) }
+.form-submit {
+  padding: 15px; border-radius: 10px; border: none; background: var(--teal);
+  color: var(--bg); font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all .25s; letter-spacing: .8px; text-transform: uppercase;
+  box-shadow: 0 4px 24px rgba(15,173,160,.3); margin-top: 8px;
+}
+.form-submit:hover { background: var(--teal2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(15,173,160,.4) }
+.form-submit:disabled { opacity: .5; cursor: not-allowed; transform: none }
+.form-note { font-family: var(--font-mono); font-size: 10px; color: var(--dim); text-align: center; line-height: 1.6; margin-top: 4px }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border2); background: var(--surface);
+  padding: 64px 0 40px; position: relative; z-index: 1;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px }
+.footer-brand p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 16px; max-width: 300px }
+.footer-col-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--dim); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px }
+.footer-link {
+  display: block; font-size: 13px; color: var(--muted); text-decoration: none;
+  margin-bottom: 10px; cursor: pointer; transition: color .2s; background: none; border: none;
+  text-align: left; font-family: var(--font-body);
+}
+.footer-link:hover { color: var(--teal2) }
+.footer-bottom {
+  border-top: 1px solid var(--border2); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom-l { font-family: var(--font-mono); font-size: 11px; color: var(--dim) }
+.footer-bottom-r { font-family: var(--font-mono); font-size: 11px; color: var(--teal); letter-spacing: 1px }
+
+/* ── TOAST ── */
+.toast-stack { position: fixed; top: 112px; right: 24px; z-index: 200; display: flex; flex-direction: column; gap: 8px; pointer-events: none }
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface2); border: 1px solid;
+  padding: 14px 18px; border-radius: 10px;
+  font-family: var(--font-mono); font-size: 12px;
+  max-width: 340px; pointer-events: auto;
+  animation: toastIn .3s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+.toast.success { border-color: rgba(15,186,111,.3); color: var(--white) }
+.toast.error { border-color: rgba(224,59,59,.3); color: #FCA5A5 }
+.toast-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0 }
+.toast.success .toast-dot { background: var(--green); animation: pulse 1.5s infinite }
+.toast.error .toast-dot { background: var(--red) }
+@keyframes toastIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+/* ── COOKIE ── */
+.cookie-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+  background: var(--surface2); border-top: 1px solid var(--border);
+  padding: 20px 48px; display: flex; align-items: center; gap: 24px;
+  box-shadow: 0 -8px 40px rgba(0,0,0,.4);
+}
+.cookie-text { font-size: 12px; color: var(--muted); line-height: 1.6; flex: 1; font-family: var(--font-mono) }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0 }
+.btn-cookie-accept {
+  padding: 9px 20px; border-radius: 7px; background: var(--teal); color: var(--bg);
+  border: none; font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.btn-cookie-accept:hover { background: var(--teal2) }
+.btn-cookie-manage {
+  padding: 9px 16px; border-radius: 7px; background: none; color: var(--dim);
+  border: 1px solid var(--border2); font-family: var(--font-mono); font-size: 11px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-cookie-manage:hover { color: var(--white); border-color: var(--border) }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease }
+.reveal.visible { opacity: 1; transform: translateY(0) }
+
+/* ── TYPEWRITER ── */
+.typewriter::after { content: '|'; animation: blink .7s infinite }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <div class="modal-title">🔒 Zero-Trust Query Executed</div>
-    <div class="modal-body">
-      Your natural language query has been processed through NexIntent's proprietary Intent-Parsing Schema (IPS). <br><br>
-      <strong style="color:var(--teal2)">Data isolation confirmed:</strong> No raw transactional data was transmitted to the LLM layer. The AI classified your intent only — all database execution occurred within your isolated Azure UK silo. <br><br>
-      FCA-compliant audit log entry created at <span style="color:var(--teal3);font-family:'JetBrains Mono',monospace">2026-06-07T14:32:18Z</span>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal()">Dismiss</button>
-      <button class="btn btn-primary" onclick="closeModal()">✓ View Audit Log</button>
-    </div>
+<div class="mesh">
+  <div class="mesh-orb"></div>
+  <div class="mesh-orb"></div>
+  <div class="mesh-orb"></div>
+</div>
+<div class="grid-bg"></div>
+
+<!-- TICKER -->
+<div class="ticker-bar" style="top:64px">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- TOAST STACK -->
+<div class="toast-stack" id="toasts"></div>
+
+<!-- COOKIE -->
+<div class="cookie-bar" id="cookie" style="display:none">
+  <svg width="18" height="18" fill="none" stroke="var(--teal2)" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+  <p class="cookie-text">We use strictly necessary cookies to deliver our enterprise compliance services. NexIntent never uses cookies to collect, track, or sell personally identifiable financial information. UK GDPR Article 6(1)(b) basis.</p>
+  <div class="cookie-actions">
+    <button class="btn-cookie-manage" onclick="toast('Cookie preferences saved. Strictly necessary cookies retained.')">Manage</button>
+    <button class="btn-cookie-accept" onclick="acceptCookies()">Accept & Continue</button>
   </div>
 </div>
 
-<div class="app">
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo" onclick="setTab('home')">
+    <div class="nav-logomark">NI</div>
+    <div class="nav-wordmark">Nex<span>Intent</span></div>
+  </div>
+  <div class="nav-center">
+    <button class="nav-link active" data-tab="home" onclick="setTab('home')">Platform</button>
+    <button class="nav-link" data-tab="solutions" onclick="setTab('solutions')">Solutions</button>
+    <button class="nav-link" data-tab="logs" onclick="setTab('logs')">Audit Logs</button>
+    <button class="nav-link" data-tab="pricing" onclick="setTab('pricing')">Pricing</button>
+    <button class="nav-link" data-tab="docs" onclick="setTab('docs')">Docs</button>
+    <button class="nav-link" data-tab="company" onclick="setTab('company')">Company</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-status"><div class="status-pulse"></div>All Systems Nominal</div>
+    <button class="btn-nav" onclick="scrollToPilot()">Deploy Integration</button>
+  </div>
+</nav>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="logo">
-      <div class="logo-mark">NI</div>
-      <div class="logo-text">Nex<span>Intent</span></div>
-    </div>
-    <div class="topbar-badge">FCA Compliance Intelligence</div>
-    <div class="topbar-spacer"></div>
-    <div class="topbar-pill"><div class="dot"></div>All Systems Operational</div>
-    <div class="topbar-actions">
-      <div class="icon-btn" title="Notifications" onclick="showModal()">🔔<div class="notif-badge">3</div></div>
-      <div class="icon-btn" title="Export">⬇</div>
-      <div class="icon-btn" title="Settings" onclick="navigate('settings')">⚙</div>
-      <div class="avatar" title="Oluwafemi Olagoke">OMO</div>
-    </div>
-  </header>
+<!-- ═══════════════════════════════════════
+     HOME
+════════════════════════════════════════ -->
+<div class="page-panel active" id="tab-home">
 
-  <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="nav-section">Intelligence</div>
-    <div class="nav-item active" onclick="navigate('overview')"><span class="nav-icon">⬛</span>Overview</div>
-    <div class="nav-item" onclick="navigate('query')"><span class="nav-icon">💬</span>Compliance Copilot</div>
-    <div class="nav-item" onclick="navigate('transactions')"><span class="nav-icon">⟳</span>Transaction Monitor<span class="nav-badge">23</span></div>
-
-    <div class="nav-section">Regulatory</div>
-    <div class="nav-item" onclick="navigate('audit')"><span class="nav-icon">🔍</span>Audit Pipeline</div>
-    <div class="nav-item" onclick="navigate('reports')"><span class="nav-icon">📄</span>FCA Reports<span class="nav-badge teal">2</span></div>
-    <div class="nav-item" onclick="navigate('aml')"><span class="nav-icon">🛡</span>AML / KYC</div>
-
-    <div class="nav-section">Web3</div>
-    <div class="nav-item" onclick="navigate('web3')"><span class="nav-icon">⬡</span>On-Chain Monitor</div>
-
-    <div class="nav-section">Platform</div>
-    <div class="nav-item" onclick="navigate('settings')"><span class="nav-icon">⚙</span>Settings & Security</div>
-
-    <div class="sidebar-bottom">
-      <div class="status-card">
-        <div class="status-label">Compliance Score</div>
-        <div class="status-val">98.4%</div>
-        <div class="status-sub">↑ 2.1% vs last quarter</div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <main class="main">
-
-    <!-- ══ OVERVIEW ══ -->
-    <div class="panel active" id="panel-overview">
-      <div class="alert-banner" id="alert1">
-        <div class="alert-dot"></div>
-        <strong>3 transactions</strong>&nbsp;flagged for manual SAR review — £2.4M total exposure. Review required within 48 hours.
-        <span class="alert-close" onclick="document.getElementById('alert1').remove()">✕</span>
-      </div>
-      <div class="page-header">
-        <div>
-          <div class="page-title">Compliance Overview</div>
-          <div class="page-sub">Last updated: 07 Jun 2026 at 14:32 UTC &nbsp;·&nbsp; <span class="zt-badge"><span class="zt-dot"></span>Zero-Trust Active</span></div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container" style="display:grid;grid-template-columns:1fr 480px;gap:40px;align-items:center">
+      <div>
+        <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div>UK RegTech Infrastructure · FCA Aligned</div>
+        <h1 class="hero-title">
+          AUTOMATE<br>
+          <span class="accent-fill">AML AUDITS.</span><br>
+          <span class="accent">ZERO EXPOSURE.</span>
+        </h1>
+        <p class="hero-body">The enterprise compliance engine for UK FinTechs, payment processors, and Web3 custodians. Query your entire transaction network in plain English — without a single byte of your data leaving your infrastructure.</p>
+        <div class="hero-ctas">
+          <button class="btn-primary" onclick="scrollToPilot()">Request Pilot Access</button>
+          <button class="btn-secondary" onclick="setTab('solutions')">See How It Works →</button>
         </div>
-        <div class="page-actions">
-          <button class="btn btn-ghost" onclick="navigate('reports')">📄 FCA Export</button>
-          <button class="btn btn-primary" onclick="navigate('query')">💬 Ask Copilot</button>
+        <div class="hero-trust">
+          <div class="trust-label">Architecture Certifications</div>
+          <div class="trust-badges">
+            <div class="trust-badge"><svg width="14" height="14" fill="none" stroke="var(--teal2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>SOC-2 Type II</div>
+            <div class="trust-badge"><svg width="14" height="14" fill="none" stroke="var(--teal2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>UK GDPR · PII Masking</div>
+            <div class="trust-badge"><svg width="14" height="14" fill="none" stroke="var(--teal2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>FCA SYSC Compliant</div>
+            <div class="trust-badge"><svg width="14" height="14" fill="none" stroke="var(--teal2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Azure UK · TLS 1.3</div>
+          </div>
         </div>
       </div>
-      <div class="content">
-        <!-- KPI ROW -->
-        <div class="grid-4">
-          <div class="card kpi" style="border-color:rgba(13,148,136,.3)">
-            <div class="card-header">
-              <div class="card-title">Transactions Monitored</div>
-              <div class="card-icon" style="background:rgba(13,148,136,.12);color:var(--teal2)">⟳</div>
+
+      <!-- HERO LIVE PANEL -->
+      <div style="position:relative">
+        <div class="hero-panel">
+          <div class="scan-line"></div>
+          <div class="panel-chrome">
+            <div class="chrome-dots">
+              <div class="chrome-dot" style="background:#E03B3B"></div>
+              <div class="chrome-dot" style="background:#E8A020"></div>
+              <div class="chrome-dot" style="background:#0FBA6F"></div>
             </div>
-            <div class="kpi-val" style="color:var(--teal2)">847,293</div>
-            <div class="kpi-label">This quarter — Q2 2026</div>
-            <div class="kpi-delta up">↑ 12.4% vs Q1</div>
-            <div class="kpi-bar"><div class="kpi-fill" style="width:78%;background:var(--teal)"></div></div>
+            <div class="chrome-title">nexintent://compliance-monitor · live</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--teal2)"><div class="status-pulse" style="width:5px;height:5px"></div>SCANNING</div>
           </div>
-          <div class="card kpi">
-            <div class="card-header">
-              <div class="card-title">AML Flags Raised</div>
-              <div class="card-icon" style="background:rgba(239,68,68,.12);color:var(--red)">⚑</div>
-            </div>
-            <div class="kpi-val" style="color:var(--red)">23</div>
-            <div class="kpi-label">Pending manual review</div>
-            <div class="kpi-delta down">↑ 3 new since yesterday</div>
-            <div class="kpi-bar"><div class="kpi-fill" style="width:23%;background:var(--red)"></div></div>
+          <div class="panel-body">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--dim);margin-bottom:10px;letter-spacing:.5px">// LIVE TRANSACTION INTELLIGENCE · Q2 2026</div>
+            <div class="panel-row"><span class="panel-row-id">TXN-94821</span><span class="panel-row-type">IBAN Transfer</span><span class="panel-row-amount">£847,200</span><span class="risk-high">RISK 92</span></div>
+            <div class="panel-row"><span class="panel-row-id">WAL-8824</span><span class="panel-row-type">USDC Transfer</span><span class="panel-row-amount">$85,000</span><span class="risk-high">RISK 88</span></div>
+            <div class="panel-row"><span class="panel-row-id">TXN-94701</span><span class="panel-row-type">SWIFT Wire</span><span class="panel-row-amount">£218,900</span><span class="risk-med">RISK 45</span></div>
+            <div class="panel-row"><span class="panel-row-id">WAL-8822</span><span class="panel-row-type">USDC Transfer</span><span class="panel-row-amount">$4,500</span><span class="risk-low">RISK 12</span></div>
+            <div class="panel-row"><span class="panel-row-id">ACC-8823</span><span class="panel-row-type">BACS Payment</span><span class="panel-row-amount">£2,100</span><span class="risk-low">RISK 05</span></div>
           </div>
-          <div class="card kpi">
-            <div class="card-header">
-              <div class="card-title">FCA Reports Filed</div>
-              <div class="card-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✓</div>
-            </div>
-            <div class="kpi-val" style="color:var(--green)">14</div>
-            <div class="kpi-label">REP-CRIM submissions YTD</div>
-            <div class="kpi-delta up">100% on-time filing</div>
-            <div class="kpi-bar"><div class="kpi-fill" style="width:100%;background:var(--green)"></div></div>
-          </div>
-          <div class="card kpi">
-            <div class="card-header">
-              <div class="card-title">Compliance Score</div>
-              <div class="card-icon" style="background:rgba(245,158,11,.12);color:var(--gold)">★</div>
-            </div>
-            <div class="kpi-val" style="color:var(--gold)">98.4%</div>
-            <div class="kpi-label">FCA benchmark: 85%</div>
-            <div class="kpi-delta up">↑ Top 5% of registered firms</div>
-            <div class="kpi-bar"><div class="kpi-fill" style="width:98%;background:var(--gold)"></div></div>
+          <div class="panel-footer">
+            <span style="color:var(--teal2);font-family:var(--font-mono);font-size:10px">● 847,293 tx monitored</span>
+            <span style="color:var(--dim);font-family:var(--font-mono);font-size:10px">3 flags · SAR queued</span>
           </div>
         </div>
+        <!-- Glow under panel -->
+        <div style="position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);width:200px;height:60px;background:var(--teal);filter:blur(40px);opacity:.15;pointer-events:none"></div>
+      </div>
+    </div>
+  </section>
 
-        <!-- MAIN GRID -->
-        <div class="grid-main">
-          <!-- Left: Recent Flags + Activity -->
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Flagged Transactions — Live</div>
-                <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="navigate('transactions')">View All →</button>
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-eyebrow">// Zero-Trust Architecture</div>
+        <div class="section-title">How NexIntent<br>Protects Your Data</div>
+        <p class="section-body">Unlike legacy platforms, we never require you to export your master database to our servers. Your data never moves.</p>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step-card" data-num="01">
+          <div class="step-number">Step 01 · Intent</div>
+          <div class="step-title">Natural Language Command</div>
+          <p class="step-body">Compliance officers query complex AML typologies in plain English. The AI engine processes the semantic logic entirely blind to your database contents.</p>
+          <div class="step-connector">→</div>
+        </div>
+        <div class="step-card" data-num="02">
+          <div class="step-number">Step 02 · Schema</div>
+          <div class="step-title">Dynamic Schema Translation</div>
+          <p class="step-body">The classified intent is mapped against your OpenAPI spec via NexIntent's proprietary Intent-Parsing Schema, generating a secure, parameterised JSON payload.</p>
+          <div class="step-connector">→</div>
+        </div>
+        <div class="step-card" data-num="03">
+          <div class="step-number">Step 03 · Resolution</div>
+          <div class="step-title">Read-Only Execution</div>
+          <p class="step-body">Your internal server executes the fetch safely. PII-masked, FCA-formatted results are returned to the dashboard. Immutable audit log entry created automatically.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SANDBOX -->
+  <section class="sandbox-section">
+    <div class="container">
+      <div class="reveal" style="text-align:center;margin-bottom:0">
+        <div class="section-eyebrow" style="justify-content:center">// Live Execution Engine</div>
+        <div class="section-title">Interactive Sandbox</div>
+        <p class="section-body" style="margin:0 auto;text-align:center">Experience the zero-trust pipeline. Click a command and watch intent become data.</p>
+      </div>
+      <div class="sandbox-wrap reveal">
+        <div class="sandbox-sidebar">
+          <div class="sandbox-label">CCO Command</div>
+          <button class="sandbox-cmd" onclick="runDemo('high_risk', this)">"Audit all high-risk accounts and wallets for Q2 2026."</button>
+          <button class="sandbox-cmd" onclick="runDemo('large_fiat', this)">"Show all fiat deposits exceeding £10,000 this quarter."</button>
+          <button class="sandbox-cmd" onclick="runDemo('cross_border', this)">"Find anomalous SWIFT and stablecoin cross-border flows."</button>
+          <button class="sandbox-reset" onclick="resetDemo()">↺ Clear Console</button>
+          <div style="margin-top:24px;padding:14px;background:var(--bg);border:1px solid var(--border2);border-radius:8px">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Session Stats</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">Queries: <span id="qcount" style="color:var(--teal2)">0</span></div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">Data to LLM: <span style="color:var(--green)">0 bytes</span></div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">Violations: <span style="color:var(--green)">None</span></div>
+          </div>
+        </div>
+        <div class="sandbox-main">
+          <div class="sandbox-chrome">
+            <div class="chrome-dots">
+              <div class="chrome-dot" style="background:#E03B3B"></div>
+              <div class="chrome-dot" style="background:#E8A020"></div>
+              <div class="chrome-dot" style="background:#0FBA6F"></div>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--dim);margin-left:6px">nexintent://sandbox · zero-trust-enforced</span>
+            <div style="margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--teal2);display:flex;align-items:center;gap:5px"><div class="status-pulse" style="width:5px;height:5px"></div>ZDR Active</div>
+          </div>
+          <div class="sandbox-panels">
+            <div class="sandbox-pane">
+              <div class="pane-header">
+                <div class="pane-label">Encrypted JSON Payload</div>
+                <div class="pane-indicator ind-idle" id="ai-ind"></div>
               </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Transaction ID</th><th>Counterparty</th><th>Amount</th><th>Risk Score</th><th>Flag Reason</th><th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr onclick="showModal()"><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94821</td><td>Meridian Pay Ltd</td><td style="color:var(--red)">£847,200</td><td><div class="risk-bar"><div class="risk-fill" style="width:88%;background:var(--red)"></div></div> <span style="font-size:10px;color:var(--red)">88</span></td><td><span class="activity-tag" style="background:rgba(239,68,68,.1);color:var(--red)">Sanctioned jurisdiction</span></td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
-                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94756</td><td>Crypto Vault AG</td><td style="color:var(--gold)">£412,500</td><td><div class="risk-bar"><div class="risk-fill" style="width:72%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">72</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">Structuring pattern</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
-                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94701</td><td>NovaPay Solutions</td><td style="color:var(--gold)">£218,900</td><td><div class="risk-bar"><div class="risk-fill" style="width:65%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">65</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">Velocity breach</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
-                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94688</td><td>Global Remit PLC</td><td>£89,400</td><td><div class="risk-bar"><div class="risk-fill" style="width:31%;background:var(--green)"></div></div> <span style="font-size:10px;color:var(--green)">31</span></td><td><span class="activity-tag" style="background:rgba(16,185,129,.1);color:var(--green)">Threshold trigger</span></td><td><span class="status-pill clear">✓ Clear</span></td></tr>
-                    <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94621</td><td>Stacks Bridge Inc</td><td>£156,000</td><td><div class="risk-bar"><div class="risk-fill" style="width:44%;background:var(--gold)"></div></div> <span style="font-size:10px;color:var(--gold)">44</span></td><td><span class="activity-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">New counterparty</span></td><td><span class="status-pill pending">⋯ Pending</span></td></tr>
+              <div class="code-block" id="code-output">
+                <span class="code-dim">// Awaiting CCO command...<br>// LLM operates here — isolated from production data.<br>// Zero raw financial data transmitted.</span>
+              </div>
+            </div>
+            <div class="sandbox-pane">
+              <div class="pane-header">
+                <div class="pane-label">Client Data Resolution</div>
+                <div class="pane-indicator ind-idle" id="db-ind"></div>
+              </div>
+              <div id="table-wrap">
+                <table class="results-table">
+                  <thead><tr><th>Ref ID</th><th>Type</th><th>Amount</th><th>Risk Score</th></tr></thead>
+                  <tbody id="results-body">
+                    <tr><td colspan="4" style="color:var(--dim);padding:24px;text-align:center;font-style:italic">Awaiting API payload execution...</td></tr>
                   </tbody>
                 </table>
               </div>
             </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Transaction Volume — Last 12 Weeks</div>
-                <span style="font-size:11px;color:var(--green)">↑ 12.4% trend</span>
-              </div>
-              <div class="mini-chart" id="chart1"></div>
-            </div>
           </div>
-
-          <!-- Right: Risk + Activity -->
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="card" style="text-align:center">
-              <div class="card-title" style="text-align:left;margin-bottom:16px">Overall Risk Rating</div>
-              <div class="risk-ring">
-                <svg viewBox="0 0 80 80">
-                  <circle class="ring-bg" cx="40" cy="40" r="35"/>
-                  <circle class="ring-fill" cx="40" cy="40" r="35" stroke="var(--teal2)" style="--dash:44"/>
-                </svg>
-                <div class="risk-label">
-                  <div class="risk-pct" style="color:var(--teal2)">LOW</div>
-                  <div class="risk-txt">RISK</div>
-                </div>
-              </div>
-              <div style="margin-top:12px;display:flex;justify-content:space-around">
-                <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--green);font-family:'Syne',sans-serif">98.4%</div><div style="font-size:10px;color:var(--dgray)">Compliance</div></div>
-                <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--red);font-family:'Syne',sans-serif">0.003%</div><div style="font-size:10px;color:var(--dgray)">Flag Rate</div></div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Live Activity Feed</div>
-                <div style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite"></div>
-              </div>
-              <div id="activity-feed">
-                <div class="activity-item"><div class="activity-dot" style="background:var(--teal)"></div><div><div class="activity-text">REP-CRIM Q1 report auto-generated and queued for submission</div><div class="activity-time">14:32:18 UTC</div></div></div>
-                <div class="activity-item"><div class="activity-dot" style="background:var(--red)"></div><div><div class="activity-text">TXN-94821 flagged — sanctioned jurisdiction counterparty detected<span class="activity-tag" style="background:rgba(239,68,68,.1);color:var(--red)">SAR Required</span></div><div class="activity-time">14:28:44 UTC</div></div></div>
-                <div class="activity-item"><div class="activity-dot" style="background:var(--green)"></div><div><div class="activity-text">KYC refresh completed for 14 clients — all verified</div><div class="activity-time">13:55:02 UTC</div></div></div>
-                <div class="activity-item"><div class="activity-dot" style="background:var(--gold)"></div><div><div class="activity-text">Velocity breach pattern detected across 3 linked accounts</div><div class="activity-time">13:41:17 UTC</div></div></div>
-                <div class="activity-item"><div class="activity-dot" style="background:var(--teal)"></div><div><div class="activity-text">Audit pipeline stage 3 completed — data validated against FCA schema</div><div class="activity-time">12:59:33 UTC</div></div></div>
-              </div>
-            </div>
+          <div class="sandbox-footer">
+            <span>Pipeline: <span id="pipe-status" style="color:var(--dim)">Idle</span></span>
+            <button class="export-btn" id="export-btn" style="display:none" onclick="toast('FCA-compliant PDF audit report generated and queued for GABRIEL submission.')">
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export FCA Audit
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- ══ COPILOT ══ -->
-    <div class="panel" id="panel-query">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Compliance Copilot</div>
-          <div class="page-sub">Natural language → FCA-structured audit queries &nbsp;·&nbsp; <span class="zt-badge"><span class="zt-dot"></span>Zero-Trust Active — LLM sees no raw data</span></div>
+  <!-- PILOT SECTION -->
+  <section class="pilot-section" id="pilot-anchor">
+    <div class="container">
+      <div class="pilot-card reveal">
+        <div style="text-align:center">
+          <div class="section-eyebrow" style="display:block;text-align:center;margin-bottom:12px">// Institutional Validation Programme</div>
+          <div class="section-title" style="font-size:clamp(36px,4vw,52px)">Request Pilot Access</div>
+          <p style="font-size:15px;color:var(--muted);margin-top:12px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7">Strategic pricing for UK validation partners. Verified organisations receive comprehensive configuration support and a dedicated solutions engineer.</p>
         </div>
-        <div class="page-actions">
-          <button class="btn btn-ghost">⬇ Export Session</button>
-          <button class="btn btn-primary" onclick="showModal()">🔒 View Audit Log</button>
-        </div>
+        <form class="pilot-form" id="pilot-form" onsubmit="submitPilot(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Corporate Representative</label>
+              <input class="form-input" name="Full Name" placeholder="e.g. Alex Carter" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Enterprise Name</label>
+              <input class="form-input" name="Company Name" placeholder="e.g. Meridian FinTech" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Corporate Email</label>
+            <input class="form-input" name="Email Address" type="email" placeholder="compliance@yourfirm.co.uk" required>
+          </div>
+          <button type="submit" class="form-submit" id="submit-btn">Request Deployment Authority</button>
+          <p class="form-note">Enterprise email required. Public domains rejected. NexIntent guarantees complete operational data isolation.</p>
+        </form>
       </div>
-      <div class="content">
-        <div class="grid-main">
-          <div class="query-panel">
-            <div class="query-header">
-              <div class="query-traffic">
-                <div class="traffic-dot" style="background:#EF4444"></div>
-                <div class="traffic-dot" style="background:#F59E0B"></div>
-                <div class="traffic-dot" style="background:#10B981"></div>
-              </div>
-              <div class="query-title">nexintent://compliance-copilot &nbsp;—&nbsp; FCA Audit Interface v2.4</div>
-              <div class="zt-badge" style="margin-left:auto"><span class="zt-dot"></span>ZDR Enforced</div>
-            </div>
-            <div class="query-messages" id="messages">
-              <div class="msg msg-system">
-                <div class="msg-bubble">
-                  ✦ NexIntent Compliance Copilot online.<br>
-                  I can query your FCA audit data, flag suspicious transactions, generate REP-CRIM reports, and monitor AML patterns — all in plain English.<br><br>
-                  <span style="color:var(--teal3)">Your data never leaves your isolated Azure UK silo.</span>
-                </div>
-                <div class="msg-meta">NexIntent IPS v2.4 &nbsp;·&nbsp; Zero-Trust Confirmed</div>
-              </div>
-            </div>
-            <div class="quick-queries">
-              <div class="quick-q" onclick="sendQuery('Show all transactions above £50K flagged for AML review in Q2 2026')">AML flags Q2 £50K+</div>
-              <div class="quick-q" onclick="sendQuery('Generate REP-CRIM report for Q1 2026')">REP-CRIM Q1 report</div>
-              <div class="quick-q" onclick="sendQuery('Show SAR-required transactions this month')">SAR required this month</div>
-              <div class="quick-q" onclick="sendQuery('List all sanctioned jurisdiction transactions year to date')">Sanctioned jurisdictions YTD</div>
-            </div>
-            <div class="query-input-area">
-              <input class="query-input" id="queryInput" placeholder="Ask a compliance question in plain English..." onkeydown="if(event.key==='Enter')sendQuery()"/>
-              <button class="send-btn" onclick="sendQuery()">➤</button>
-            </div>
-          </div>
+    </div>
+  </section>
 
-          <!-- Right: context -->
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="card">
-              <div class="card-title" style="margin-bottom:12px">How It Works</div>
-              <div class="pipeline">
-                <div class="pipe-step done"><div class="pipe-num">1</div><div class="pipe-info"><div class="pipe-title">Intent Classification</div><div class="pipe-sub">LLM parses your question — no data access</div></div><div class="pipe-status">✓ Done</div></div>
-                <div class="pipe-step done"><div class="pipe-num">2</div><div class="pipe-info"><div class="pipe-title">Schema Mapping (IPS)</div><div class="pipe-sub">Intent mapped to FCA data taxonomy</div></div><div class="pipe-status">✓ Done</div></div>
-                <div class="pipe-step active"><div class="pipe-num">3</div><div class="pipe-info"><div class="pipe-title">Sanitised Execution</div><div class="pipe-sub">Read-only query on your isolated silo</div></div><div class="pipe-status">● Active</div></div>
-                <div class="pipe-step pending"><div class="pipe-num">4</div><div class="pipe-info"><div class="pipe-title">Output Formatting</div><div class="pipe-sub">Results formatted to FCA template</div></div><div class="pipe-status">⋯ Queued</div></div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title" style="margin-bottom:12px">Session Stats</div>
-              <div class="result-table">
-                <div class="result-row"><span class="result-key">Queries this session</span><span class="result-val" id="qcount">1</span></div>
-                <div class="result-row"><span class="result-key">Data transmitted to LLM</span><span class="result-val" style="color:var(--green)">0 bytes</span></div>
-                <div class="result-row"><span class="result-key">Avg response time</span><span class="result-val">1.8s</span></div>
-                <div class="result-row"><span class="result-key">Audit log entries</span><span class="result-val" id="acount">1</span></div>
-                <div class="result-row"><span class="result-key">Zero-trust violations</span><span class="result-val" style="color:var(--green)">None</span></div>
-              </div>
-            </div>
-          </div>
+</div><!-- /home -->
+
+<!-- ═══════════════════════════════════════
+     SOLUTIONS
+════════════════════════════════════════ -->
+<div class="page-panel" id="tab-solutions">
+  <div class="solutions-hero" style="padding-top:140px">
+    <div class="container">
+      <div class="section-eyebrow">// The Compliance Gap</div>
+      <div class="section-title">Why Modern Compliance<br>Is Broken</div>
+      <p class="section-body">Global financial institutions lose billions in fines, yet implementing legacy AML tools takes months and exposes sensitive PII to third-party databases. NexIntent solves this with localised Intent Routing.</p>
+      <div class="vs-grid">
+        <div class="vs-card danger">
+          <div class="vs-heading">The Legacy Danger</div>
+          <div class="vs-item"><div class="vs-item-title">Massive Data Duplication</div><p class="vs-item-body">Legacy tools require you to export and host copies of your user data on their servers, creating a massive target for hackers and GDPR violations.</p></div>
+          <div class="vs-item"><div class="vs-item-title">Months of Integration</div><p class="vs-item-body">Integrating a traditional screening engine takes 6–12 months of developer time, draining startup runways before a single query is run.</p></div>
+          <div class="vs-item"><div class="vs-item-title">Black-Box AI Fines</div><p class="vs-item-body">Traditional ML models flag users without explaining why, creating compliance failures when the FCA demands a defensible audit trail.</p></div>
+        </div>
+        <div class="vs-card advantage">
+          <div class="vs-heading">The NexIntent Advantage</div>
+          <div class="vs-item"><div class="vs-item-title">Zero-Trust Architecture</div><p class="vs-item-body">We never store your transaction history. The AI builds a schema, pings your existing database, and reads the secure result. Your data never moves.</p></div>
+          <div class="vs-item"><div class="vs-item-title">Integration in Hours</div><p class="vs-item-body">Acting as an isolated router rather than a central database, engineering teams deploy NexIntent endpoints in a single afternoon via our OpenAPI spec.</p></div>
+          <div class="vs-item"><div class="vs-item-title">Legally Defensible Audits</div><p class="vs-item-body">Every query generates an immutable, timestamped audit log entry with full intent classification — FCA-ready, SAR-exportable, board-presentable.</p></div>
         </div>
       </div>
     </div>
-
-    <!-- ══ TRANSACTIONS ══ -->
-    <div class="panel" id="panel-transactions">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Transaction Monitor</div>
-          <div class="page-sub">Real-time AML / KYC transaction intelligence &nbsp;·&nbsp; 847,293 monitored this quarter</div>
-        </div>
-        <div class="page-actions">
-          <button class="btn btn-ghost">⬇ Export CSV</button>
-          <button class="btn btn-primary">+ Add Filter</button>
-        </div>
-      </div>
-      <div class="content">
-        <div class="grid-4">
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Total Volume</div><div class="kpi-val" style="color:var(--teal2)">£2.4B</div><div class="kpi-label">Q2 2026</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Flagged</div><div class="kpi-val" style="color:var(--red)">23</div><div class="kpi-label">Pending review</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Auto-Cleared</div><div class="kpi-val" style="color:var(--green)">847,270</div><div class="kpi-label">Below risk threshold</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">SAR Filed</div><div class="kpi-val" style="color:var(--gold)">7</div><div class="kpi-label">This quarter</div></div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">All Flagged Transactions</div>
-            <div style="display:flex;gap:6px">
-              <span class="status-pill flagged" style="cursor:pointer">⚠ Flagged (23)</span>
-              <span class="status-pill review" style="cursor:pointer">⏵ Review (8)</span>
-              <span class="status-pill clear" style="cursor:pointer">✓ Cleared (6)</span>
-            </div>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>ID</th><th>Date/Time</th><th>Originator</th><th>Beneficiary</th><th>Amount (GBP)</th><th>Jurisdiction</th><th>Risk</th><th>Flag Type</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr onclick="showModal()"><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94821</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 14:12</td><td>ClearPay UK</td><td>Meridian Pay Ltd</td><td style="color:var(--red);font-weight:600">£847,200</td><td><span style="color:var(--red)">🔴 IR — Iran</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:88%;background:var(--red)"></div></div></td><td>Sanctioned country</td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94756</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 13:44</td><td>NovaPay</td><td>Crypto Vault AG</td><td style="color:var(--gold);font-weight:600">£412,500</td><td><span style="color:var(--lgray)">🟡 CH — Switzerland</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:72%;background:var(--gold)"></div></div></td><td>Structuring</td><td><span class="status-pill review">⏵ Review</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94701</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 12:38</td><td>Apex Finance</td><td>NovaPay Solutions</td><td style="color:var(--gold);font-weight:600">£218,900</td><td><span style="color:var(--lgray)">🟡 AE — UAE</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:65%;background:var(--gold)"></div></div></td><td>Velocity breach</td><td><span class="status-pill review">⏵ Review</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94688</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 11:22</td><td>Stellar Bank</td><td>Global Remit PLC</td><td>£89,400</td><td><span style="color:var(--green)">🟢 GB — United Kingdom</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:31%;background:var(--green)"></div></div></td><td>Threshold trigger</td><td><span class="status-pill clear">✓ Cleared</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;color:var(--teal3)">TXN-94621</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px">2026-06-07 10:05</td><td>Bridge Layer</td><td>Stacks Bridge Inc</td><td>£156,000</td><td><span style="color:var(--lgray)">🟡 US — United States</span></td><td><div class="risk-bar"><div class="risk-fill" style="width:44%;background:var(--gold)"></div></div></td><td>New counterparty</td><td><span class="status-pill pending">⋯ Pending</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+  </div>
+  <div class="matrix-section">
+    <div class="container">
+      <div class="section-eyebrow">// Competitive Positioning</div>
+      <div class="section-title">NexIntent vs. The Market</div>
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="color:var(--muted)">Capability</th>
+            <th style="color:var(--dim)">Legacy Screeners<br><span style="font-size:10px;font-weight:400">(ComplyAdvantage)</span></th>
+            <th style="color:var(--dim)">Web3 Indexers<br><span style="font-size:10px;font-weight:400">(Chainalysis)</span></th>
+            <th class="ours">NexIntent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Data Residency</td><td class="neg">Forced Cloud Upload</td><td class="neg">Public Chain Only</td><td class="ours">Client Local Servers</td></tr>
+          <tr><td>Integration Time</td><td class="neg">6–12 Months</td><td class="neg">Weeks</td><td class="ours">Hours</td></tr>
+          <tr><td>Query Language</td><td class="neg">Complex SQL / UI</td><td class="neg">Graph Forensics</td><td class="ours">Natural Language (NLP)</td></tr>
+          <tr><td>Fiat + Web3 Unified</td><td class="neg">Fiat Only</td><td class="neg">Crypto Only</td><td class="ours">Bridged via Router</td></tr>
+          <tr><td>FCA Audit Export</td><td class="neg">Manual Template</td><td class="neg">None</td><td class="ours">Auto-Generated</td></tr>
+          <tr><td>Entry Pricing</td><td class="neg">£5,000+/mo</td><td class="neg">£8,000+/mo</td><td class="ours">£499/mo</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:40px;text-align:center">
+        <button class="btn-primary" onclick="scrollToPilot();setTab('home')">Bypass Legacy Tools Today</button>
       </div>
     </div>
-
-    <!-- ══ AUDIT PIPELINE ══ -->
-    <div class="panel" id="panel-audit">
-      <div class="page-header">
-        <div><div class="page-title">FCA Audit Pipeline</div><div class="page-sub">Automated REP-CRIM submission pipeline — Q2 2026</div></div>
-        <div class="page-actions">
-          <button class="btn btn-ghost">⟳ Refresh</button>
-          <button class="btn btn-primary" onclick="navigate('reports')">📄 View Reports</button>
+  </div>
+  <section class="pilot-section" style="padding-top:0" id="pilot-anchor-sol">
+    <div class="container"><div class="pilot-card reveal" style="max-width:640px">
+      <div style="text-align:center">
+        <div class="section-eyebrow" style="display:block;text-align:center;margin-bottom:10px">// Apply for Pilot</div>
+        <div class="section-title" style="font-size:40px">Deploy NexIntent</div>
+      </div>
+      <form class="pilot-form" onsubmit="submitPilot(event)">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Name</label><input class="form-input" name="Full Name" placeholder="Full name" required></div>
+          <div class="form-group"><label class="form-label">Company</label><input class="form-input" name="Company Name" placeholder="Company name" required></div>
         </div>
-      </div>
-      <div class="content">
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:16px">Q2 2026 REP-CRIM Pipeline</div>
-            <div class="pipeline">
-              <div class="pipe-step done"><div class="pipe-num">1</div><div class="pipe-info"><div class="pipe-title">Data Ingestion</div><div class="pipe-sub">847,293 transactions pulled from isolated silo</div></div><div class="pipe-status">✓ Complete</div></div>
-              <div class="pipe-bar done"></div>
-              <div class="pipe-step done"><div class="pipe-num">2</div><div class="pipe-info"><div class="pipe-title">Schema Validation</div><div class="pipe-sub">All fields validated against FCA taxonomy v4.2</div></div><div class="pipe-status">✓ Complete</div></div>
-              <div class="pipe-bar done"></div>
-              <div class="pipe-step done"><div class="pipe-num">3</div><div class="pipe-info"><div class="pipe-title">AML Flag Reconciliation</div><div class="pipe-sub">23 flags reviewed — 7 escalated to SAR</div></div><div class="pipe-status">✓ Complete</div></div>
-              <div class="pipe-bar active"></div>
-              <div class="pipe-step active"><div class="pipe-num">4</div><div class="pipe-info"><div class="pipe-title">Report Compilation</div><div class="pipe-sub">REP-CRIM XML generation in progress — 94% complete</div></div><div class="pipe-status">● In Progress</div></div>
-              <div class="pipe-bar"></div>
-              <div class="pipe-step pending"><div class="pipe-num">5</div><div class="pipe-info"><div class="pipe-title">FCA Submission</div><div class="pipe-sub">GABRIEL portal upload — scheduled 09 Jun 2026</div></div><div class="pipe-status">⋯ Scheduled</div></div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="card">
-              <div class="card-title" style="margin-bottom:12px">Pipeline Health</div>
-              <div class="result-table">
-                <div class="result-row"><span class="result-key">Data quality score</span><span class="result-val">99.97%</span></div>
-                <div class="result-row"><span class="result-key">Fields validated</span><span class="result-val">2,847,293</span></div>
-                <div class="result-row"><span class="result-key">Schema errors</span><span class="result-val" style="color:var(--green)">0</span></div>
-                <div class="result-row"><span class="result-key">Estimated completion</span><span class="result-val" style="color:var(--teal2)">~18 mins</span></div>
-                <div class="result-row"><span class="result-key">FCA deadline</span><span class="result-val" style="color:var(--gold)">09 Jun 2026</span></div>
-                <div class="result-row"><span class="result-key">Last submission result</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title" style="margin-bottom:12px">Historical Submissions</div>
-              <div class="result-table">
-                <div class="result-row"><span class="result-key">Q1 2026 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
-                <div class="result-row"><span class="result-key">Q4 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
-                <div class="result-row"><span class="result-key">Q3 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
-                <div class="result-row"><span class="result-key">Q2 2025 REP-CRIM</span><span class="result-val" style="color:var(--green)">✓ Accepted</span></div>
-                <div class="result-row"><span class="result-key">On-time filing rate</span><span class="result-val">100%</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ REPORTS ══ -->
-    <div class="panel" id="panel-reports">
-      <div class="page-header">
-        <div><div class="page-title">FCA Reports</div><div class="page-sub">Auto-generated regulatory submissions — GABRIEL portal ready</div></div>
-        <div class="page-actions">
-          <button class="btn btn-ghost">⬇ Download All</button>
-          <button class="btn btn-primary" onclick="navigate('query')">+ Generate New</button>
-        </div>
-      </div>
-      <div class="content">
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div class="report-item"><div class="report-icon" style="background:rgba(13,148,136,.12);color:var(--teal2)">📋</div><div class="report-info"><div class="report-name">REP-CRIM Q2 2026 — Financial Crime Return</div><div class="report-meta">Generated: 07 Jun 2026 &nbsp;·&nbsp; 847,293 transactions &nbsp;·&nbsp; FCA GABRIEL format &nbsp;·&nbsp; <span style="color:var(--gold)">● Pending submission</span></div></div><div class="report-actions"><button class="report-btn dl" onclick="showModal()">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
-          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">REP-CRIM Q1 2026 — Financial Crime Return</div><div class="report-meta">Submitted: 08 Apr 2026 &nbsp;·&nbsp; 791,442 transactions &nbsp;·&nbsp; <span style="color:var(--green)">✓ Accepted by FCA</span></div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
-          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">SAR Batch Report — Jun 2026</div><div class="report-meta">Generated: 06 Jun 2026 &nbsp;·&nbsp; 7 Suspicious Activity Reports &nbsp;·&nbsp; NCA submission ready</div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
-          <div class="report-item"><div class="report-icon" style="background:rgba(245,158,11,.12);color:var(--gold)">📊</div><div class="report-info"><div class="report-name">Consumer Duty Outcomes Report — H1 2026</div><div class="report-meta">Generated: 01 Jun 2026 &nbsp;·&nbsp; FCA PS22/9 compliant &nbsp;·&nbsp; Board sign-off pending</div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
-          <div class="report-item"><div class="report-icon" style="background:rgba(16,185,129,.12);color:var(--green)">✅</div><div class="report-info"><div class="report-name">REP-CRIM Q4 2025 — Financial Crime Return</div><div class="report-meta">Submitted: 12 Jan 2026 &nbsp;·&nbsp; 722,819 transactions &nbsp;·&nbsp; <span style="color:var(--green)">✓ Accepted by FCA</span></div></div><div class="report-actions"><button class="report-btn dl">⬇ Download</button><button class="report-btn view">👁 Preview</button></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ AML ══ -->
-    <div class="panel" id="panel-aml">
-      <div class="page-header">
-        <div><div class="page-title">AML / KYC Intelligence</div><div class="page-sub">Anti-Money Laundering & Know Your Customer monitoring</div></div>
-        <div class="page-actions"><button class="btn btn-primary" onclick="navigate('query')">💬 Query Copilot</button></div>
-      </div>
-      <div class="content">
-        <div class="grid-3">
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">KYC Verified Clients</div><div class="kpi-val" style="color:var(--green)">1,847</div><div class="kpi-label">Active & verified</div><div class="kpi-delta up">↑ 23 new this month</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Watchlist Matches</div><div class="kpi-val" style="color:var(--red)">4</div><div class="kpi-label">Pending review</div><div class="kpi-delta down">Requires immediate action</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">PEP Identified</div><div class="kpi-val" style="color:var(--gold)">12</div><div class="kpi-label">Politically Exposed Persons</div><div class="kpi-delta">Under enhanced monitoring</div></div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px">AML Alert Summary</div>
-            <div class="result-table">
-              <div class="result-row"><span class="result-key">Structuring patterns</span><span class="result-val red">3 active</span></div>
-              <div class="result-row"><span class="result-key">Sanctioned jurisdictions</span><span class="result-val red">1 (Iran)</span></div>
-              <div class="result-row"><span class="result-key">Velocity breaches</span><span class="result-val gold">2 monitoring</span></div>
-              <div class="result-row"><span class="result-key">Round-trip transactions</span><span class="result-val" style="color:var(--green)">None detected</span></div>
-              <div class="result-row"><span class="result-key">Layering indicators</span><span class="result-val gold">1 under review</span></div>
-              <div class="result-row"><span class="result-key">Auto-cleared today</span><span class="result-val">12,847</span></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title" style="margin-bottom:14px">KYC Refresh Queue</div>
-            <div class="pipeline">
-              <div class="pipe-step done"><div class="pipe-num" style="font-size:9px">✓</div><div class="pipe-info"><div class="pipe-title">Annual refresh — Tier 1 clients</div><div class="pipe-sub">1,200 clients — completed 01 Jun 2026</div></div></div>
-              <div class="pipe-step active"><div class="pipe-num" style="font-size:9px">●</div><div class="pipe-info"><div class="pipe-title">Enhanced DD — PEP clients</div><div class="pipe-sub">12 clients — 8 of 12 complete</div></div></div>
-              <div class="pipe-step pending"><div class="pipe-num" style="font-size:9px">⋯</div><div class="pipe-info"><div class="pipe-title">Watchlist re-screening</div><div class="pipe-sub">Scheduled: 10 Jun 2026</div></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ WEB3 ══ -->
-    <div class="panel" id="panel-web3">
-      <div class="page-header">
-        <div><div class="page-title">On-Chain Monitor</div><div class="page-sub">Blockchain transaction intelligence — Ethereum, Stacks, Celo networks</div></div>
-        <div class="page-actions"><button class="btn btn-primary" onclick="navigate('query')">💬 Query Wallets</button></div>
-      </div>
-      <div class="content">
-        <div class="grid-3">
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Wallets Monitored</div><div class="kpi-val" style="color:var(--teal2)">2,847</div><div class="kpi-label">Across 3 chains</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">On-Chain Volume</div><div class="kpi-val" style="color:var(--gold)">£48.2M</div><div class="kpi-label">USDC/cUSD equivalent Q2</div></div>
-          <div class="card kpi"><div class="card-title" style="margin-bottom:8px">Travel Rule Compliance</div><div class="kpi-val" style="color:var(--green)">100%</div><div class="kpi-label">FATF compliant transfers</div></div>
-        </div>
-        <div class="card">
-          <div class="card-title" style="margin-bottom:14px">Recent On-Chain Flags</div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Wallet Hash</th><th>Network</th><th>Amount</th><th>Counterparty Risk</th><th>Travel Rule</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">0x7f3a...d921</td><td>Ethereum</td><td style="color:var(--gold)">£892,000 USDC</td><td><span class="status-pill review">Medium</span></td><td><span class="status-pill clear">✓ Compliant</span></td><td><span class="status-pill review">⏵ Review</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">SP4k9...8bvc</td><td>Stacks</td><td style="color:var(--lgray)">£124,500 STX</td><td><span class="status-pill clear">Low</span></td><td><span class="status-pill clear">✓ Compliant</span></td><td><span class="status-pill clear">✓ Clear</span></td></tr>
-                <tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal3)">0xcE2f...7741</td><td>Celo</td><td style="color:var(--red)">£2,104,000 cUSD</td><td><span class="status-pill flagged">High</span></td><td><span class="status-pill review">Pending</span></td><td><span class="status-pill flagged">⚠ Flagged</span></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ SETTINGS ══ -->
-    <div class="panel" id="panel-settings">
-      <div class="page-header">
-        <div><div class="page-title">Settings & Security</div><div class="page-sub">Platform configuration — Zero-Trust architecture always enforced</div></div>
-        <div class="page-actions"><button class="btn btn-primary">💾 Save Changes</button></div>
-      </div>
-      <div class="content">
-        <div class="grid-2">
-          <div>
-            <div class="settings-section">
-              <div class="settings-title">Data Security</div>
-              <div class="setting-row"><div><div class="setting-label">Zero-Trust LLM Isolation</div><div class="setting-desc">LLM never receives raw financial data — always active</div></div><div class="toggle on" title="Always enforced — cannot be disabled"></div></div>
-              <div class="setting-row"><div><div class="setting-label">AES-256 Encryption at Rest</div><div class="setting-desc">Azure Key Vault — HSM backed</div></div><div class="toggle on"></div></div>
-              <div class="setting-row"><div><div class="setting-label">TLS 1.3 Enforcement</div><div class="setting-desc">All API endpoints — TLS 1.2 blocked</div></div><div class="toggle on"></div></div>
-              <div class="setting-row"><div><div class="setting-label">Immutable Audit Logging</div><div class="setting-desc">WORM policy — Azure Blob Storage</div></div><div class="toggle on"></div></div>
-              <div class="setting-row"><div><div class="setting-label">OpenAI Zero Data Retention</div><div class="setting-desc">Enterprise ZDR — no training on your data</div></div><div class="toggle on"></div></div>
-            </div>
-            <div class="settings-section">
-              <div class="settings-title">Compliance Notifications</div>
-              <div class="setting-row"><div><div class="setting-label">AML Flag Alerts</div><div class="setting-desc">Instant notification on new suspicious transactions</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-              <div class="setting-row"><div><div class="setting-label">FCA Deadline Reminders</div><div class="setting-desc">7-day and 48-hour advance warnings</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-              <div class="setting-row"><div><div class="setting-label">Watchlist Match Alerts</div><div class="setting-desc">Real-time OFAC / HMT / UN sanctions screening</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-            </div>
-          </div>
-          <div>
-            <div class="settings-section">
-              <div class="settings-title">Data Residency</div>
-              <div class="card" style="margin-bottom:14px">
-                <div class="result-table">
-                  <div class="result-row"><span class="result-key">Primary region</span><span class="result-val">Azure UK South (London)</span></div>
-                  <div class="result-row"><span class="result-key">Failover region</span><span class="result-val">Azure UK West (Cardiff)</span></div>
-                  <div class="result-row"><span class="result-key">Data boundary</span><span class="result-val" style="color:var(--green)">UK only — guaranteed</span></div>
-                  <div class="result-row"><span class="result-key">GDPR role</span><span class="result-val">Data Processor (Art. 28)</span></div>
-                  <div class="result-row"><span class="result-key">DPA status</span><span class="result-val" style="color:var(--green)">✓ Signed</span></div>
-                  <div class="result-row"><span class="result-key">RTO / RPO</span><span class="result-val">4hr / 1hr</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="settings-section">
-              <div class="settings-title">Account</div>
-              <div class="setting-row"><div><div class="setting-label">Oluwafemi Mobolaji Olagoke</div><div class="setting-desc">Platform Administrator &nbsp;·&nbsp; dracuul54@gmail.com</div></div><button class="btn btn-ghost" style="font-size:11px">Edit</button></div>
-              <div class="setting-row"><div><div class="setting-label">Subscription Tier</div><div class="setting-desc">Enterprise &nbsp;·&nbsp; Unlimited queries &nbsp;·&nbsp; Custom FCA templates</div></div><span class="status-pill clear">✓ Active</span></div>
-              <div class="setting-row"><div><div class="setting-label">Next Billing Date</div><div class="setting-desc">01 July 2026 &nbsp;·&nbsp; £1,999/month</div></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+        <div class="form-group"><label class="form-label">Corporate Email</label><input class="form-input" name="Email Address" type="email" placeholder="you@yourfirm.co.uk" required></div>
+        <button type="submit" class="form-submit">Request Access</button>
+      </form>
+    </div></div>
+  </section>
 </div>
 
+<!-- ═══════════════════════════════════════
+     AUDIT LOGS
+════════════════════════════════════════ -->
+<div class="page-panel" id="tab-logs">
+  <div class="logs-section">
+    <div class="container">
+      <div class="section-eyebrow">// Immutable Audit Infrastructure</div>
+      <div class="section-title">Network Audit Ledger</div>
+      <p class="section-body">Read-only simulation of NexIntent's intentional processing metrics across enterprise compliance pipelines.</p>
+      <table class="log-table">
+        <thead><tr><th>Log Hash ID</th><th>Timestamp (UTC)</th><th>Sector</th><th>Parsed Intent</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>NEX-9981</td><td>2026-06-08 07:12:04</td><td><span class="sector-tag">FinTech</span></td><td>Scan high-frequency USDC deposits matching OFAC sanctions lists</td><td><span class="log-status resolved"><span style="width:6px;height:6px;background:var(--teal2);border-radius:50%;display:inline-block"></span>RESOLVED</span></td></tr>
+          <tr><td>NEX-9982</td><td>2026-06-08 07:44:12</td><td><span class="sector-tag">Real Estate</span></td><td>Audit beneficial owners for commercial cash buyers exceeding £1M</td><td><span class="log-status flagged"><span style="width:6px;height:6px;background:var(--red);border-radius:50%;display:inline-block"></span>FLAGGED</span></td></tr>
+          <tr><td>NEX-9983</td><td>2026-06-08 08:01:55</td><td><span class="sector-tag">Legal</span></td><td>Query dormant Escrow accounts with zero source-of-funds documentation</td><td><span class="log-status resolved"><span style="width:6px;height:6px;background:var(--teal2);border-radius:50%;display:inline-block"></span>RESOLVED</span></td></tr>
+          <tr><td>NEX-9984</td><td>2026-06-08 09:14:22</td><td><span class="sector-tag">Crypto</span></td><td>Identify wallet clusters transacting across sanctioned jurisdictions Q2</td><td><span class="log-status resolved"><span style="width:6px;height:6px;background:var(--teal2);border-radius:50%;display:inline-block"></span>RESOLVED</span></td></tr>
+          <tr><td>NEX-9985</td><td>2026-06-08 10:33:07</td><td><span class="sector-tag">Payments</span></td><td>REP-CRIM Q2 compilation — aggregate suspicious transaction report batch</td><td><span class="log-status flagged"><span style="width:6px;height:6px;background:var(--red);border-radius:50%;display:inline-block"></span>FLAGGED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PRICING
+════════════════════════════════════════ -->
+<div class="page-panel" id="tab-pricing">
+  <div class="pricing-section">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="section-eyebrow" style="display:inline-block">// Enterprise Deployment Tiers</div>
+        <div class="section-title" style="margin-top:12px">Transparent Pricing</div>
+        <p class="section-body" style="margin:0 auto;text-align:center">Scale your compliance operations without vendor lock-in. All tiers run on your infrastructure.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Founding Partner</div>
+          <div class="price-val">Free</div>
+          <div class="price-period">12-month pilot · UK validation cohort</div>
+          <div class="price-desc">Exclusive to early UK FinTech validation partners. Full platform access. Priority onboarding support.</div>
+          <div class="price-divider"></div>
+          <div class="price-features">
+            <div class="price-feature"><span class="f-check">✓</span>1 Database Router Integration</div>
+            <div class="price-feature"><span class="f-check">✓</span>Standard FCA Rule-Book Mapping</div>
+            <div class="price-feature"><span class="f-check">✓</span>PII Masking & Data Obfuscation</div>
+            <div class="price-feature"><span class="f-check">✓</span>Up to 500 NL Queries / month</div>
+            <div class="price-feature dimmed"><span class="f-no">✗</span>Multi-Region Nodes</div>
+            <div class="price-feature dimmed"><span class="f-no">✗</span>Dedicated Account Engineer</div>
+          </div>
+          <button class="btn-price btn-price-primary" onclick="scrollToPilot();setTab('home')">Apply for Pilot</button>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-tier">Growth</div>
+          <div class="price-val">£999</div>
+          <div class="price-period">per month · annual commitment</div>
+          <div class="price-desc">For Series A FinTechs and payment processors with active FCA authorisation and growing compliance teams.</div>
+          <div class="price-divider"></div>
+          <div class="price-features">
+            <div class="price-feature"><span class="f-check">✓</span>Unlimited Schema Router Plugs</div>
+            <div class="price-feature"><span class="f-check">✓</span>Tailored Jurisdictional Rule Sync</div>
+            <div class="price-feature"><span class="f-check">✓</span>2,500 NL Queries / month</div>
+            <div class="price-feature"><span class="f-check">✓</span>24/7 SLA Technical Escalation</div>
+            <div class="price-feature"><span class="f-check">✓</span>Custom Webhook Infrastructure</div>
+            <div class="price-feature"><span class="f-check">✓</span>99.9% Uptime Guarantee</div>
+          </div>
+          <button class="btn-price btn-price-primary" onclick="toast('Growth tier onboarding available post-pilot. Contact solutions team.')">Contact Sales</button>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Enterprise</div>
+          <div class="price-val">£1,999+</div>
+          <div class="price-period">per month · bespoke volume</div>
+          <div class="price-desc">For Tier 2 banks, crypto custodians, and high-frequency payment institutions requiring on-prem deployment.</div>
+          <div class="price-divider"></div>
+          <div class="price-features">
+            <div class="price-feature"><span class="f-check">✓</span>Local Isolated LLM Model Weights</div>
+            <div class="price-feature"><span class="f-check">✓</span>Zero Cloud Dependency Option</div>
+            <div class="price-feature"><span class="f-check">✓</span>CISO Attestation Manifests</div>
+            <div class="price-feature"><span class="f-check">✓</span>Dedicated Hardware Optimisation</div>
+            <div class="price-feature"><span class="f-check">✓</span>Unlimited Queries · Custom SLA</div>
+            <div class="price-feature"><span class="f-check">✓</span>White-Label API Licensing</div>
+          </div>
+          <button class="btn-price btn-price-ghost" onclick="toast('Enterprise consultation routing initiated. Our solutions architect will contact you.')">Request Consultation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     DOCS
+════════════════════════════════════════ -->
+<div class="page-panel" id="tab-docs">
+  <div class="docs-section">
+    <div class="container">
+      <div class="section-eyebrow">// Technical Reference</div>
+      <div class="section-title">Developer Documentation</div>
+      <p class="section-body">NexIntent uses Model Context Protocol to interpret compliance intent natively. Review our conceptual endpoint architecture.</p>
+      <div class="docs-grid">
+        <div class="docs-nav">
+          <button class="docs-nav-item active" onclick="this.parentNode.querySelectorAll('.docs-nav-item').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Core Philosophy</button>
+          <button class="docs-nav-item" onclick="this.parentNode.querySelectorAll('.docs-nav-item').forEach(b=>b.classList.remove('active'));this.classList.add('active')">API Reference</button>
+          <button class="docs-nav-item" onclick="this.parentNode.querySelectorAll('.docs-nav-item').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Authentication</button>
+          <button class="docs-nav-item" onclick="this.parentNode.querySelectorAll('.docs-nav-item').forEach(b=>b.classList.remove('active'));this.classList.add('active')">IPS Schema</button>
+          <button class="docs-nav-item" onclick="this.parentNode.querySelectorAll('.docs-nav-item').forEach(b=>b.classList.remove('active'));this.classList.add('active')">FCA Templates</button>
+        </div>
+        <div class="docs-content">
+          <div class="doc-block">
+            <div class="doc-block-title">Core Philosophy: Zero Data Retention</div>
+            <p class="doc-block-body">Standard compliance structures force software providers to cache internal business transactions. NexIntent completely circumvents this hazard. The system generates ephemeral runtime specifications — classifying intent, mapping schema, and executing read-only queries — without persisting any client financial data at any stage of the pipeline. Every operation is stateless by design.</p>
+          </div>
+          <div class="doc-block">
+            <div class="doc-block-title">Intent Route API — Core Endpoint</div>
+            <p class="doc-block-body">All NexIntent queries pass through a single authenticated endpoint. The system handles intent classification, schema mapping, and result formatting internally.</p>
+            <div class="code-snippet">
+<span style="color:var(--dim)">// POST /api/v1/intent/route</span><br>
+<span style="color:var(--teal2)">Authorization:</span> Bearer NEX_SECURE_TOKEN_HEX<br>
+<span style="color:var(--teal2)">Content-Type:</span> application/json<br><br>
+<span style="color:var(--dim)">// Request Body</span><br>
+{<br>
+&nbsp;&nbsp;<span style="color:var(--gold2)">"intent_prompt"</span>: <span style="color:var(--white)">"Audit high-risk accounts matching SYSC 6.1.1..."</span>,<br>
+&nbsp;&nbsp;<span style="color:var(--gold2)">"mask_pii"</span>: <span style="color:var(--teal3)">true</span>,<br>
+&nbsp;&nbsp;<span style="color:var(--gold2)">"fca_schema_version"</span>: <span style="color:var(--white)">"v4.2"</span><br>
+}
+            </div>
+          </div>
+          <div class="doc-block">
+            <div class="doc-block-title">Security Architecture — TLS & Key Management</div>
+            <p class="doc-block-body">All API endpoints enforce TLS 1.3. TLS 1.2 and below are explicitly blocked at the load balancer. Cryptographic keys are managed via Azure Key Vault with HSM backing. Client API keys are stored with AES-256 encryption and are revocable instantly from the dashboard.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     COMPANY
+════════════════════════════════════════ -->
+<div class="page-panel" id="tab-company">
+  <div class="company-section">
+    <div class="container">
+      <div class="section-eyebrow">// The RegTech Engine</div>
+      <div class="section-title">About NexIntent</div>
+      <p class="section-body">A next-generation regulatory intelligence engine designed to fight global financial crime — bridging complex multi-chain ecosystems, traditional payment gateways, and strict FCA regulatory standards.</p>
+      <div class="founder-card">
+        <div class="founder-avatar">OMO</div>
+        <div>
+          <div class="founder-name">Oluwafemi Mobolaji Olagoke</div>
+          <div class="founder-role">Founder & Technical Architect · NexIntent RegTech Ltd</div>
+          <p class="founder-bio">A Web3 entrepreneur and systems architect specialising in decentralised intent-based AI agents and high-frequency financial utility integrations. Architect behind MasoMind DeAI (intent-parsing engine), AbaPay (Celo #6 globally), Hashlock (Stacks #4), and published enterprise security libraries @investorphem/validator-tools and @investorphem/stx-utils. Building Zero-Trust compliance environments for the next generation of global FinTechs.</p>
+          <div class="founder-links">
+            <a class="founder-link" href="https://twitter.com/investorphem" target="_blank">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.007 3.966H5.078z"/></svg>
+              @investorphem
+            </a>
+            <a class="founder-link" href="https://github.com/investorphem" target="_blank">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="ops-grid">
+        <div class="ops-card">
+          <div class="ops-title">Operations & Legal</div>
+          <div class="ops-row"><span class="ops-key">Entity</span><span class="ops-val">NexIntent RegTech Ltd</span></div>
+          <div class="ops-row"><span class="ops-key">UK Registration</span><span class="ops-val pending">Pending — Companies House</span></div>
+          <div class="ops-row"><span class="ops-key">Endorsing Body</span><span class="ops-val">Envestors Limited</span></div>
+          <div class="ops-row"><span class="ops-key">Visa Programme</span><span class="ops-val">UK Innovator Founder</span></div>
+          <div class="ops-row"><span class="ops-key">Compliance Standard</span><span class="ops-val">FCA Framework Ready</span></div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-title">Technology Stack</div>
+          <div class="ops-row"><span class="ops-key">Cloud Infrastructure</span><span class="ops-val">Azure UK South</span></div>
+          <div class="ops-row"><span class="ops-key">Data Encryption</span><span class="ops-val">AES-256 · TLS 1.3</span></div>
+          <div class="ops-row"><span class="ops-key">LLM Provider</span><span class="ops-val">OpenAI Enterprise ZDR</span></div>
+          <div class="ops-row"><span class="ops-key">Key Management</span><span class="ops-val">Azure Key Vault HSM</span></div>
+          <div class="ops-row"><span class="ops-key">Audit Storage</span><span class="ops-val">WORM · Immutable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER (shown on all tabs)
+════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="nav-logomark">NI</div>
+          <div style="font-family:var(--font-display);font-size:20px;letter-spacing:1px">Nex<span style="color:var(--teal2)">Intent</span></div>
+        </div>
+        <p>Next-generation regulatory intelligence engine for UK FinTechs, payment processors, and Web3 custodians. Zero-Trust. FCA Aligned. Enterprise Grade.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <button class="footer-link" onclick="setTab('home')">Router Interface</button>
+        <button class="footer-link" onclick="setTab('solutions')">Industry Solutions</button>
+        <button class="footer-link" onclick="setTab('pricing')">Pricing & SLA</button>
+        <button class="footer-link" onclick="setTab('docs')">API Documentation</button>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <button class="footer-link" onclick="setTab('company')">About & Founders</button>
+        <a class="footer-link" href="https://twitter.com/investorphem" target="_blank">X · @investorphem</a>
+        <a class="footer-link" href="https://github.com/investorphem" target="_blank">GitHub Repository</a>
+        <button class="footer-link" onclick="setTab('logs')">Audit Ledger</button>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <button class="footer-link" onclick="toast('Privacy Policy document loading...')">Privacy Policy</button>
+        <button class="footer-link" onclick="toast('Terms of Service document loading...')">Terms of Service</button>
+        <button class="footer-link" onclick="toast('DPA available upon NDA execution.')">Data Processing Agreement</button>
+        <button class="footer-link" onclick="toast('Cookie preferences panel opening...')">Cookie Settings</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-l">© 2026 NexIntent RegTech Ltd. UK Corporate Registration Pending.</div>
+      <div class="footer-bottom-r">AUDIT-READY · ZERO-TRUST · FCA-ALIGNED</div>
+    </div>
+  </div>
+</footer>
+
 <script>
-// ── NAVIGATION ──────────────────────────────────────────────────────────────
-function navigate(page) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const panel = document.getElementById('panel-' + page);
-  if(panel) panel.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + page + "'")) n.classList.add('active');
+// ── TABS ────────────────────────────────────────────────────────────────────
+function setTab(name) {
+  document.querySelectorAll('.page-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('tab-' + name);
+  if (panel) { panel.classList.add('active'); window.scrollTo(0,0); }
+  document.querySelectorAll('.nav-link').forEach(b => {
+    if (b.dataset.tab === name) b.classList.add('active');
+  });
+  checkReveals();
+}
+
+// ── SCROLL ──────────────────────────────────────────────────────────────────
+function scrollToPilot() {
+  setTab('home');
+  setTimeout(() => {
+    document.getElementById('pilot-anchor')?.scrollIntoView({ behavior: 'smooth' });
+  }, 50);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+  checkReveals();
+});
+
+function checkReveals() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 60) el.classList.add('visible');
   });
 }
+setTimeout(checkReveals, 100);
 
-// ── MODAL ───────────────────────────────────────────────────────────────────
-function showModal() { document.getElementById('modal').classList.add('open') }
-function closeModal() { document.getElementById('modal').classList.remove('open') }
-document.getElementById('modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal() });
+// ── TOAST ────────────────────────────────────────────────────────────────────
+function toast(msg, isError = false) {
+  const container = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (isError ? 'error' : 'success');
+  el.innerHTML = `<div class="toast-dot"></div><span>${msg}</span>`;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
 
-// ── CHART ───────────────────────────────────────────────────────────────────
-const vals = [42,38,55,61,48,70,82,74,91,84,88,96];
-const colors = ['var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal)','var(--teal2)'];
-const chart = document.getElementById('chart1');
-vals.forEach((v, i) => {
-  const b = document.createElement('div');
-  b.className = 'bar-c';
-  b.style.cssText = `height:${v}%;background:${colors[i]};opacity:${.5 + v/200};` +
-    `transition:height .8s ease ${i*60}ms;`;
-  b.title = `Week ${i+1}: ${v}K transactions`;
-  chart.appendChild(b);
+// ── COOKIE ───────────────────────────────────────────────────────────────────
+if (!localStorage.getItem('ni_cookie')) {
+  setTimeout(() => document.getElementById('cookie').style.display = 'flex', 1500);
+}
+function acceptCookies() {
+  localStorage.setItem('ni_cookie', '1');
+  document.getElementById('cookie').style.display = 'none';
+}
+
+// ── TICKER ───────────────────────────────────────────────────────────────────
+const tickerItems = [
+  { color: '#0FBA6F', text: 'REP-CRIM Q2 2026 compilation complete · 847,293 transactions validated' },
+  { color: '#E03B3B', text: 'ALERT: TXN-94821 · £847,200 · Sanctioned jurisdiction detected · SAR Required' },
+  { color: '#0FADA0', text: 'KYC refresh completed · 1,847 clients verified · Zero watchlist matches' },
+  { color: '#E8A020', text: 'ALERT: Velocity breach pattern · 3 linked accounts · Under review' },
+  { color: '#0FBA6F', text: 'Zero-Trust pipeline nominal · 0 bytes raw data transmitted to LLM layer' },
+  { color: '#0FADA0', text: 'GABRIEL submission queued · FCA deadline: 09 Jun 2026 · On track' },
+  { color: '#E03B3B', text: 'ALERT: WAL-8824 · $85,000 USDC · High-risk score 88 · Manual review required' },
+];
+const track = document.getElementById('ticker');
+const allItems = [...tickerItems, ...tickerItems];
+allItems.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'ticker-item';
+  div.innerHTML = `<div class="ticker-dot" style="background:${item.color}"></div>${item.text}`;
+  track.appendChild(div);
 });
 
-// ── QUERY / COPILOT ─────────────────────────────────────────────────────────
-let qCount = 1, aCount = 1;
-
-const responses = {
-  'aml': {
-    summary: '✦ AML Scan Complete — Q2 2026',
-    rows: [
-      ['Transactions scanned', '847,293'],
-      ['Above £50K threshold', '2,841'],
-      ['AML flagged', '23'],
-      ['SAR-required', '7 (critical)'],
-      ['Sanctioned jurisdictions', '1 (Iran — TXN-94821)'],
-      ['Total exposure', '£2,384,600'],
-    ]
-  },
-  'repcrim': {
-    summary: '✦ REP-CRIM Q1 2026 Generated',
-    rows: [
-      ['Report reference', 'RC-2026-Q1-NI'],
-      ['Submission format', 'FCA GABRIEL XML v4.2'],
-      ['Reporting period', '01 Jan – 31 Mar 2026'],
-      ['Transactions included', '791,442'],
-      ['Total value reported', '£1.84B'],
-      ['Status', 'Ready for submission ✓'],
-    ]
-  },
-  'sar': {
-    summary: '✦ SAR-Required Transactions — June 2026',
-    rows: [
-      ['Total SARs required', '7'],
-      ['Highest risk', 'TXN-94821 (£847,200)'],
-      ['NCA submission deadline', '14 Jun 2026'],
-      ['Auto-drafted SARs', '7 of 7'],
-      ['Pending MLRO sign-off', '3'],
-    ]
-  },
-  'sanction': {
-    summary: '✦ Sanctioned Jurisdiction Transactions — YTD',
-    rows: [
-      ['Screening database', 'OFAC + HMT + UN Consolidated'],
-      ['Last updated', '07 Jun 2026 06:00 UTC'],
-      ['Matches detected', '1 confirmed, 2 potential'],
-      ['Confirmed match', 'TXN-94821 — Iran (OFAC)'],
-      ['Auto-blocked', 'Yes — transaction halted'],
-      ['Regulatory notification', 'Pending — 24hr deadline'],
-    ]
-  }
+// ── SANDBOX ──────────────────────────────────────────────────────────────────
+let qCount = 0;
+const db = [
+  { id: 'ACC-8821', type: 'IBAN Transfer',  amount: '£15,000',  risk: '92', riskClass: 'risk-high' },
+  { id: 'WAL-8824', type: 'USDC Transfer',  amount: '$85,000',  risk: '88', riskClass: 'risk-high' },
+  { id: 'ACC-8825', type: 'SWIFT Wire',     amount: '£11,500',  risk: '45', riskClass: 'risk-med' },
+  { id: 'WAL-8822', type: 'USDC Transfer',  amount: '$4,500',   risk: '12', riskClass: 'risk-low' },
+  { id: 'ACC-8823', type: 'BACS Payment',   amount: '£2,100',   risk: '05', riskClass: 'risk-low' },
+];
+const payloads = {
+  high_risk:    `{\n  <span class="code-gold">"action"</span>: <span class="code-white">"FETCH_ENTITIES"</span>,\n  <span class="code-gold">"filters"</span>: {\n    <span class="code-gold">"entity_types"</span>: [<span class="code-white">"bank_account"</span>, <span class="code-white">"crypto_wallet"</span>],\n    <span class="code-gold">"risk_score_min"</span>: <span class="code-teal">80</span>\n  },\n  <span class="code-gold">"fca_rule_sync"</span>: <span class="code-white">"SYSC 6.1.1"</span>,\n  <span class="code-gold">"pii_mask"</span>: <span class="code-teal">true</span>\n}`,
+  large_fiat:   `{\n  <span class="code-gold">"action"</span>: <span class="code-white">"FETCH_TRANSACTIONS"</span>,\n  <span class="code-gold">"filters"</span>: {\n    <span class="code-gold">"asset_class"</span>: <span class="code-white">"fiat"</span>,\n    <span class="code-gold">"amount_min_gbp"</span>: <span class="code-teal">10000</span>\n  },\n  <span class="code-gold">"fca_rule_sync"</span>: <span class="code-white">"MLR 2017"</span>\n}`,
+  cross_border: `{\n  <span class="code-gold">"action"</span>: <span class="code-white">"FETCH_TRANSACTIONS"</span>,\n  <span class="code-gold">"filters"</span>: {\n    <span class="code-gold">"types"</span>: [<span class="code-white">"SWIFT"</span>, <span class="code-white">"USDC"</span>]\n  },\n  <span class="code-gold">"fca_rule_sync"</span>: <span class="code-white">"PS23/15"</span>\n}`,
+};
+const filters = {
+  high_risk:    d => parseInt(d.risk) >= 80,
+  large_fiat:   d => (d.type==='IBAN Transfer'||d.type==='SWIFT Wire') && parseInt(d.amount.replace(/[^0-9]/g,'')) >= 10000,
+  cross_border: d => d.type==='USDC Transfer'||d.type==='SWIFT Wire',
 };
 
-function getResponse(query) {
-  const q = query.toLowerCase();
-  if (q.includes('aml') || q.includes('50k') || q.includes('flagged')) return responses['aml'];
-  if (q.includes('rep-crim') || q.includes('repcrim') || q.includes('report')) return responses['repcrim'];
-  if (q.includes('sar') || q.includes('suspicious')) return responses['sar'];
-  if (q.includes('sanction') || q.includes('jurisdiction')) return responses['sanction'];
-  return {
-    summary: '✦ Query Executed Successfully',
-    rows: [
-      ['Intent classified', 'Compliance data query'],
-      ['Schema matched', 'FCA regulatory taxonomy'],
-      ['Records queried', Math.floor(Math.random()*50000+1000).toLocaleString()],
-      ['Data sent to LLM', '0 bytes (zero-trust enforced)'],
-      ['Audit log', 'Entry #' + (aCount+1) + ' created'],
-      ['Execution time', (Math.random()*1.5+0.8).toFixed(2) + 's'],
-    ]
-  };
-}
+function runDemo(cmd, btn) {
+  document.querySelectorAll('.sandbox-cmd').forEach(b => b.classList.remove('executing'));
+  if (btn) btn.classList.add('executing');
+  const aiInd = document.getElementById('ai-ind');
+  const dbInd = document.getElementById('db-ind');
+  const codeOut = document.getElementById('code-output');
+  const resultsBody = document.getElementById('results-body');
+  const exportBtn = document.getElementById('export-btn');
+  const pipeStatus = document.getElementById('pipe-status');
 
-function sendQuery(preset) {
-  const input = document.getElementById('queryInput');
-  const query = preset || input.value.trim();
-  if (!query) return;
-  input.value = '';
-
-  const msgs = document.getElementById('messages');
-
-  // User message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'msg msg-user';
-  userMsg.innerHTML = `<div class="msg-bubble">${query}</div><div class="msg-meta" style="text-align:right">${new Date().toLocaleTimeString()}</div>`;
-  msgs.appendChild(userMsg);
-
-  // Typing indicator
-  const typing = document.createElement('div');
-  typing.className = 'msg msg-system';
-  typing.innerHTML = '<div class="msg-bubble"><div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
-  msgs.appendChild(typing);
-  msgs.scrollTop = msgs.scrollHeight;
+  exportBtn.style.display = 'none';
+  aiInd.className = 'pane-indicator ind-loading';
+  dbInd.className = 'pane-indicator ind-idle';
+  pipeStatus.style.color = 'var(--gold)';
+  pipeStatus.textContent = 'Parsing intent...';
+  codeOut.innerHTML = '<span class="code-dim">// Classifying intent...\n// Mapping to FCA taxonomy...</span>';
+  resultsBody.innerHTML = '<tr><td colspan="4" style="color:var(--dim);padding:24px;text-align:center;font-style:italic">Connecting to enterprise read-replica...</td></tr>';
 
   setTimeout(() => {
-    typing.remove();
-    // System ack
-    const sysMsg = document.createElement('div');
-    sysMsg.className = 'msg msg-system';
-    sysMsg.innerHTML = `<div class="msg-bubble">✔ Intent classified — querying your isolated Azure UK silo<br><span style="color:var(--teal3);font-size:11px">0 bytes of raw data transmitted to LLM — zero-trust enforced</span></div>`;
-    msgs.appendChild(sysMsg);
-    msgs.scrollTop = msgs.scrollHeight;
+    aiInd.className = 'pane-indicator ind-active';
+    codeOut.innerHTML = payloads[cmd];
+    dbInd.className = 'pane-indicator ind-loading';
+    pipeStatus.textContent = 'Executing read-only query...';
 
     setTimeout(() => {
-      const resp = getResponse(query);
-      const resMsg = document.createElement('div');
-      resMsg.className = 'msg msg-result';
-      let rows = resp.rows.map(r => `<div class="result-row"><span class="result-key">${r[0]}</span><span class="result-val ${r[1].includes('critical')||r[1].includes('Iran')?'red':''} ${r[1].includes('£8')||r[1].includes('£2.3')?'gold':''}">${r[1]}</span></div>`).join('');
-      resMsg.innerHTML = `<div class="msg-bubble"><strong style="color:var(--teal2)">${resp.summary}</strong><div class="result-table" style="margin-top:8px">${rows}</div></div><div class="msg-meta">NexIntent IPS &nbsp;·&nbsp; Audit log updated &nbsp;·&nbsp; ${new Date().toLocaleTimeString()}</div>`;
-      msgs.appendChild(resMsg);
-      msgs.scrollTop = msgs.scrollHeight;
-      qCount++; aCount++;
+      dbInd.className = 'pane-indicator ind-active';
+      pipeStatus.style.color = 'var(--teal2)';
+      pipeStatus.textContent = 'Pipeline complete · Audit log updated';
+      const rows = db.filter(filters[cmd]);
+      if (rows.length) {
+        resultsBody.innerHTML = rows.map(r => `<tr><td style="color:var(--teal3)">${r.id}</td><td>${r.type}</td><td style="color:var(--white);font-weight:600">${r.amount}</td><td class="${r.riskClass}">${r.risk}</td></tr>`).join('');
+        exportBtn.style.display = 'flex';
+      } else {
+        resultsBody.innerHTML = '<tr><td colspan="4" style="color:var(--dim);padding:24px;text-align:center">No records matched current filters.</td></tr>';
+      }
+      qCount++;
       document.getElementById('qcount').textContent = qCount;
-      document.getElementById('acount').textContent = aCount;
-      showModal();
-    }, 900);
-  }, 1200);
+      if (btn) btn.classList.remove('executing');
+    }, 700);
+  }, 900);
 }
 
-// ── TOGGLE TOGGLES ───────────────────────────────────────────────────────────
-document.querySelectorAll('.toggle:not([title])').forEach(t => {
-  t.addEventListener('click', () => t.classList.toggle('on'));
-});
+function resetDemo() {
+  document.querySelectorAll('.sandbox-cmd').forEach(b => b.classList.remove('executing'));
+  document.getElementById('ai-ind').className = 'pane-indicator ind-idle';
+  document.getElementById('db-ind').className = 'pane-indicator ind-idle';
+  document.getElementById('code-output').innerHTML = '<span class="code-dim">// Awaiting CCO command...\n// LLM operates here — isolated from production data.\n// Zero raw financial data transmitted.</span>';
+  document.getElementById('results-body').innerHTML = '<tr><td colspan="4" style="color:var(--dim);padding:24px;text-align:center;font-style:italic">Awaiting API payload execution...</td></tr>';
+  document.getElementById('export-btn').style.display = 'none';
+  document.getElementById('pipe-status').style.color = 'var(--dim)';
+  document.getElementById('pipe-status').textContent = 'Idle';
+}
 
-// ── LIVE ACTIVITY FEED ───────────────────────────────────────────────────────
-const newActivities = [
-  {color:'var(--teal)',  text:'Compliance Copilot query executed — zero-trust confirmed', time:'now'},
-  {color:'var(--green)', text:'Watchlist re-screening completed — 0 new matches', time:'just now'},
-  {color:'var(--gold)',  text:'PEP enhanced due diligence reminder — 4 clients due this week', time:'2 min ago'},
-];
-let actIdx = 0;
-setInterval(() => {
-  const feed = document.getElementById('activity-feed');
-  if (!feed) return;
-  const a = newActivities[actIdx % newActivities.length];
-  const item = document.createElement('div');
-  item.className = 'activity-item';
-  item.style.animation = 'fadeIn .4s ease';
-  item.innerHTML = `<div class="activity-dot" style="background:${a.color}"></div><div><div class="activity-text">${a.text}</div><div class="activity-time">${a.time}</div></div>`;
-  feed.insertBefore(item, feed.firstChild);
-  if (feed.children.length > 6) feed.lastChild.remove();
-  actIdx++;
-}, 8000);
+// ── FORM ─────────────────────────────────────────────────────────────────────
+function submitPilot(e) {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const emailVal = new FormData(form).get('Email Address') || '';
+  const domain = emailVal.toLowerCase().split('@')[1] || '';
+  const publicDomains = ['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com'];
+  if (publicDomains.includes(domain)) {
+    toast('Enterprise validation failed. Please use a corporate email address.', true);
+    return;
+  }
+  const btn = form.querySelector('[type=submit]');
+  btn.disabled = true;
+  btn.textContent = 'Validating Application...';
+  // Simulated submission (replace with real Formspree endpoint)
+  setTimeout(() => {
+    toast('Application received. Our solutions engineer will contact you within 24 hours.');
+    form.reset();
+    btn.disabled = false;
+    btn.textContent = 'Request Deployment Authority';
+  }, 1800);
+}
 </script>
 </body>
 </html>
